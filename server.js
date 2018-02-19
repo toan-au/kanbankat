@@ -2,6 +2,9 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 const keys = require('./config/keys');
 const passport = require('passport');
+const mongoose = require('mongoose');
+
+mongoose.connect(keys.mongoURI);
 
 const app = express();
 
