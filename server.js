@@ -4,6 +4,7 @@ const keys = require('./config/keys');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
 const app = express();
