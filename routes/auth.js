@@ -1,21 +1,25 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const keys = require('./config/keys');
+const keys = require('../config/keys');
 
 // configure passport
 passport.use(
   new GoogleStrategy(
     {
-      clientID: keys.googleClientId,
+      clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/'
+      callbackURL: 'http://localhost:5000/auth/google/callback'
     },
-    (accessToken, refreshToken, profile, cb) => {}
+    (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      cb(null, profile);
+    }
   )
 );
 
 module.exports = app => {
-  app.get('/api/test', (req, res) => {
-    res.send({ success: true });
-  });
+  app.get(
+    '/auth/google',
+    passport.authenticate('google', { scope: ['profile'] })
+  );
 };
