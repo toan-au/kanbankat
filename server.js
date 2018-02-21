@@ -4,6 +4,10 @@ const keys = require('./config/keys');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
+// models
+require('./models/user');
+require('./models/board.js');
+
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
@@ -19,8 +23,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// models
 
 // routes
 require('./routes/auth')(app);
