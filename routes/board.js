@@ -41,7 +41,7 @@ module.exports = app => {
     const { name } = req.body;
     let board = await Board.findById(req.params.boardId);
 
-    // add a list item into subdoc collection
+    // add a list then subtract 1 from numLists
     board.lists.push({ name, order: board.numLists });
     board.numLists++;
     board = await board.save();
@@ -50,8 +50,12 @@ module.exports = app => {
 
   app.delete('/board/list/:boardId/:listId', async (req, res) => {
     const { boardId, listId } = req.params;
-    const board = await Board.findById(boardId);
-    await board.lists.id(listId).delete();
+    let board = await Board.findById(boardId);
+
+    // remove list then subtract form numLists
+    board.lists.id(listId).remove();
+    board.numLists--;
+    board = await board.save();
     res.send(board);
   });
 
