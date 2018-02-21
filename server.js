@@ -26,6 +26,7 @@ app.use(passport.session());
 
 // routes
 require('./routes/auth')(app);
+require('./routes/board')(app);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('server has been started');
