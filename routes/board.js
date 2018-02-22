@@ -6,8 +6,8 @@ const Board = mongoose.model('boards');
 //  get all user's boards
 //  get specific board      X
 //  delete board            X
-//  delete list
-//  delete task
+//  delete list             X
+//  delete task             X
 //  update list
 //  update task
 //  move task
@@ -68,7 +68,22 @@ module.exports = app => {
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
     const list = await board.lists.id(listId);
+
+    // push new task increment counter
     list.tasks.push({ name, description });
+    list.numTasks++;
+    board = await board.save();
+    res.send(board);
+  });
+
+  app.delete('/board/task/:boardId/:listId/:taskId', async (req, res) => {
+    const { boardId, listId, taskId } = req.params;
+    let board = await Board.findById(boardId);
+    const list = board.lists.id(listId);
+
+    // remove a task decrement counter
+    list.tasks.id(taskId).remove();
+    list.numTasks--;
     board = await board.save();
     res.send(board);
   });
