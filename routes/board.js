@@ -21,18 +21,21 @@ module.exports = app => {
   // *************
 
   // create a new board
-  app.post('/api/board/new', requireLogin, async (req, res) => {
+  app.post('/api/board', requireLogin, async (req, res) => {
     const { name } = req.body;
     const board = await new Board({ name }).save();
-    req.user.boards.push(board._id);
+
+    // attach board to user then persist to DB
+    req.user.boardIds.push(board._id);
+    req.user.boardNames.push(board.name);
     await req.user.save();
     res.send(board);
   });
 
   // get list of user's boards
   app.get('/api/boards', async (req, res) => {
-    // const boards = await Board.find({ _id: { $in: req.user.boards } });
-    res.send({ hi: 'hey' });
+    const boards = await Board.find({ _id: { $in: req.user.boardIds } });
+    res.send(boards);
   });
 
   // get a specific board
