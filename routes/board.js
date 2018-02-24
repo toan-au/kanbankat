@@ -15,12 +15,13 @@ const Board = mongoose.model('boards');
 //  move list
 
 module.exports = app => {
+  app.get('/api/test', (req, res) => res.send({ test: true }));
   // *************
   // BOARD STUFF
   // *************
 
   // create a new board
-  app.post('/board/new', requireLogin, async (req, res) => {
+  app.post('/api/board/new', requireLogin, async (req, res) => {
     const { name } = req.body;
     const board = await new Board({ name }).save();
     req.user.boards.push(board._id);
@@ -29,19 +30,19 @@ module.exports = app => {
   });
 
   // get list of user's boards
-  app.get('/boards', requireLogin, async (req, res) => {
-    const boards = await Board.find({ _id: { $in: req.user.boards } });
-    res.send(boards);
+  app.get('/api/boards', async (req, res) => {
+    // const boards = await Board.find({ _id: { $in: req.user.boards } });
+    res.send({ hi: 'hey' });
   });
 
   // get a specific board
-  app.get('/board/:boardId', requireLogin, async (req, res) => {
+  app.get('/api/board/:boardId', requireLogin, async (req, res) => {
     const board = await Board.findById(req.params.boardId);
     res.send(board);
   });
 
   // delete a board
-  app.delete('/board/:boardId', requireLogin, async (req, res) => {
+  app.delete('/api/board/:boardId', requireLogin, async (req, res) => {
     const board = await Board.find(req.params.boardId);
     res.send(board);
   });
@@ -51,7 +52,7 @@ module.exports = app => {
   // *************
 
   // create a new list
-  app.post('/board/list/:boardId/', async (req, res) => {
+  app.post('/api/board/list/:boardId/', async (req, res) => {
     const { name } = req.body;
     let board = await Board.findById(req.params.boardId);
 
@@ -63,7 +64,7 @@ module.exports = app => {
   });
 
   // delete a list
-  app.delete('/board/list/:boardId/:listId', async (req, res) => {
+  app.delete('/api/board/list/:boardId/:listId', async (req, res) => {
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
 
@@ -79,7 +80,7 @@ module.exports = app => {
   // *************
 
   // create a new task
-  app.post('/board/task/:boardId/:listId', async (req, res) => {
+  app.post('/api/board/task/:boardId/:listId', async (req, res) => {
     const { name, description } = req.body;
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
@@ -93,7 +94,7 @@ module.exports = app => {
   });
 
   // delete a task
-  app.delete('/board/task/:boardId/:listId/:taskId', async (req, res) => {
+  app.delete('/api/board/task/:boardId/:listId/:taskId', async (req, res) => {
     const { boardId, listId, taskId } = req.params;
     let board = await Board.findById(boardId);
     const list = board.lists.id(listId);
