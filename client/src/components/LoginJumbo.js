@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const LoginJumbo = () => {
   return (
@@ -12,11 +11,9 @@ const LoginJumbo = () => {
         </p>
         <hr className="my-4" />
         <p className="lead">Please login to access your boards</p>
-        <Link to="/auth/google">
-          <button className="btn btn-primary btn-lg" role="button">
-            Login with google
-          </button>
-        </Link>
+        <a className="btn btn-primary btn-lg" role="button" href="/auth/google">
+          Login with google
+        </a>
       </div>
     </div>
   );
