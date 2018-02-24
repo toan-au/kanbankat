@@ -46,8 +46,18 @@ module.exports = app => {
 
   // delete a board
   app.delete('/api/board/:boardId', requireLogin, async (req, res) => {
-    const board = await Board.find(req.params.boardId);
-    res.send(board);
+    console.log(req.params.boardId);
+    const board = await Board.findByIdAndRemove(req.params.boardId);
+    // remove id from boardIds
+    let idx = req.user.boardIds.indexOf(board._id);
+    req.user.boardIds.splice(idx, 1);
+
+    // remove name from boardNames
+    idx = req.user.boardNames.indexOf(board.name);
+    req.user.boardNames.splice(idx, 1);
+
+    const user = await req.user.save();
+    res.send(user);
   });
 
   // *************
