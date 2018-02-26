@@ -4,6 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducers from './reducers';
+
+// styling
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js.map';
 
@@ -12,10 +17,14 @@ if (process.env.NODE_ENV === 'development') {
   window.axios = axios;
 }
 
+const store = createStore(reducers);
+
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 registerServiceWorker();
