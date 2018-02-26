@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import LoginJumbo from './LoginJumbo';
 import Boards from './Boards';
 import ViewBoard from './pages/ViewBoard';

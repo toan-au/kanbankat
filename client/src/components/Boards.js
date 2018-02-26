@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const renderBoardList = (boards = []) => {
   return (
@@ -10,7 +11,7 @@ const renderBoardList = (boards = []) => {
           <Link
             to={'/board/' + board.id}
             key={board.id}
-            className="list-group-item"
+            className="list-group-item clearfix"
           >
             {board.name}
           </Link>
@@ -24,8 +25,6 @@ const Boards = props => {
   return (
     <div className="container">
       <h1>Here are your boards</h1>
-      <Link to="/aye/123">click me</Link>
-      {console.log(props.user)}
       {renderBoardList(props.user.boards)}
     </div>
   );
@@ -35,4 +34,4 @@ const mapStateToProps = state => {
   return { user: state.user };
 };
 
-export default connect(mapStateToProps)(Boards);
+export default withRouter(connect(mapStateToProps)(Boards));

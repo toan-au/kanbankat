@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getBoard } from '../../actions/boards';
+import { withRouter } from 'react-router-dom';
+import BackButton from '../BackButton';
 
 class ViewBoard extends Component {
   componentDidMount() {
@@ -8,16 +10,18 @@ class ViewBoard extends Component {
   }
 
   renderLists(lists = []) {
-    return lists.map(list => {
-      <div className="list">{list.name}</div>;
-    });
+    return lists.map(list => (
+      <div className="list" key={list._id}>
+        {list.name}
+      </div>
+    ));
   }
 
   render() {
     return (
       <div className="ViewBoard container-fluid">
-        {console.log(this.props)}
         <div className="container">
+          <BackButton />
           <h1>{this.props.board.name}</h1>
         </div>
         <div className="lists">{this.renderLists(this.props.board.lists)}</div>
@@ -30,4 +34,4 @@ const mapStateToProps = state => {
   return { board: state.board };
 };
 
-export default connect(mapStateToProps, { getBoard })(ViewBoard);
+export default withRouter(connect(mapStateToProps, { getBoard })(ViewBoard));
