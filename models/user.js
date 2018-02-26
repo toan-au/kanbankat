@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const boardRepSchema = new Schema({
+  id: [String],
+  name: [String]
+});
+
 const userSchema = new Schema({
   googleId: String,
-  boardIds: [String],
-  boardNames: [String]
+  boards: [boardRepSchema]
 });
 
 mongoose.model('users', userSchema);

@@ -26,8 +26,7 @@ module.exports = app => {
     const board = await new Board({ name }).save();
 
     // attach board to user then persist to DB
-    req.user.boardIds.push(board._id);
-    req.user.boardNames.push(board.name);
+    req.user.boards.push({ id: board._id, name: board.name });
     await req.user.save();
     res.send(board);
   });
@@ -48,13 +47,10 @@ module.exports = app => {
   app.delete('/api/board/:boardId', requireLogin, async (req, res) => {
     console.log(req.params.boardId);
     const board = await Board.findByIdAndRemove(req.params.boardId);
-    // remove id from boardIds
-    let idx = req.user.boardIds.indexOf(board._id);
-    req.user.boardIds.splice(idx, 1);
 
-    // remove name from boardNames
-    idx = req.user.boardNames.indexOf(board.name);
-    req.user.boardNames.splice(idx, 1);
+    // remove id from boardIds
+    let idx = req.user.boards.indexOf({ id: board._id, name: board.name });
+    req.user.boards.splice(idx, 1);
 
     const user = await req.user.save();
     res.send(user);

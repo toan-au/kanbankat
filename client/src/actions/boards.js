@@ -1,8 +1,9 @@
-import { GET_BOARDS } from './types';
+import { GET_BOARD } from './types';
 import axios from 'axios';
 
-export const getBoards = userId => {
+export const getBoard = boardId => {
   return async dispatch => {
-    const boards = axios('/api/boards/' + userId);
+    const board = await axios('/api/board/' + boardId);
+    dispatch({ type: GET_BOARD, payload: board.data });
   };
 };
