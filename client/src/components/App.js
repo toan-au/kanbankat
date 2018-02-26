@@ -7,8 +7,6 @@ import { getUser } from '../actions/user';
 class App extends Component {
   componentDidMount() {
     this.props.getUser();
-    console.log(this.props.user);
-    console.log('you are so beautiful');
   }
 
   render() {
