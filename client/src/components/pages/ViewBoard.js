@@ -9,10 +9,20 @@ class ViewBoard extends Component {
     this.props.getBoard(this.props.match.params.boardId);
   }
 
+  renderTasks(tasks = []) {
+    return tasks.map(task => (
+      <div className="task" key={task._id}>
+        <span>{task.name}</span>
+        <p>{task.description}</p>
+      </div>
+    ));
+  }
+
   renderLists(lists = []) {
     return lists.map(list => (
       <div className="list" key={list._id}>
-        {list.name}
+        <h5 className="list-header">{list.name}</h5>
+        <div className="tasks">{this.renderTasks(list.tasks)}</div>
       </div>
     ));
   }
