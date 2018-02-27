@@ -4,6 +4,7 @@ import { getBoard, shiftTask } from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import NewBoard from './NewBoard';
 
 class ViewBoard extends Component {
   componentDidMount() {
@@ -75,6 +76,7 @@ class ViewBoard extends Component {
           </div>
           <div className="lists">
             {this.renderLists(this.props.board.lists)}
+            <NewBoard boardId={this.props.board._id} />
           </div>
         </div>
       </DragDropContext>

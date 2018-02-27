@@ -1,12 +1,11 @@
 .ViewBoard .lists {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
 .ViewBoard .list {
   background: #0b6fdf;
-  /* display: flex; */
-  /* flex-direction: column; */
   width: 300px;
   margin: 10px;
   padding: 10px;
@@ -18,9 +17,23 @@
   color: white;
 }
 
+.ViewBoard .tasks {
+  padding: 14px 0px;
+  background: #328df5;
+  border-radius: 5px;
+}
+
 .ViewBoard .task {
   border: 1px solid grey;
   background: white;
   padding: 7px;
   margin-bottom: 10px;
+}
+
+.ViewBoard .NewBoard {
+  background: #99ccff;
+}
+
+.ViewBoard .NewBoard form input {
+  text-align: center;
 }
