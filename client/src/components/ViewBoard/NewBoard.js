@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { createList } from '../../actions/boards';
+import { connect } from 'react-redux';
 
-export default class NewBoard extends Component {
+class NewBoard extends Component {
   state = { name: '' };
   onChange(e) {
     this.setState({ name: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
+    this.props.handleSubmit({ name: this.state.name });
   }
 
   render() {
@@ -23,9 +26,15 @@ export default class NewBoard extends Component {
               value={this.state.name}
             />
           </div>
+          <input
+            type="submit"
+            className="btn btn-primary btn-block"
+            value="Create"
+          />
         </form>
-        <button className="btn btn-primary btn-block">Create</button>
       </div>
     );
   }
 }
+
+export default connect(null, {})(NewBoard);

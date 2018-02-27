@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getBoard, shiftTask } from '../../actions/boards';
+import { getBoard, shiftTask, createList } from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -9,6 +9,11 @@ import NewBoard from './NewBoard';
 class ViewBoard extends Component {
   componentDidMount() {
     this.props.getBoard(this.props.match.params.boardId);
+  }
+
+  handleCreateListSubmit(list) {
+    console.log('creating');
+    this.props.createList(this.props.board._id, list);
   }
 
   onDragEnd(result) {
@@ -76,7 +81,7 @@ class ViewBoard extends Component {
           </div>
           <div className="lists">
             {this.renderLists(this.props.board.lists)}
-            <NewBoard boardId={this.props.board._id} />
+            <NewBoard handleSubmit={this.handleCreateListSubmit.bind(this)} />
           </div>
         </div>
       </DragDropContext>
@@ -89,5 +94,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getBoard, shiftTask })(ViewBoard)
+  connect(mapStateToProps, { getBoard, shiftTask, createList })(ViewBoard)
 );

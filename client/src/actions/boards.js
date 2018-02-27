@@ -64,9 +64,9 @@ export const shiftTask = dropResult => {
   };
 };
 
-export const createList = boardId => {
+export const createList = (boardId, list) => {
   return async dispatch => {
-    const board = await axios.post('/api/board/list/' + boardId);
+    const board = await axios.post('/api/board/list/' + boardId, list);
     dispatch({ type: CREATE_LIST, payload: board.data });
   };
 };
