@@ -3,39 +3,68 @@ import { connect } from 'react-redux';
 import { getBoard } from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 class ViewBoard extends Component {
   componentDidMount() {
     this.props.getBoard(this.props.match.params.boardId);
   }
 
+  onDragEnd(result) {
+    console.log(result);
+  }
+
   renderTasks(tasks = []) {
     return tasks.map(task => (
-      <div className="task" key={task._id}>
-        <span>{task.name}</span>
-        <p>{task.description}</p>
-      </div>
+      <Draggable draggableId={task._id} key={task._id} type="TASK">
+        {(provided, snapshot) => (
+          <div
+            className="task"
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <span>{task.name}</span>
+            <p>{task.description}</p>
+          </div>
+        )}
+      </Draggable>
     ));
   }
 
   renderLists(lists = []) {
     return lists.map(list => (
-      <div className="list" key={list._id}>
-        <h5 className="list-header">{list.name}</h5>
-        <div className="tasks">{this.renderTasks(list.tasks)}</div>
-      </div>
+      <Droppable droppableId={list._id} key={list._id} type="TASK">
+        {(provided, snapshot) => (
+          <div
+            className="list"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <h5 className="list-header">{list.name}</h5>
+            <div className="tasks">
+              {this.renderTasks(list.tasks)}
+              {provided.placeholder}
+            </div>
+          </div>
+        )}
+      </Droppable>
     ));
   }
 
   render() {
     return (
-      <div className="ViewBoard container-fluid">
-        <div className="container">
-          <BackButton />
-          <h1>{this.props.board.name}</h1>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <div className="ViewBoard container-fluid">
+          <div className="container">
+            <BackButton />
+            <h1>{this.props.board.name}</h1>
+          </div>
+          <div className="lists">
+            {this.renderLists(this.props.board.lists)}
+          </div>
         </div>
-        <div className="lists">{this.renderLists(this.props.board.lists)}</div>
-      </div>
+      </DragDropContext>
     );
   }
 }
