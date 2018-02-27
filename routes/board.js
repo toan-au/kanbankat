@@ -66,12 +66,12 @@ module.exports = app => {
     let board = await Board.findById(req.params.boardId);
 
     // add a list then subtract 1 from numLists
-    board.lists.push({ name, order: board.numLists });
-    board.numLists++;
+    board.lists.push({ name });
     board = await board.save();
     res.send(board);
   });
 
+  // shifting tasks within lists
   app.patch('/api/board/list/:boardId/', requireLogin, async (req, res) => {
     const { newerLists } = req.body;
     const board = await Board.findById(req.params.boardId);
@@ -87,7 +87,6 @@ module.exports = app => {
 
     // remove list then subtract form numLists
     board.lists.id(listId).remove();
-    board.numLists--;
     board = await board.save();
     res.send(board);
   });
@@ -105,7 +104,6 @@ module.exports = app => {
 
     // push new task increment counter
     list.tasks.push({ name, description });
-    list.numTasks++;
     board = await board.save();
     res.send(board);
   });
@@ -118,7 +116,6 @@ module.exports = app => {
 
     // remove a task decrement counter
     list.tasks.id(taskId).remove();
-    list.numTasks--;
     board = await board.save();
     res.send(board);
   });
