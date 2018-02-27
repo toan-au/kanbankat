@@ -5,8 +5,8 @@
 
 .ViewBoard .list {
   background: #0b6fdf;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
   width: 300px;
   margin: 10px;
   padding: 10px;
