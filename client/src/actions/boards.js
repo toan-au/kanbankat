@@ -1,4 +1,4 @@
-import { GET_BOARD, SHIFT_TASK } from './types';
+import { GET_BOARD, SHIFT_TASK, CREATE_LIST } from './types';
 import axios from 'axios';
 import dotProp from 'dot-prop-immutable';
 
@@ -61,6 +61,13 @@ export const shiftTask = dropResult => {
     });
 
     dispatch({ type: SHIFT_TASK, payload: newerLists });
+  };
+};
+
+export const createList = boardId => {
+  return async dispatch => {
+    const board = await axios.post('/api/board/list/' + boardId);
+    dispatch({ type: CREATE_LIST, payload: board.data });
   };
 };
 
