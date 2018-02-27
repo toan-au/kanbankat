@@ -28,14 +28,17 @@ class ViewBoard extends Component {
         index={index}
       >
         {(provided, snapshot) => (
-          <div
-            className="task"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <span>{task.name}</span>
-            <p>{task.description}</p>
+          <div>
+            <div
+              className="task"
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              <span>{task.name}</span>
+              <p>{task.description}</p>
+            </div>
+            {provided.placeholder}
           </div>
         )}
       </Draggable>
