@@ -72,6 +72,14 @@ module.exports = app => {
     res.send(board);
   });
 
+  app.patch('/api/board/list/:boardId/', requireLogin, async (req, res) => {
+    const { newerLists } = req.body;
+    const board = await Board.findById(req.params.boardId);
+    board.lists = [...newerLists];
+    await board.save();
+    res.send(board);
+  });
+
   // delete a list
   app.delete('/api/board/list/:boardId/:listId', async (req, res) => {
     const { boardId, listId } = req.params;

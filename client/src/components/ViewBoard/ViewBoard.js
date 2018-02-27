@@ -17,7 +17,6 @@ class ViewBoard extends Component {
   }
 
   onDragEnd(result) {
-    console.log(result);
     if (result.destination == null) {
       return;
     }

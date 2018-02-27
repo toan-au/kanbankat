@@ -60,6 +60,9 @@ export const shiftTask = dropResult => {
       index: destIndex
     });
 
+    // Do back end update
+    axios.patch(`/api/board/list/${board._id}`, { newerLists });
+
     dispatch({ type: SHIFT_TASK, payload: newerLists });
   };
 };
