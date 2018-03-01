@@ -4,15 +4,19 @@ import { getBoard, shiftTask, createList } from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import NewBoard from './NewBoard';
+import NewList from './NewList';
+import NewTask from './NewTask';
 
 class ViewBoard extends Component {
   componentDidMount() {
     this.props.getBoard(this.props.match.params.boardId);
   }
 
+  handleCreateTaskSubmit(task) {
+    // pass
+  }
+
   handleCreateListSubmit(list) {
-    console.log('creating');
     this.props.createList(this.props.board._id, list);
   }
 
@@ -63,6 +67,7 @@ class ViewBoard extends Component {
             <div className="tasks">
               {this.renderTasks(list.tasks)}
               {provided.placeholder}
+              <NewTask />
             </div>
           </div>
         )}
@@ -80,7 +85,7 @@ class ViewBoard extends Component {
           </div>
           <div className="lists">
             {this.renderLists(this.props.board.lists)}
-            <NewBoard handleSubmit={this.handleCreateListSubmit.bind(this)} />
+            <NewList handleSubmit={this.handleCreateListSubmit.bind(this)} />
           </div>
         </div>
       </DragDropContext>
