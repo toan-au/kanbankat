@@ -41,19 +41,30 @@ class ViewBoard extends Component {
         type="TASK"
         index={index}
       >
-        {(provided, snapshot) => (
-          <div>
-            <div
-              className="task"
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              <p>{task.description}</p>
+        {(provided, snapshot) => {
+          const style = {
+            backgroundColor: snapshot.isDragging && '#ddd',
+            boxShadow:
+              snapshot.isDragging &&
+              //credit to material design box shadows
+              '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+            ...provided.draggableProps.style
+          };
+          return (
+            <div>
+              <div
+                className="task"
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                style={style}
+              >
+                <p>{task.description}</p>
+              </div>
+              {provided.placeholder}
             </div>
-            {provided.placeholder}
-          </div>
-        )}
+          );
+        }}
       </Draggable>
     ));
   }
