@@ -1,6 +1,5 @@
 import { GET_BOARD, SHIFT_TASK, CREATE_LIST } from './types';
 import axios from 'axios';
-import dotProp from 'dot-prop-immutable';
 
 export const getBoard = boardId => {
   return async dispatch => {
@@ -17,11 +16,11 @@ export const shiftTask = dropResult => {
     let srcIndex, destIndex;
     board.lists.find((list, index) => {
       srcIndex = index;
-      return list._id == source.droppableId;
+      return list._id === source.droppableId;
     });
     board.lists.find((list, index) => {
       destIndex = index;
-      return list._id == destination.droppableId;
+      return list._id === destination.droppableId;
     });
 
     // make copies of the lists

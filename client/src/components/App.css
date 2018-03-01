@@ -38,20 +38,6 @@
   text-align: center;
 }
 
-.ViewBoard .NewTask button {
-  /* background: white; */
-}
-
-.ViewBoard .NewTask button:hover {
-  cursor: pointer;
-  background: #ddd;
-}
-
-.ViewBoard .NewTask button:active {
-  cursor: pointer;
-  background: #ddd;
-}
-
 .ViewBoard .NewTask textarea {
   min-height: 100px;
 }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { createList } from '../../actions/boards';
 import { connect } from 'react-redux';
 
 class NewBoard extends Component {

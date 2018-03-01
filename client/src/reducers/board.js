@@ -1,5 +1,4 @@
 import { GET_BOARD, SHIFT_TASK, CREATE_LIST } from '../actions/types';
-import dotProp from 'dot-prop-immutable';
 
 export default (state = {}, action) => {
   switch (action.type) {
