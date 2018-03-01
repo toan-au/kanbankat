@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PlusIcon } from 'react-octicons';
+import clickOutside from 'react-click-outside';
 
 class NewTask extends Component {
   state = { description: '', showForm: false };
@@ -13,8 +14,16 @@ class NewTask extends Component {
     this.props.onSubmit(this.state.description);
   }
 
+  handleClickOutside() {
+    this.closeForm();
+  }
+
   toggleForm() {
     this.setState({ showForm: !this.state.showForm });
+  }
+
+  closeForm() {
+    this.setState({ showForm: false });
   }
 
   renderForm() {
@@ -64,4 +73,4 @@ class NewTask extends Component {
   }
 }
 
-export default NewTask;
+export default clickOutside(NewTask);
