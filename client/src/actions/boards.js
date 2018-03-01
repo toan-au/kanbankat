@@ -1,5 +1,6 @@
-import { GET_BOARD, SHIFT_TASK, CREATE_LIST } from './types';
+import { GET_BOARD, SHIFT_TASK, CREATE_LIST, CREATE_TASK } from './types';
 import axios from 'axios';
+import ObjectID from 'bson-objectid';
 
 export const getBoard = boardId => {
   return async dispatch => {
@@ -70,6 +71,31 @@ export const createList = (boardId, list) => {
   return async dispatch => {
     const board = await axios.post('/api/board/list/' + boardId, list);
     dispatch({ type: CREATE_LIST, payload: board.data });
+  };
+};
+
+export const createTask = (boardId, listId, task) => {
+  return (dispatch, getState) => {
+    // update client side
+    // create the ObjectID on the client side so we can dispatch it immediately
+    task._id = ObjectID();
+
+    const { lists } = { ...getState().board };
+
+    // find index & copy of task's list
+    let listIdx;
+    const list = lists.find((l, i) => {
+      listIdx = i;
+      return l._id === listId;
+    });
+
+    // build copy of the tasks array and create a NEW list object
+    const newList = { ...list, tasks: [...list.tasks, task] };
+    lists[listIdx] = newList;
+
+    // update api
+    axios.post(`/api/board/task/${boardId}/${listId}`, task);
+    dispatch({ type: CREATE_TASK, payload: lists });
   };
 };
 

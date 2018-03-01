@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getBoard, shiftTask, createList } from '../../actions/boards';
+import {
+  getBoard,
+  shiftTask,
+  createList,
+  createTask
+} from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -100,5 +105,7 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getBoard, shiftTask, createList })(ViewBoard)
+  connect(mapStateToProps, { getBoard, shiftTask, createList, createTask })(
+    ViewBoard
+  )
 );

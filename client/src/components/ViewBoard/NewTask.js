@@ -15,6 +15,8 @@ class NewTask extends Component {
     this.props.handleSubmit(this.props.listId, {
       description: this.state.description
     });
+    // reset the field
+    this.setState({ description: '' });
   }
 
   handleClickOutside() {

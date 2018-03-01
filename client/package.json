@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
+    "bson-objectid": "^1.2.2",
     "react": "^16.2.0",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.2.0",

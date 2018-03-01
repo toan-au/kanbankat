@@ -7,3 +7,5 @@ export const GET_BOARD = 'get_board';
 export const SHIFT_TASK = 'shift_task';
 
 export const CREATE_LIST = 'create_list';
+
+export const CREATE_TASK = 'create_task';
