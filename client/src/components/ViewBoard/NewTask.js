@@ -11,7 +11,10 @@ class NewTask extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state.description);
+    // pass a new task obj to given handler method
+    this.props.handleSubmit(this.props.listId, {
+      description: this.state.description
+    });
   }
 
   handleClickOutside() {

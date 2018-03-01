@@ -12,11 +12,11 @@ class ViewBoard extends Component {
     this.props.getBoard(this.props.match.params.boardId);
   }
 
-  handleCreateTaskSubmit(task) {
-    // pass
+  handleCreateTask(listId, task) {
+    this.props.createTask(this.props.board._id, listId, task);
   }
 
-  handleCreateListSubmit(list) {
+  handleCreateList(list) {
     this.props.createList(this.props.board._id, list);
   }
 
@@ -66,7 +66,10 @@ class ViewBoard extends Component {
             <div className="tasks">
               {this.renderTasks(list.tasks)}
               {provided.placeholder}
-              <NewTask />
+              <NewTask
+                handleSubmit={this.handleCreateTask.bind(this)}
+                listId={list._id}
+              />
             </div>
           </div>
         )}
@@ -84,7 +87,7 @@ class ViewBoard extends Component {
           </div>
           <div className="lists">
             {this.renderLists(this.props.board.lists)}
-            <NewList handleSubmit={this.handleCreateListSubmit.bind(this)} />
+            <NewList handleSubmit={this.handleCreateList.bind(this)} />
           </div>
         </div>
       </DragDropContext>
