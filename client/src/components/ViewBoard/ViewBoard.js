@@ -44,7 +44,6 @@ class ViewBoard extends Component {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <span>{task.name}</span>
               <p>{task.description}</p>
             </div>
             {provided.placeholder}
