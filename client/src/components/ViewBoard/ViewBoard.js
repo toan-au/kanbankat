@@ -18,6 +18,8 @@ class ViewBoard extends Component {
     this.props.getBoard(this.props.match.params.boardId);
   }
 
+  // Handler methods for interactive elements
+
   handleCreateTask(listId, task) {
     this.props.createTask(this.props.board._id, listId, task);
   }
@@ -26,6 +28,13 @@ class ViewBoard extends Component {
     this.props.createList(this.props.board._id, list);
   }
 
+  handleDeleteList(listId) {
+    alert(listId);
+  }
+
+  // -- end handler methods --
+
+  // required method for react-beautiful-dnd
   onDragEnd(result) {
     if (result.destination == null) {
       return;
@@ -82,9 +91,7 @@ class ViewBoard extends Component {
             <div className="list-header">
               <h5>{list.name}</h5>
               <DeleteButton
-                handleClick={() => {
-                  alert('Are you sure?');
-                }}
+                handleClick={() => this.handleDeleteList(list._id)}
               />
             </div>
             <div className="tasks">

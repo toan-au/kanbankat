@@ -2,7 +2,8 @@ import {
   GET_BOARD,
   SHIFT_TASK,
   CREATE_LIST,
-  CREATE_TASK
+  CREATE_TASK,
+  DELETE_LIST
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -19,6 +20,8 @@ export default (state = {}, action) => {
     case CREATE_LIST:
       return action.payload;
     case CREATE_TASK:
+      return { ...state, lists: [...action.payload] };
+    case DELETE_LIST:
       return { ...state, lists: [...action.payload] };
     default:
       return state;

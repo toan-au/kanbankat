@@ -9,3 +9,5 @@ export const SHIFT_TASK = 'shift_task';
 export const CREATE_LIST = 'create_list';
 
 export const CREATE_TASK = 'create_task';
+
+export const DELETE_LIST = 'delete_list';

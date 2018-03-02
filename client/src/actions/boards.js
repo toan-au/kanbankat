@@ -1,4 +1,10 @@
-import { GET_BOARD, SHIFT_TASK, CREATE_LIST, CREATE_TASK } from './types';
+import {
+  GET_BOARD,
+  SHIFT_TASK,
+  CREATE_LIST,
+  CREATE_TASK,
+  DELETE_LIST
+} from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
 
@@ -96,6 +102,15 @@ export const createTask = (boardId, listId, task) => {
     // update api
     axios.post(`/api/board/task/${boardId}/${listId}`, task);
     dispatch({ type: CREATE_TASK, payload: lists });
+  };
+};
+
+export const deleteList = listId => {
+  return (dispatch, getState) => {
+    const { lists } = { ...getState().board };
+    const newLists = lists.filter(l => l._id != listId);
+
+    dispatch({ type: DELETE_LIST, payload: newLists });
   };
 };
 
