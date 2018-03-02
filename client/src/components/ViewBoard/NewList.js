@@ -9,6 +9,7 @@ class NewBoard extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.props.handleSubmit({ name: this.state.name });
+    this.setState({ name: '' });
   }
 
   render() {

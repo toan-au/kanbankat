@@ -7,6 +7,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import NewList from './NewList';
 import NewTask from './NewTask';
 import DeleteButton from '../DeleteButton';
+import Task from './Task';
 
 const { getBoard, shiftTask, createList, createTask, deleteList } = actions;
 class ViewBoard extends Component {
@@ -25,8 +26,10 @@ class ViewBoard extends Component {
   }
 
   handleDeleteList(boardId, listId) {
-    window.confirm('Are you sure you want to delete this list?');
-    this.props.deleteList(boardId, listId);
+    const response = window.confirm(
+      'Are you sure you want to delete this list?'
+    );
+    response && this.props.deleteList(boardId, listId);
   }
 
   // -- end handler methods --
@@ -42,37 +45,7 @@ class ViewBoard extends Component {
   // return list of draggable elements, index determined by order from state
   renderTasks(tasks = []) {
     return tasks.map((task, index) => (
-      <Draggable
-        draggableId={task._id}
-        key={task._id}
-        type="TASK"
-        index={index}
-      >
-        {(provided, snapshot) => {
-          const style = {
-            backgroundColor: snapshot.isDragging && '#ddd',
-            boxShadow:
-              snapshot.isDragging &&
-              //credit to material design box shadows
-              '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
-            ...provided.draggableProps.style
-          };
-          return (
-            <div>
-              <div
-                className="task"
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={style}
-              >
-                <p>{task.description}</p>
-              </div>
-              {provided.placeholder}
-            </div>
-          );
-        }}
-      </Draggable>
+      <Task task={task} index={index} key={task._id} />
     ));
   }
 
@@ -86,7 +59,7 @@ class ViewBoard extends Component {
             {...provided.droppableProps}
           >
             <div className="list-header">
-              <h5>{list.name}</h5>
+              <h5 onDoubleClick={() => alert('ouch!')}>{list.name}</h5>
               <DeleteButton
                 handleClick={() =>
                   this.handleDeleteList(this.props.board._id, list._id)
