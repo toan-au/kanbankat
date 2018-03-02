@@ -11,6 +11,7 @@ import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import NewList from './NewList';
 import NewTask from './NewTask';
+import DeleteButton from '../DeleteButton';
 
 class ViewBoard extends Component {
   componentDidMount() {
@@ -78,7 +79,14 @@ class ViewBoard extends Component {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            <h5 className="list-header">{list.name}</h5>
+            <div className="list-header">
+              <h5>{list.name}</h5>
+              <DeleteButton
+                handleClick={() => {
+                  alert('Are you sure?');
+                }}
+              />
+            </div>
             <div className="tasks">
               {this.renderTasks(list.tasks)}
               {provided.placeholder}
@@ -96,7 +104,7 @@ class ViewBoard extends Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-        <div className="ViewBoard container-fluid">
+        <div className="ViewBoard container-full">
           <div className="container">
             <BackButton />
             <h1>{this.props.board.name}</h1>

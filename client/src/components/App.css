@@ -3,6 +3,8 @@
   flex-direction: row;
   align-items: flex-start;
   overflow: auto;
+  padding-top: 10px;
+  height: 100%;
 }
 
 .ViewBoard .list {
@@ -15,8 +17,16 @@
 }
 
 .ViewBoard .list-header {
+  position: relative;
   text-align: center;
   color: white;
+}
+
+.ViewBoard .list-header h5 {
+  margin-right: 10px;
+}
+
+.ViewBoard .list-header .btn-delete {
 }
 
 .ViewBoard .tasks {
@@ -41,4 +51,19 @@
 
 .ViewBoard .NewTask textarea {
   min-height: 100px;
+}
+
+.ViewBoard .btn-delete {
+  position: absolute;
+  right: -11px;
+  top: -9px;
+  border: 1px solid #328df5;
+  border-radius: 20px;
+  background: white;
+}
+
+.ViewBoard .btn-delete:hover {
+  cursor: pointer;
+  background: rgb(245, 75, 75);
+  border: 1px solid rgb(245, 75, 75);
 }
