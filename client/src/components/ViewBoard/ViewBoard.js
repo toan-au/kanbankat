@@ -8,6 +8,7 @@ import NewList from './NewList';
 import NewTask from './NewTask';
 import DeleteButton from '../DeleteButton';
 import Task from './Task';
+import List from './List';
 
 const { getBoard, shiftTask, createList, createTask, deleteList } = actions;
 class ViewBoard extends Component {
@@ -25,11 +26,11 @@ class ViewBoard extends Component {
     this.props.createList(this.props.board._id, list);
   }
 
-  handleDeleteList(boardId, listId) {
+  handleDeleteList(listId) {
     const response = window.confirm(
       'Are you sure you want to delete this list?'
     );
-    response && this.props.deleteList(boardId, listId);
+    response && this.props.deleteList(this.props.board._id, listId);
   }
 
   // -- end handler methods --
@@ -42,41 +43,14 @@ class ViewBoard extends Component {
     this.props.shiftTask(result);
   }
 
-  // return list of draggable elements, index determined by order from state
-  renderTasks(tasks = []) {
-    return tasks.map((task, index) => (
-      <Task task={task} index={index} key={task._id} />
-    ));
-  }
-
   renderLists(lists = []) {
     return lists.map(list => (
-      <Droppable droppableId={list._id} key={list._id} type="TASK">
-        {(provided, snapshot) => (
-          <div
-            className="list"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            <div className="list-header">
-              <h5 onDoubleClick={() => alert('ouch!')}>{list.name}</h5>
-              <DeleteButton
-                handleClick={() =>
-                  this.handleDeleteList(this.props.board._id, list._id)
-                }
-              />
-            </div>
-            <div className="tasks">
-              {this.renderTasks(list.tasks)}
-              {provided.placeholder}
-              <NewTask
-                handleSubmit={this.handleCreateTask.bind(this)}
-                listId={list._id}
-              />
-            </div>
-          </div>
-        )}
-      </Droppable>
+      <List
+        list={list}
+        key={list._id}
+        handleCreateTask={this.handleCreateTask.bind(this)}
+        handleDeleteList={this.handleDeleteList.bind(this)}
+      />
     ));
   }
 
