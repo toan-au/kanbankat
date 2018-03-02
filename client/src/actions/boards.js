@@ -105,11 +105,12 @@ export const createTask = (boardId, listId, task) => {
   };
 };
 
-export const deleteList = listId => {
+export const deleteList = (boardId, listId) => {
   return (dispatch, getState) => {
     const { lists } = { ...getState().board };
     const newLists = lists.filter(l => l._id != listId);
-
+    // persist the dlete to DB
+    axios.delete(`/api/board/list/${boardId}/${listId}`);
     dispatch({ type: DELETE_LIST, payload: newLists });
   };
 };

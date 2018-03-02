@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  getBoard,
-  shiftTask,
-  createList,
-  createTask
-} from '../../actions/boards';
+import * as actions from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -13,6 +8,7 @@ import NewList from './NewList';
 import NewTask from './NewTask';
 import DeleteButton from '../DeleteButton';
 
+const { getBoard, shiftTask, createList, createTask, deleteList } = actions;
 class ViewBoard extends Component {
   componentDidMount() {
     this.props.getBoard(this.props.match.params.boardId);
@@ -28,8 +24,9 @@ class ViewBoard extends Component {
     this.props.createList(this.props.board._id, list);
   }
 
-  handleDeleteList(listId) {
-    alert(listId);
+  handleDeleteList(boardId, listId) {
+    window.confirm('Are you sure you want to delete this list?');
+    this.props.deleteList(boardId, listId);
   }
 
   // -- end handler methods --
@@ -91,7 +88,9 @@ class ViewBoard extends Component {
             <div className="list-header">
               <h5>{list.name}</h5>
               <DeleteButton
-                handleClick={() => this.handleDeleteList(list._id)}
+                handleClick={() =>
+                  this.handleDeleteList(this.props.board._id, list._id)
+                }
               />
             </div>
             <div className="tasks">
@@ -130,8 +129,4 @@ const mapStateToProps = state => {
   return { board: state.board };
 };
 
-export default withRouter(
-  connect(mapStateToProps, { getBoard, shiftTask, createList, createTask })(
-    ViewBoard
-  )
-);
+export default withRouter(connect(mapStateToProps, actions)(ViewBoard));
