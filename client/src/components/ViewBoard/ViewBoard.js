@@ -74,8 +74,8 @@ class ViewBoard extends Component {
           >
             {(provided, snapshot) => (
               <div ref={provided.innerRef} type="LIST" className="lists">
-                {this.renderLists(this.props.board.lists)}
                 {provided.placeholder}
+                {this.renderLists(this.props.board.lists)}
                 <NewList handleSubmit={this.handleCreateList.bind(this)} />
               </div>
             )}
