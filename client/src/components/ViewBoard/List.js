@@ -11,30 +11,44 @@ class List extends Component {
     ));
   }
 
-  handleSubmit() {}
-
   render() {
-    const { list, handleCreateTask, handleDeleteList } = this.props;
+    const { list, handleCreateTask, handleDeleteList, index } = this.props;
     return (
-      <Droppable droppableId={list._id} type="TASK">
+      <Draggable draggableId={list._id} type="LIST" index={index}>
         {(provided, snapshot) => (
           <div
-            className="list"
             ref={provided.innerRef}
-            {...provided.droppableProps}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
-            <div className="list-header">
-              <h5 onDoubleClick={() => alert('ouch!')}>{list.name}</h5>
-              <DeleteButton handleClick={() => handleDeleteList(list._id)} />
-            </div>
-            <div className="tasks">
-              {this.renderTasks(list.tasks)}
-              {provided.placeholder}
-              <NewTask handleSubmit={handleCreateTask} listId={list._id} />
-            </div>
+            <Droppable droppableId={list._id} type="TASK">
+              {(provided, snapshot) => (
+                <div
+                  className="list"
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                >
+                  <div className="list-header">
+                    <h5 onDoubleClick={() => alert('ouch!')}>{list.name}</h5>
+                    <DeleteButton
+                      handleClick={() => handleDeleteList(list._id)}
+                    />
+                  </div>
+                  <div className="tasks">
+                    {this.renderTasks(list.tasks)}
+                    {provided.placeholder}
+                    <NewTask
+                      handleSubmit={handleCreateTask}
+                      listId={list._id}
+                    />
+                  </div>
+                </div>
+              )}
+            </Droppable>
+            {provided.placeholder}
           </div>
         )}
-      </Droppable>
+      </Draggable>
     );
   }
 }

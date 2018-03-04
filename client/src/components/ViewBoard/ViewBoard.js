@@ -37,17 +37,22 @@ class ViewBoard extends Component {
 
   // required method for react-beautiful-dnd
   onDragEnd(result) {
+    console.log(result);
     if (result.destination == null) {
       return;
+    } else if (result.type === 'TASK') {
+      this.props.shiftTask(result);
+    } else if (result.type === 'LIST') {
+      // pass
     }
-    this.props.shiftTask(result);
   }
 
   renderLists(lists = []) {
-    return lists.map(list => (
+    return lists.map((list, index) => (
       <List
         list={list}
         key={list._id}
+        index={index}
         handleCreateTask={this.handleCreateTask.bind(this)}
         handleDeleteList={this.handleDeleteList.bind(this)}
       />
@@ -62,10 +67,19 @@ class ViewBoard extends Component {
             <BackButton />
             <h1>{this.props.board.name}</h1>
           </div>
-          <div className="lists">
-            {this.renderLists(this.props.board.lists)}
-            <NewList handleSubmit={this.handleCreateList.bind(this)} />
-          </div>
+          <Droppable
+            droppableId={this.props.match.params.boardId}
+            type="LIST"
+            direction="horizontal"
+          >
+            {(provided, snapshot) => (
+              <div ref={provided.innerRef} type="LIST" className="lists">
+                {this.renderLists(this.props.board.lists)}
+                {provided.placeholder}
+                <NewList handleSubmit={this.handleCreateList.bind(this)} />
+              </div>
+            )}
+          </Droppable>
         </div>
       </DragDropContext>
     );
