@@ -45,7 +45,6 @@ module.exports = app => {
 
   // delete a board
   app.delete('/api/board/:boardId', requireLogin, async (req, res) => {
-    console.log(req.params.boardId);
     const board = await Board.findByIdAndRemove(req.params.boardId);
 
     // remove id from boardIds
@@ -54,6 +53,14 @@ module.exports = app => {
 
     const user = await req.user.save();
     res.send(user);
+  });
+
+  // shifting lists within board
+  app.patch('/api/board/:boardId/shift', requireLogin, async (req, res) => {
+    let board = await Board.findById(req.params.boardId);
+    board.lists = req.body;
+    board = await board.save();
+    res.send(board);
   });
 
   // *************

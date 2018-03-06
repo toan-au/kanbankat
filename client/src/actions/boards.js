@@ -87,7 +87,7 @@ export const shiftList = dropResult => {
     removeList.splice(destination.index, 0, draggedList);
 
     // update api
-
+    axios.patch(`/api/board/${destination.droppableId}/shift`, removeList);
     dispatch({ type: SHIFT_LIST, payload: removeList });
   };
 };

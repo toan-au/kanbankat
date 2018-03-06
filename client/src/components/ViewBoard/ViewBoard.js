@@ -37,12 +37,13 @@ class ViewBoard extends Component {
 
   // required method for react-beautiful-dnd
   onDragEnd(result) {
+    // if dropped outside of droppable element then return
+    // decide whether a TASK or LIST was shifted and use appropriate action creator
     if (result.destination == null) {
       return;
     } else if (result.type === 'TASK') {
       this.props.shiftTask(result);
     } else if (result.type === 'LIST') {
-      console.log(result);
       this.props.shiftList(result);
     }
   }
