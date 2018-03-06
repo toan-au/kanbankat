@@ -3,7 +3,8 @@ import {
   SHIFT_TASK,
   CREATE_LIST,
   CREATE_TASK,
-  DELETE_LIST
+  DELETE_LIST,
+  SHIFT_LIST
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
@@ -73,6 +74,24 @@ export const shiftTask = dropResult => {
   };
 };
 
+export const shiftList = dropResult => {
+  return (dispatch, getState) => {
+    const { draggableId, destination } = dropResult;
+    const { lists } = { ...getState().board };
+
+    // remove list from lists
+    const removeList = lists.filter(l => l._id !== draggableId);
+    const draggedList = lists.find(l => l._id === draggableId);
+
+    // re-add list to correct position
+    removeList.splice(destination.index, 0, draggedList);
+
+    // update api
+
+    dispatch({ type: SHIFT_LIST, payload: removeList });
+  };
+};
+
 export const createList = (boardId, list) => {
   return async dispatch => {
     const board = await axios.post('/api/board/list/' + boardId, list);
@@ -108,7 +127,7 @@ export const createTask = (boardId, listId, task) => {
 export const deleteList = (boardId, listId) => {
   return (dispatch, getState) => {
     const { lists } = { ...getState().board };
-    const newLists = lists.filter(l => l._id != listId);
+    const newLists = lists.filter(l => l._id !== listId);
     // persist the dlete to DB
     axios.delete(`/api/board/list/${boardId}/${listId}`);
     dispatch({ type: DELETE_LIST, payload: newLists });

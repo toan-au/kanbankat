@@ -3,7 +3,8 @@ import {
   SHIFT_TASK,
   CREATE_LIST,
   CREATE_TASK,
-  DELETE_LIST
+  DELETE_LIST,
+  SHIFT_LIST
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -12,6 +13,11 @@ export default (state = {}, action) => {
       return action.payload;
 
     case SHIFT_TASK:
+      return {
+        ...state,
+        lists: [...action.payload]
+      };
+    case SHIFT_LIST:
       return {
         ...state,
         lists: [...action.payload]

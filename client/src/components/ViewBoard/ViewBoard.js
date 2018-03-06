@@ -37,13 +37,13 @@ class ViewBoard extends Component {
 
   // required method for react-beautiful-dnd
   onDragEnd(result) {
-    console.log(result);
     if (result.destination == null) {
       return;
     } else if (result.type === 'TASK') {
       this.props.shiftTask(result);
     } else if (result.type === 'LIST') {
-      // pass
+      console.log(result);
+      this.props.shiftList(result);
     }
   }
 
