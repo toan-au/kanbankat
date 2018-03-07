@@ -27,7 +27,8 @@ module.exports = app => {
 
     // attach board to user then persist to DB
     req.user.boards.push({ id: board._id, name: board.name });
-    await req.user.save();
+    req.user.save();
+
     res.send(board);
   });
 

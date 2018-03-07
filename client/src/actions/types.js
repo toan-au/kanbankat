@@ -1,5 +1,7 @@
 export const GET_USER = 'get_user';
 
+export const CREATE_BOARD = 'create_board';
+
 export const GET_BOARDS = 'get_boards';
 
 export const GET_BOARD = 'get_board';

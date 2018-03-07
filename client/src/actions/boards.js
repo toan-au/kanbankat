@@ -4,10 +4,18 @@ import {
   CREATE_LIST,
   CREATE_TASK,
   DELETE_LIST,
-  SHIFT_LIST
+  SHIFT_LIST,
+  CREATE_BOARD
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
+
+export const createBoard = board => {
+  return async dispatch => {
+    const newBoard = await axios.post('/api/board', board);
+    dispatch({ type: CREATE_BOARD });
+  };
+};
 
 export const getBoard = boardId => {
   return async dispatch => {

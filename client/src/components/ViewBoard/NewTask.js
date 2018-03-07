@@ -36,6 +36,7 @@ class NewTask extends Component {
       <form className="clearfix" onSubmit={this.handleSubmit.bind(this)}>
         <div className="form-group">
           <textarea
+            autoFocus={true}
             type="textarea"
             className="form-control"
             value={this.state.description}

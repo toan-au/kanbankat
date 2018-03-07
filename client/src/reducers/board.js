@@ -4,11 +4,14 @@ import {
   CREATE_LIST,
   CREATE_TASK,
   DELETE_LIST,
-  SHIFT_LIST
+  SHIFT_LIST,
+  CREATE_BOARD
 } from '../actions/types';
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case CREATE_BOARD:
+      return state;
     case GET_BOARD:
       return action.payload;
 

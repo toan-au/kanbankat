@@ -3,14 +3,10 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/boards';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import NewList from './NewList';
-import NewTask from './NewTask';
-import DeleteButton from '../DeleteButton';
-import Task from './Task';
 import List from './List';
 
-const { getBoard, shiftTask, createList, createTask, deleteList } = actions;
 class ViewBoard extends Component {
   componentDidMount() {
     this.props.getBoard(this.props.match.params.boardId);
