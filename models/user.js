@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const boardRepSchema = new Schema({
-  id: [String],
-  name: [String]
+  id: String,
+  name: String
 });
 
 const userSchema = new Schema({

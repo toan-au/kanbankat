@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middleware/requireLogin');
+const requireOwnBoard = require('../middleware/requireOwnBoard');
 
 const Board = mongoose.model('boards');
 
@@ -33,28 +34,38 @@ module.exports = app => {
   });
 
   // get list of user's boards
-  app.get('/api/boards', async (req, res) => {
+  app.get('/api/boards', requireLogin, requireOwnBoard, async (req, res) => {
     const boards = await Board.find({ _id: { $in: req.user.boardIds } });
     res.send(boards);
   });
 
   // get a specific board
-  app.get('/api/board/:boardId', requireLogin, async (req, res) => {
-    const board = await Board.findById(req.params.boardId);
-    res.send(board);
-  });
+  app.get(
+    '/api/board/:boardId',
+    requireLogin,
+    requireOwnBoard,
+    async (req, res) => {
+      const board = await Board.findById(req.params.boardId);
+      res.send(board);
+    }
+  );
 
   // delete a board
-  app.delete('/api/board/:boardId', requireLogin, async (req, res) => {
-    const board = await Board.findByIdAndRemove(req.params.boardId);
+  app.delete(
+    '/api/board/:boardId',
+    requireLogin,
+    requireOwnBoard,
+    async (req, res) => {
+      const board = await Board.findByIdAndRemove(req.params.boardId);
 
-    // remove id from boardIds
-    let idx = req.user.boards.indexOf({ id: board._id, name: board.name });
-    req.user.boards.splice(idx, 1);
+      // remove id from boardIds
+      let idx = req.user.boards.indexOf({ id: board._id, name: board.name });
+      req.user.boards.splice(idx, 1);
 
-    const user = await req.user.save();
-    res.send(user);
-  });
+      const user = await req.user.save();
+      res.send(user);
+    }
+  );
 
   // shifting lists within board
   app.patch('/api/board/:boardId/shift', requireLogin, async (req, res) => {

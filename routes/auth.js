@@ -57,7 +57,10 @@ module.exports = app => {
     }
   );
 
-  app.get('/auth/logout', (req, res) => req.user.logout());
+  app.get('/auth/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
 
   app.get('/auth/current', (req, res) => res.send(req.user));
 };
