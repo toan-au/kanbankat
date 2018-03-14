@@ -1,3 +1,16 @@
+.Boards .btn-delete {
+  border-radius: 40px;
+  border: none;
+  float: right;
+  z-index: 9000;
+  border: 1px solid black;
+}
+
+.Boards .btn-delete:hover {
+  cursor: pointer;
+  background: rgb(245, 75, 75);
+}
+
 .ViewBoard .lists {
   display: flex;
   flex-direction: row;

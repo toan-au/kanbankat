@@ -5,14 +5,15 @@ import {
   CREATE_TASK,
   DELETE_LIST,
   SHIFT_LIST,
-  CREATE_BOARD
+  CREATE_BOARD,
+  DELETE_BOARD
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
 
 export const createBoard = board => {
   return async dispatch => {
-    const newBoard = await axios.post('/api/board', board);
+    await axios.post('/api/board', board);
     dispatch({ type: CREATE_BOARD });
   };
 };
@@ -21,6 +22,13 @@ export const getBoard = boardId => {
   return async dispatch => {
     const board = await axios('/api/board/' + boardId);
     dispatch({ type: GET_BOARD, payload: board.data });
+  };
+};
+
+export const deleteBoard = boardId => {
+  return async dispatch => {
+    await axios.delete('/api/board/' + boardId);
+    dispatch({ type: DELETE_BOARD });
   };
 };
 
