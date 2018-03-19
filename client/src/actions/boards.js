@@ -6,7 +6,8 @@ import {
   DELETE_LIST,
   SHIFT_LIST,
   CREATE_BOARD,
-  DELETE_BOARD
+  DELETE_BOARD,
+  RESET_VIEW_BOARD
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
@@ -30,6 +31,10 @@ export const deleteBoard = boardId => {
     await axios.delete('/api/board/' + boardId);
     dispatch({ type: DELETE_BOARD });
   };
+};
+
+export const resetViewBoard = () => {
+  return { type: RESET_VIEW_BOARD };
 };
 
 // shift task based on shift value

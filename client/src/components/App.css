@@ -15,6 +15,12 @@
   text-align: center;
 }
 
+.ViewBoard .spinner {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .ViewBoard .lists {
   display: flex;
   flex-direction: row;

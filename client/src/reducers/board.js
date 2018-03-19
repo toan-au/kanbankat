@@ -6,7 +6,8 @@ import {
   DELETE_LIST,
   SHIFT_LIST,
   CREATE_BOARD,
-  DELETE_BOARD
+  DELETE_BOARD,
+  RESET_VIEW_BOARD
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -19,6 +20,10 @@ export default (state = {}, action) => {
 
     case DELETE_BOARD:
       return state;
+
+    // Resets the state to empty object, better UX when switching between boards
+    case RESET_VIEW_BOARD:
+      return {};
 
     case SHIFT_TASK:
       return {

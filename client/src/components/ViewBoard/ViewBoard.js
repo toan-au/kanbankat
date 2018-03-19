@@ -6,9 +6,11 @@ import BackButton from '../BackButton';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import NewList from './NewList';
 import List from './List';
+import { BeatLoader } from 'react-spinners';
 
 class ViewBoard extends Component {
   componentDidMount() {
+    this.props.resetViewBoard();
     this.props.getBoard(this.props.match.params.boardId);
   }
 
@@ -56,29 +58,46 @@ class ViewBoard extends Component {
     ));
   }
 
-  render() {
+  renderBoard() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-        <div className="ViewBoard container-full">
-          <div className="container">
-            <h1 className="board-header">{this.props.board.name}</h1>
-          </div>
-          <Droppable
-            droppableId={this.props.match.params.boardId}
-            type="LIST"
-            direction="horizontal"
-          >
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} type="LIST" className="lists">
-                {provided.placeholder}
-                {this.renderLists(this.props.board.lists)}
-                <NewList handleSubmit={this.handleCreateList.bind(this)} />
-              </div>
-            )}
-          </Droppable>
+        <div className="container">
+          <h1 className="board-header">{this.props.board.name}</h1>
         </div>
+        <Droppable
+          droppableId={this.props.match.params.boardId}
+          type="LIST"
+          direction="horizontal"
+        >
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} type="LIST" className="lists">
+              {provided.placeholder}
+              {this.renderLists(this.props.board.lists)}
+              <NewList handleSubmit={this.handleCreateList.bind(this)} />
+            </div>
+          )}
+        </Droppable>
       </DragDropContext>
     );
+  }
+
+  renderSpinner() {
+    return (
+      <div className="spinner mt-3">
+        <BeatLoader />
+        <span className="small">Retrieving board...</span>
+      </div>
+    );
+  }
+
+  render() {
+    let content;
+    if (Object.keys(this.props.board) == 0) {
+      content = this.renderSpinner();
+    } else {
+      content = this.renderBoard();
+    }
+    return <div className="ViewBoard container-full">{content}</div>;
   }
 }
 

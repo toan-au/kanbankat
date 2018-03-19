@@ -11,7 +11,8 @@ import reduxThunk from 'redux-thunk';
 
 // styling
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js.map';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap.min';
 
 // include axios in the window to test api
 if (process.env.NODE_ENV === 'development') {
