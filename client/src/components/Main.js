@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import LoginJumbo from './LoginJumbo';
 import Boards from './ListBoard/Boards';
 import ViewBoard from './ViewBoard/ViewBoard';
+import Home from './Home/Home';
 
 class Main extends Component {
   render() {
@@ -12,7 +13,7 @@ class Main extends Component {
           <Route exact path="/boards" component={Boards} />
           <Route exact path="/board/:boardId" component={ViewBoard} />
           <Route exact path="/aye/123" component={LoginJumbo} />
-          <Route path="/" component={LoginJumbo} />
+          <Route path="/" component={Home} />
         </Switch>
       </main>
     );
