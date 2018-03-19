@@ -61,8 +61,7 @@ class ViewBoard extends Component {
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
         <div className="ViewBoard container-full">
           <div className="container">
-            <BackButton />
-            <h1>{this.props.board.name}</h1>
+            <h1 className="board-header">{this.props.board.name}</h1>
           </div>
           <Droppable
             droppableId={this.props.match.params.boardId}

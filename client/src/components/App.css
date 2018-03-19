@@ -11,6 +11,10 @@
   background: rgb(245, 75, 75);
 }
 
+.ViewBoard .board-header {
+  text-align: center;
+}
+
 .ViewBoard .lists {
   display: flex;
   flex-direction: row;

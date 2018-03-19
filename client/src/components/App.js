@@ -4,6 +4,7 @@ import Main from './Main';
 import { connect } from 'react-redux';
 import { getUser } from '../actions/user';
 import { withRouter } from 'react-router-dom';
+import Topbar from './Topbar';
 
 class App extends Component {
   componentDidMount() {
@@ -12,8 +13,11 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App container-fluid">
-        <Main />
+      <div className="App">
+        <Topbar />
+        <div className="container-fluid">
+          <Main />
+        </div>
       </div>
     );
   }
