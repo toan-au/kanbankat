@@ -32,8 +32,6 @@ class Topbar extends Component {
         </li>
       </ul>
     );
-
-    console.log(this.props.user);
     if (Object.keys(this.props.user).length !== 0) {
       return userDropdown;
     }

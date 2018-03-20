@@ -89,3 +89,37 @@
   background: rgb(245, 75, 75);
   border: 1px solid rgb(245, 75, 75);
 }
+
+/**************/
+
+.ListName {
+  clear: both;
+}
+
+.ListName form {
+  position: relative;
+  left: -12px;
+  padding: 0px 2px;
+  margin: 0px;
+}
+
+.ListName h5 {
+  overflow-wrap: break-word;
+  position: relative;
+  top: 1px;
+  padding: 2px 0px;
+  text-align: left;
+}
+
+.ListName form textarea {
+  resize: none;
+  overflow-wrap: break-word;
+  padding: 0px;
+  margin: 0px;
+  text-align: left;
+  border: none;
+  color: black;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border-radius: 7px;
+}

@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { connect } from 'react-redux';
 import DeleteButton from '../DeleteButton';
 import NewTask from './NewTask';
 import Task from './Task';
+import ListName from './ListName';
+import { renameList } from '../../actions/boards';
 
 class List extends Component {
   renderTasks(tasks = []) {
     return tasks.map((task, index) => (
       <Task task={task} index={index} key={task._id} />
     ));
+  }
+
+  handleRenameList(listName) {
+    this.props.onRenameList(this.props.list._id, listName);
   }
 
   render() {
@@ -30,7 +37,10 @@ class List extends Component {
                     {...provided.draggableProps}
                   >
                     <div className="list-header">
-                      <h5 onDoubleClick={() => alert('ouch!')}>{list.name}</h5>
+                      <ListName
+                        name={list.name}
+                        onRenameList={this.handleRenameList.bind(this)}
+                      />
                       <DeleteButton
                         handleClick={() => handleDeleteList(list._id)}
                       />
@@ -55,4 +65,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default connect(null, { renameList })(List);

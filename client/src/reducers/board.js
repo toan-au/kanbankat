@@ -7,7 +7,8 @@ import {
   SHIFT_LIST,
   CREATE_BOARD,
   DELETE_BOARD,
-  RESET_VIEW_BOARD
+  RESET_VIEW_BOARD,
+  RENAME_LIST
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -32,6 +33,12 @@ export default (state = {}, action) => {
       };
 
     case SHIFT_LIST:
+      return {
+        ...state,
+        lists: [...action.payload]
+      };
+
+    case RENAME_LIST:
       return {
         ...state,
         lists: [...action.payload]

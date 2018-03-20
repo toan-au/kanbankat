@@ -18,4 +18,6 @@ export const DELETE_LIST = 'delete_list';
 
 export const SHIFT_LIST = 'shift_list';
 
+export const RENAME_LIST = 'rename_list';
+
 export const CREATE_TASK = 'create_task';

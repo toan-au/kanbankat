@@ -7,7 +7,8 @@ import {
   SHIFT_LIST,
   CREATE_BOARD,
   DELETE_BOARD,
-  RESET_VIEW_BOARD
+  RESET_VIEW_BOARD,
+  RENAME_LIST
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
@@ -117,6 +118,30 @@ export const createList = (boardId, list) => {
   return async dispatch => {
     const board = await axios.post('/api/board/list/' + boardId, list);
     dispatch({ type: CREATE_LIST, payload: board.data });
+  };
+};
+
+export const renameList = (boardId, listId, listName) => {
+  return (dispatch, getState) => {
+    const { lists } = { ...getState().board };
+    let listIdx;
+    // find the list within state
+    const list = lists.find((l, idx) => {
+      listIdx = idx;
+      return l._id === listId;
+    });
+
+    // change the list's name
+    list.name = listName;
+
+    // retunr updated lists
+    const action = { item: list, index: listIdx };
+    const newLists = updateObjectInArray(lists, action);
+
+    // persist to DB
+    axios.patch('/api/board/list/' + boardId, { newerLists: newLists });
+
+    dispatch({ type: RENAME_LIST, payload: newLists });
   };
 };
 
