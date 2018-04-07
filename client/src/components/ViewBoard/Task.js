@@ -1,12 +1,17 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import DeleteButton from '../DeleteButton';
+import EditableLabel from './EditableLabel';
 
 const Task = props => {
-  const { task, index, onDelete } = props;
+  const { task, index, onDelete, onRename } = props;
 
-  const handleDelete = taskId => {
-    onDelete(taskId);
+  const handleDelete = () => {
+    onDelete(task._id);
+  };
+
+  const handleRename = description => {
+    onRename(task._id, description);
   };
 
   return (
@@ -31,9 +36,11 @@ const Task = props => {
             >
               <div>
                 <div style={{ position: 'relative' }}>
-                  <DeleteButton onClick={() => handleDelete(task._id)} />
+                  <DeleteButton onClick={handleDelete} />
                 </div>
-                <p>{task.description}</p>
+                <EditableLabel label={task.description} onRename={handleRename}>
+                  <p>{task.description}</p>
+                </EditableLabel>
               </div>
             </div>
             {provided.placeholder}

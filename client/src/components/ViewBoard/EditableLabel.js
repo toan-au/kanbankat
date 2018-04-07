@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import clickOutside from 'react-click-outside';
 import TextAreaAutoSize from 'react-autosize-textarea';
 
-class ListName extends Component {
+class EditableLabel extends Component {
   state = { editing: false, name: '' };
 
   componentDidMount() {
-    this.setState({ newName: '', name: this.props.name });
+    this.setState({ newName: '', name: this.props.label });
   }
 
   handleClickOutside() {
@@ -14,7 +14,7 @@ class ListName extends Component {
   }
 
   handleSubmit(e) {
-    this.props.onRenameList(this.state.newName);
+    this.props.onRename(this.state.newName);
   }
 
   handleNameChange(e) {
@@ -50,17 +50,19 @@ class ListName extends Component {
 
   renderName() {
     return (
-      <h5 onDoubleClick={this.toggleEditing.bind(this)}>{this.state.name}</h5>
+      <span onDoubleClick={this.toggleEditing.bind(this)}>
+        {this.props.children}
+      </span>
     );
   }
 
   render() {
     return (
-      <div className="ListName">
+      <div className="EditableLabel">
         {this.state.editing ? this.renderForm() : this.renderName()}
       </div>
     );
   }
 }
 
-export default clickOutside(ListName);
+export default clickOutside(EditableLabel);

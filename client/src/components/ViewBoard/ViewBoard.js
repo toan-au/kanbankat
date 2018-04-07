@@ -27,6 +27,10 @@ class ViewBoard extends Component {
     this.props.renameList(this.props.board._id, listId, listName);
   }
 
+  handleRenameTask(listId, taskId, description) {
+    this.props.renameTask(this.props.board._id, listId, taskId, description);
+  }
+
   handleCreateList(list) {
     this.props.createList(this.props.board._id, list);
   }
@@ -70,6 +74,7 @@ class ViewBoard extends Component {
         onDeleteTask={this.handleDeleteTask.bind(this)}
         handleDeleteList={this.handleDeleteList.bind(this)}
         onRenameList={this.handleRenameList.bind(this)}
+        onRenameTask={this.handleRenameTask.bind(this)}
       />
     ));
   }

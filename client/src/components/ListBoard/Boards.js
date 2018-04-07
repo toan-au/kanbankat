@@ -34,7 +34,7 @@ class Boards extends Component {
               <li className="list-group-item clearfix">
                 {board.name}
                 <DeleteButton
-                  handleClick={() => this.handleDeleteBoard(board.id)}
+                  onClick={() => this.handleDeleteBoard(board.id)}
                 />
               </li>
             </Link>

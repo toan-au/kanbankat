@@ -9,7 +9,8 @@ import {
   DELETE_BOARD,
   RESET_VIEW_BOARD,
   RENAME_LIST,
-  DELETE_TASK
+  DELETE_TASK,
+  RENAME_TASK
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -52,6 +53,9 @@ export default (state = {}, action) => {
       return { ...state, lists: [...action.payload] };
 
     case DELETE_TASK:
+      return { ...state, lists: [...action.payload] };
+
+    case RENAME_TASK:
       return { ...state, lists: [...action.payload] };
 
     case DELETE_LIST:

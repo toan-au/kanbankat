@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import DeleteButton from '../DeleteButton';
 import NewTask from './NewTask';
 import Task from './Task';
-import ListName from './ListName';
+import EditableLabel from './EditableLabel';
 import { renameList } from '../../actions/boards';
 
 class List extends Component {
@@ -15,6 +15,7 @@ class List extends Component {
         index={index}
         key={task._id}
         onDelete={this.handleDeleteTask.bind(this)}
+        onRename={this.handleRenameTask.bind(this)}
       />
     ));
   }
@@ -25,6 +26,10 @@ class List extends Component {
 
   handleRenameList(listName) {
     this.props.onRenameList(this.props.list._id, listName);
+  }
+
+  handleRenameTask(taskId, description) {
+    this.props.onRenameTask(this.props.list._id, taskId, description);
   }
 
   render() {
@@ -46,10 +51,12 @@ class List extends Component {
                     {...provided.draggableProps}
                   >
                     <div className="list-header">
-                      <ListName
-                        name={list.name}
-                        onRenameList={this.handleRenameList.bind(this)}
-                      />
+                      <EditableLabel
+                        onRename={this.handleRenameList.bind(this)}
+                        label={list.name}
+                      >
+                        <h5>{list.name}</h5>
+                      </EditableLabel>
                       <DeleteButton
                         onClick={() => handleDeleteList(list._id)}
                       />
