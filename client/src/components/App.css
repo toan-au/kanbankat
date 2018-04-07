@@ -58,14 +58,28 @@
   border-radius: 5px;
 }
 
-.ViewBoard .task {
+.ViewBoard .Task {
   background: white;
   padding: 7px;
+  padding-right: 12px;
   margin-bottom: 10px;
+  overflow-wrap: break-word;
 }
 
-.ViewBoard .task:hover {
+.ViewBoard .Task:hover {
   background: #ddd;
+}
+
+.BackButton {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+}
+
+.BackButton:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .ViewBoard .NewTask {
@@ -88,6 +102,24 @@
   cursor: pointer;
   background: rgb(245, 75, 75);
   border: 1px solid rgb(245, 75, 75);
+}
+
+.Task .btn-delete {
+  display: none;
+  left: 210px;
+  background: none;
+  border: none;
+  color: #aaa;
+}
+
+.Task:hover .btn-delete {
+  display: block;
+}
+
+.Task .btn-delete:hover {
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 /**************/

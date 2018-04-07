@@ -5,7 +5,7 @@ const DeleteButton = props => {
   const handleClick = e => {
     // stops button from linking to anything if this is a child of another button
     e.preventDefault();
-    props.handleClick();
+    props.onClick();
   };
 
   return (

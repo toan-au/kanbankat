@@ -8,7 +8,8 @@ import {
   CREATE_BOARD,
   DELETE_BOARD,
   RESET_VIEW_BOARD,
-  RENAME_LIST
+  RENAME_LIST,
+  DELETE_TASK
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
@@ -168,6 +169,36 @@ export const createTask = (boardId, listId, task) => {
     axios.post(`/api/board/task/${boardId}/${listId}`, task);
     dispatch({ type: CREATE_TASK, payload: lists });
   };
+};
+
+export const deleteTask = (boardId, listId, taskId) => {
+  return (dispatch, getState) => {
+    let listIdx;
+    const { lists } = { ...getState().board };
+    const list = lists.find((l, i) => {
+      listIdx = i;
+      return l._id === listId;
+    });
+    const tasks = [...list.tasks];
+    const newTasks = tasks.filter(t => t._id !== taskId);
+
+    // update the tasks in chosen list
+    list.tasks = newTasks;
+
+    // update the array of lists
+    const action = { index: listIdx, item: list };
+    const newLists = updateObjectInArray(lists, action);
+
+    // update backend
+    axios.patch('/api/board/list/' + boardId, { newerLists: newLists });
+
+    // dispatch changes
+    dispatch({ type: DELETE_TASK, payload: newLists });
+  };
+};
+
+export const renameTask = (boardId, listId, taskId) => {
+  return (dispatch, getState) => {};
 };
 
 export const deleteList = (boardId, listId) => {

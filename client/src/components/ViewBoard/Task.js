@@ -1,8 +1,14 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import DeleteButton from '../DeleteButton';
 
 const Task = props => {
-  const { task, index } = props;
+  const { task, index, onDelete } = props;
+
+  const handleDelete = taskId => {
+    onDelete(taskId);
+  };
+
   return (
     <Draggable draggableId={task._id} type="TASK" index={index}>
       {(provided, snapshot) => {
@@ -17,13 +23,18 @@ const Task = props => {
         return (
           <div>
             <div
-              className="task"
+              className="Task"
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               style={style}
             >
-              <p>{task.description}</p>
+              <div>
+                <div style={{ position: 'relative' }}>
+                  <DeleteButton onClick={() => handleDelete(task._id)} />
+                </div>
+                <p>{task.description}</p>
+              </div>
             </div>
             {provided.placeholder}
           </div>

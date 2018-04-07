@@ -9,9 +9,12 @@ import List from './List';
 import { BeatLoader } from 'react-spinners';
 
 class ViewBoard extends Component {
-  componentDidMount() {
-    this.props.resetViewBoard();
-    this.props.getBoard(this.props.match.params.boardId);
+  state = { loading: true };
+
+  async componentDidMount() {
+    // this.props.resetViewBoard();
+    await this.props.getBoard(this.props.match.params.boardId);
+    this.setState({ loading: false });
   }
 
   // Handler methods for interactive elements
@@ -33,6 +36,13 @@ class ViewBoard extends Component {
       'Are you sure you want to delete this list?'
     );
     response && this.props.deleteList(this.props.board._id, listId);
+  }
+
+  handleDeleteTask(listId, taskId) {
+    const response = window.confirm(
+      'Are you sure you want to delete this task?'
+    );
+    response && this.props.deleteTask(this.props.board._id, listId, taskId);
   }
 
   // -- end handler methods --
@@ -57,6 +67,7 @@ class ViewBoard extends Component {
         key={list._id}
         index={index}
         handleCreateTask={this.handleCreateTask.bind(this)}
+        onDeleteTask={this.handleDeleteTask.bind(this)}
         handleDeleteList={this.handleDeleteList.bind(this)}
         onRenameList={this.handleRenameList.bind(this)}
       />
@@ -97,12 +108,19 @@ class ViewBoard extends Component {
 
   render() {
     let content;
-    if (Object.keys(this.props.board) == 0) {
+    if (this.state.loading) {
       content = this.renderSpinner();
     } else {
       content = this.renderBoard();
     }
-    return <div className="ViewBoard container-full">{content}</div>;
+    return (
+      <div className="ViewBoard container-full">
+        <div className="container">
+          <BackButton />
+        </div>
+        {content}
+      </div>
+    );
   }
 }
 

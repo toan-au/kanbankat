@@ -10,8 +10,17 @@ import { renameList } from '../../actions/boards';
 class List extends Component {
   renderTasks(tasks = []) {
     return tasks.map((task, index) => (
-      <Task task={task} index={index} key={task._id} />
+      <Task
+        task={task}
+        index={index}
+        key={task._id}
+        onDelete={this.handleDeleteTask.bind(this)}
+      />
     ));
+  }
+
+  handleDeleteTask(taskId) {
+    this.props.onDeleteTask(this.props.list._id, taskId);
   }
 
   handleRenameList(listName) {
@@ -42,7 +51,7 @@ class List extends Component {
                         onRenameList={this.handleRenameList.bind(this)}
                       />
                       <DeleteButton
-                        handleClick={() => handleDeleteList(list._id)}
+                        onClick={() => handleDeleteList(list._id)}
                       />
                     </div>
                     <div className="tasks">

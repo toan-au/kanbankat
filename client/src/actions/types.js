@@ -21,3 +21,5 @@ export const SHIFT_LIST = 'shift_list';
 export const RENAME_LIST = 'rename_list';
 
 export const CREATE_TASK = 'create_task';
+
+export const DELETE_TASK = 'delete_task';
