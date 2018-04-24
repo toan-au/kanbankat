@@ -10,7 +10,8 @@ import {
   RESET_VIEW_BOARD,
   RENAME_LIST,
   DELETE_TASK,
-  RENAME_TASK
+  RENAME_TASK,
+  TAG_TASK
 } from './types';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
@@ -232,6 +233,43 @@ export const renameTask = (boardId, listId, taskId, description) => {
 
     // dispatch changes
     dispatch({ type: RENAME_TASK, payload: newLists });
+  };
+};
+
+export const tagTask = (boardId, listId, taskId, color) => {
+  return (dispatch, getState) => {
+    let listIdx;
+    const { lists } = { ...getState().board };
+    const list = lists.find((l, i) => {
+      listIdx = i;
+      return l._id === listId;
+    });
+    let taskIdx;
+    const tasks = [...list.tasks];
+    const newTask = tasks.find((t, i) => {
+      taskIdx = i;
+      return t._id == taskId;
+    });
+
+    // update task
+    newTask.color = color;
+
+    // update tasks array
+    const newTasks = updateObjectInArray(tasks, {
+      index: taskIdx,
+      item: newTask
+    });
+    list.tasks = newTasks;
+
+    // update the array of lists
+    const action = { index: listIdx, item: list };
+    const newLists = updateObjectInArray(lists, action);
+
+    // update backend
+    axios.patch('/api/board/list/' + boardId, { newerLists: newLists });
+
+    // dispatch changes
+    dispatch({ type: TAG_TASK, payload: newLists });
   };
 };
 

@@ -10,7 +10,7 @@ const DeleteButton = props => {
 
   return (
     <button className="btn-delete" type="button" onClick={handleClick}>
-      <XIcon style={{ position: 'relative', top: '2px' }} />
+      {props.text || <XIcon style={{ position: 'relative', top: '2px' }} />}
     </button>
   );
 };

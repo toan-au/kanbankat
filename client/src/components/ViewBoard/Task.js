@@ -2,9 +2,10 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import DeleteButton from '../DeleteButton';
 import EditableLabel from './EditableLabel';
+import DropDown from '../DropDown';
 
 const Task = props => {
-  const { task, index, onDelete, onRename } = props;
+  const { task, index, onDelete, onRename, onTag } = props;
 
   const handleDelete = () => {
     onDelete(task._id);
@@ -12,6 +13,19 @@ const Task = props => {
 
   const handleRename = description => {
     onRename(task._id, description);
+  };
+
+  const handleTag = color => {
+    onTag(task._id, color);
+  };
+
+  const renderColorOptions = () => {
+    const colors = ['none', 'green', 'red', 'blue', 'purple'];
+    return colors.map(c => (
+      <a className={'dropdown-item ' + c} onClick={() => handleTag(c)}>
+        Tag {c}
+      </a>
+    ));
   };
 
   return (
@@ -28,7 +42,7 @@ const Task = props => {
         return (
           <div>
             <div
-              className="Task"
+              className={'Task ' + task.color}
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
@@ -36,7 +50,13 @@ const Task = props => {
             >
               <div>
                 <div style={{ position: 'relative' }}>
-                  <DeleteButton onClick={handleDelete} />
+                  <DropDown>
+                    <a className="dropdown-item" onClick={handleDelete}>
+                      Delete
+                    </a>
+                    <div className="dropdown-divider" />
+                    {renderColorOptions()}
+                  </DropDown>
                 </div>
                 <EditableLabel label={task.description} onRename={handleRename}>
                   <p>{task.description}</p>

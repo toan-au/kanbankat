@@ -58,17 +58,6 @@
   border-radius: 5px;
 }
 
-.ViewBoard .Task {
-  background: white;
-  padding: 7px 12px 1px 7px;
-  margin-bottom: 10px;
-  overflow-wrap: break-word;
-}
-
-.ViewBoard .Task:hover {
-  background: #ddd;
-}
-
 .BackButton {
   background: none;
   border: none;
@@ -103,24 +92,6 @@
   border: 1px solid rgb(245, 75, 75);
 }
 
-.Task .btn-delete {
-  display: none;
-  left: 210px;
-  background: none;
-  border: none;
-  color: #aaa;
-}
-
-.Task:hover .btn-delete {
-  display: block;
-}
-
-.Task .btn-delete:hover {
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
 /**************/
 
 .EditableLabel {
@@ -129,7 +100,7 @@
 
 .EditableLabel form {
   position: relative;
-  left: -12px;
+  left: -5px;
   padding: 0px 2px;
   margin: 0px;
 }
@@ -166,4 +137,72 @@
   text-align: left;
   font-size: initial;
   font-weight: initial;
+}
+
+/* DROPDOWN*/
+
+.DropDown {
+  position: absolute;
+  right: -2px;
+  top: 0px;
+  border: 1px solid #328df5;
+  border-radius: 20px;
+  background: white;
+}
+
+.DropDown .toggleButton {
+  background: none;
+  border: none;
+}
+
+.DropDown .toggleButton:hover {
+  cursor: pointer;
+}
+
+.Task .DropDown {
+  left: 210px;
+  background: none;
+  border: none;
+  color: #aaa;
+}
+
+.Task:hover .DropDown {
+  display: block;
+}
+
+.Task .DropDown:hover {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* TASK TAG COLORS*/
+
+.ViewBoard .Task {
+  background: white;
+  border-left: 7px solid rgba(0, 0, 0, 0);
+  padding: 14px 15px 1px 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  overflow-wrap: break-word;
+}
+
+.ViewBoard .Task:hover {
+  background: #ddd;
+}
+
+.Task.green {
+  border-color: rgb(128, 227, 66);
+}
+
+.Task.red {
+  border-color: rgb(205, 36, 24);
+}
+
+.Task.blue {
+  border-color: rgb(95, 212, 255);
+}
+
+.Task.purple {
+  border-color: rgb(162, 68, 162);
 }

@@ -16,6 +16,7 @@ class List extends Component {
         key={task._id}
         onDelete={this.handleDeleteTask.bind(this)}
         onRename={this.handleRenameTask.bind(this)}
+        onTag={this.handleTagTask.bind(this)}
       />
     ));
   }
@@ -30,6 +31,10 @@ class List extends Component {
 
   handleRenameTask(taskId, description) {
     this.props.onRenameTask(this.props.list._id, taskId, description);
+  }
+
+  handleTagTask(taskId, color) {
+    this.props.onTagTask(this.props.list._id, taskId, color);
   }
 
   render() {

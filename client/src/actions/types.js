@@ -25,3 +25,5 @@ export const CREATE_TASK = 'create_task';
 export const DELETE_TASK = 'delete_task';
 
 export const RENAME_TASK = 'rename_task';
+
+export const TAG_TASK = 'tag_task';

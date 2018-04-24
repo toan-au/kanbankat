@@ -116,13 +116,13 @@ module.exports = app => {
 
   // create a new task
   app.post('/api/board/task/:boardId/:listId', async (req, res) => {
-    const { _id, description } = req.body;
+    const { _id, description, color } = req.body;
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
     const list = await board.lists.id(listId);
 
     // push new task increment counter
-    list.tasks.push({ _id, description });
+    list.tasks.push({ _id, description, color });
     board = await board.save();
     res.send(board);
   });
