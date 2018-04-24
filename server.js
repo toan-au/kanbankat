@@ -33,15 +33,15 @@ require('./routes/auth')(app);
 require('./routes/board')(app);
 
 // client app
-// if (process.env.NODE_ENV === 'production') {
-//   // include build middleware
-//   app.use(express.static('client/build'));
+if (process.env.NODE_ENV === 'production') {
+  // include build middleware
+  app.use(express.static('client/build'));
 
-//   // serve client index.js
-//   app.get('*', (req, res) =>
-//     res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-//   );
-// }
+  // serve client index.js
+  app.get('*', (req, res) =>
+    res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  );
+}
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('server has been started');
