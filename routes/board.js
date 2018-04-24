@@ -4,17 +4,6 @@ const requireOwnBoard = require('../middleware/requireOwnBoard');
 
 const Board = mongoose.model('boards');
 
-// TODO:
-//  get all user's boards
-//  get specific board      X
-//  delete board            X
-//  delete list             X
-//  delete task             X
-//  update list
-//  update task
-//  move task
-//  move list
-
 module.exports = app => {
   app.get('/api/test', (req, res) => res.send({ test: true }));
   // *************

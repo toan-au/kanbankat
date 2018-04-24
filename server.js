@@ -37,10 +37,9 @@ if (process.env.NODE_ENV === 'production') {
   // include build middleware
   app.use(express.static('client/build'));
 
-  const path = require('path');
   // serve client index.js
   app.get('*', (req, res) =>
-    res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   );
 }
 
