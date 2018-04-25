@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={store}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
