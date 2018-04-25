@@ -4,7 +4,6 @@ const keys = require('./config/keys');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 // models
 require('./models/user');
@@ -34,13 +33,14 @@ require('./routes/board')(app);
 
 // client app
 if (process.env.NODE_ENV === 'production') {
-  // include build middleware
-  app.use(express.static('client/build'));
+  const path = require('path');
+  // express will serve our static bundle files
+  app.use(express.static('client/build/'));
 
-  // serve client index.js
-  app.get('*', (req, res) =>
-    res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  );
+  // express will serve our client app if it doesn't recognize the route
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 app.listen(process.env.PORT || 5000, () => {
