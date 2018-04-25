@@ -21,8 +21,5 @@ if (process.env.NODE_ENV === 'development') {
 
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
-ReactDOM.render(
-  <Provider store={store}>hello world</Provider>,
-  document.getElementById('root')
-);
+ReactDOM.render(<div>hello world</div>, document.getElementById('root'));
 registerServiceWorker();
