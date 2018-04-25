@@ -23,7 +23,6 @@
     "express-group-routes": "^1.1.0",
     "mongoose": "^5.0.6",
     "passport": "^0.4.0",
-    "passport-google-oauth20": "^1.0.0",
-    "react-beautiful-dnd": "^5.0.0"
+    "passport-google-oauth20": "^1.0.0"
   }
 }
