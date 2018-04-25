@@ -20,4 +20,11 @@ if (process.env.NODE_ENV === 'development') {
 
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
-ReactDOM.render(<div>hello world</div>, document.getElementById('root'));
+ReactDOM.render(
+  <Provider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById('root')
+);
