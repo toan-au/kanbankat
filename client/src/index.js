@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -22,4 +21,3 @@ if (process.env.NODE_ENV === 'development') {
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
 ReactDOM.render(<div>hello world</div>, document.getElementById('root'));
-registerServiceWorker();
