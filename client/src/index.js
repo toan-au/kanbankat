@@ -22,11 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
+  <Provider store={store}>hello world</Provider>,
   document.getElementById('root')
 );
 registerServiceWorker();
