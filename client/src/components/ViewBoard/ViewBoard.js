@@ -83,7 +83,6 @@ class ViewBoard extends Component {
       />
     ));
   }
-
   renderBoard() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
