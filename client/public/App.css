@@ -1,3 +1,7 @@
+.splash {
+  background: url('./splash.jpg');
+}
+
 .Boards .btn-delete {
   border-radius: 40px;
   border: none;
