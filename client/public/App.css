@@ -1,3 +1,8 @@
+main {
+  background: url('./bg.jpg') no-repeat 0px 100% / cover transparent;
+  height: 100vh;
+}
+
 .LoginJumbo {
   background: url('./splash.jpg') no-repeat 0px 100% / cover transparent;
   height: 100vh;
@@ -26,14 +31,19 @@
   text-align: center;
   display: inline-block;
   width: auto;
+  box-shadow: 13px 18px 87px -25px rgba(0, 0, 0, 0.4);
 }
 
 h1.title {
-  font-size: 10em;
+  font-size: 10rem;
+}
+
+h2.title {
+  font-size: 5rem;
 }
 
 h3.title {
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 .Boards .btn-delete {

@@ -49,7 +49,7 @@ class Boards extends Component {
 
     return (
       <div className="container Boards">
-        <h1>Here are your boards</h1>
+        <h2 className="title">My boards</h2>
         {this.renderBoardList(user.boards)}
         <NewBoard handleCreateBoard={this.handleCreateBoard} />
       </div>
@@ -61,5 +61,8 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { createBoard, getUser, deleteBoard })(Boards)
+  connect(
+    mapStateToProps,
+    { createBoard, getUser, deleteBoard }
+  )(Boards)
 );
