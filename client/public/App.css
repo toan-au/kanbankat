@@ -1,5 +1,39 @@
+.LoginJumbo {
+  background: url('./splash.jpg') no-repeat 0px 100% / cover transparent;
+  height: 100vh;
+}
+
 .splash {
-  background: url('./splash.jpg');
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  max-width: 600px;
+  height: 100%;
+  margin: auto auto;
+}
+
+.splash .brand-title {
+  margin-bottom: 80px;
+}
+
+.title {
+  position: relative;
+  padding: 3px 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.845);
+  text-align: center;
+  display: inline-block;
+  width: auto;
+}
+
+h1.title {
+  font-size: 10em;
+}
+
+h3.title {
+  font-size: 2em;
 }
 
 .Boards .btn-delete {

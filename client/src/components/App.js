@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <Topbar />
-        <div className="container-fluid">
+        <div>
           <Main />
         </div>
       </div>

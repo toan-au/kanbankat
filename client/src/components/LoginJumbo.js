@@ -2,10 +2,12 @@ import React from 'react';
 
 const LoginJumbo = () => {
   return (
-    <div className="container">
+    <div className="LoginJumbo">
       <div className="splash">
-        <h1>Agiboard!</h1>
-        <h3>Organize your agile process</h3>
+        <div className="brand-title">
+          <h1 className="title">Agiboard!</h1>
+          <h3 className="title">Organize your agile process</h3>
+        </div>
         <a className="btn btn-primary btn-lg" role="button" href="/auth/google">
           Get started
         </a>
