@@ -43,20 +43,19 @@ export default class NewBoard extends Component {
 
   renderButton() {
     return (
-      <button
-        className="btn btn-primary form-control"
-        onClick={this.toggleForm.bind(this)}
-      >
-        Create board
+      <button className="btn round" onClick={this.toggleForm.bind(this)}>
+        +
       </button>
     );
   }
 
   render() {
     return (
-      <div className="row justify-content-md-center">
-        <div className="NewBoard col-md-6">
-          {this.state.showForm ? this.renderForm() : this.renderButton()}
+      <div className="col-md-4 col-xs-1">
+        <div className="NewBoard card">
+          <div className="card-content">
+            {this.state.showForm ? this.renderForm() : this.renderButton()}
+          </div>
         </div>
       </div>
     );

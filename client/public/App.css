@@ -1,7 +1,21 @@
-main {
+.btn.round {
+  position: relative;
+  display: block;
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+  background: blue;
+  margin: 0 auto;
+}
+
+.ViewBoard,
+.Boards {
   background: url('./bg.jpg') no-repeat 0px 100% / cover transparent;
   height: 100vh;
+  padding-top: 70px;
 }
+
+/* HOME PAGE*/
 
 .LoginJumbo {
   background: url('./splash.jpg') no-repeat 0px 100% / cover transparent;
@@ -46,6 +60,8 @@ h3.title {
   font-size: 2rem;
 }
 
+/* BOARDS*/
+
 .Boards .btn-delete {
   border-radius: 40px;
   border: none;
@@ -58,6 +74,21 @@ h3.title {
   cursor: pointer;
   background: rgb(245, 75, 75);
 }
+
+.Boards .card {
+  margin-bottom: 2rem;
+  height: 100%;
+}
+
+/* NEWBOARD BUTTON*/
+
+.NewBoard {
+  height: 100%;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
+}
+
+/* VIEW BOARDS */
 
 .ViewBoard .board-header {
   text-align: center;
@@ -254,3 +285,5 @@ h3.title {
 .Task.purple {
   border-color: rgb(162, 68, 162);
 }
+
+/* media queries */

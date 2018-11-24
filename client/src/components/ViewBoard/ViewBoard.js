@@ -87,7 +87,7 @@ class ViewBoard extends Component {
     return (
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
         <div className="container">
-          <h1 className="board-header">{this.props.board.name}</h1>
+          <h2 className="title">{this.props.board.name}</h2>
         </div>
         <Droppable
           droppableId={this.props.match.params.boardId}
@@ -137,4 +137,9 @@ const mapStateToProps = state => {
   return { board: state.board };
 };
 
-export default withRouter(connect(mapStateToProps, actions)(ViewBoard));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    actions
+  )(ViewBoard)
+);

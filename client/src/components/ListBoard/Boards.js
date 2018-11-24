@@ -27,20 +27,25 @@ class Boards extends Component {
 
   renderBoardList = (boards = []) => {
     return (
-      <ul className="list-group mb-3">
+      <div className="row">
         {boards.map(board => {
           return (
-            <Link to={'/board/' + board.id} key={board.id}>
-              <li className="list-group-item clearfix">
-                {board.name}
-                <DeleteButton
-                  onClick={() => this.handleDeleteBoard(board.id)}
-                />
-              </li>
-            </Link>
+            <div className="col-md-4 col-sm-6 col-xs-12">
+              <div className="board-card card clearfix ">
+                <div className="card-body">
+                  <h5 className="card-title">{board.name}</h5>
+                  <div className="card-text">{console.log(board)}</div>
+                  <button className="btn btn-danger left">Delete</button>
+                  <Link to={'/board/' + board.id} key={board.id}>
+                    <button className="btn btn-primary right">View</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           );
         })}
-      </ul>
+        <NewBoard handleCreateBoard={this.handleCreateBoard} />
+      </div>
     );
   };
 
@@ -48,10 +53,11 @@ class Boards extends Component {
     const { user, getUser } = this.props;
 
     return (
-      <div className="container Boards">
-        <h2 className="title">My boards</h2>
-        {this.renderBoardList(user.boards)}
-        <NewBoard handleCreateBoard={this.handleCreateBoard} />
+      <div className="Boards">
+        <div className="container">
+          <h2 className="title mb-3">My boards</h2>
+          {this.renderBoardList(user.boards)}
+        </div>
       </div>
     );
   }
