@@ -1,13 +1,3 @@
-.btn.round {
-  position: relative;
-  display: block;
-  border-radius: 100%;
-  width: 80px;
-  height: 80px;
-  background: blue;
-  margin: 0 auto;
-}
-
 .ViewBoard,
 .Boards {
   background: url('./bg.jpg') no-repeat 0px 100% / cover transparent;
@@ -75,17 +65,40 @@ h3.title {
   background: rgb(245, 75, 75);
 }
 
+.Boards .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  margin-top: 1.7rem;
+}
+
 .Boards .card {
-  margin-bottom: 2rem;
   height: 100%;
 }
 
 /* NEWBOARD BUTTON*/
 
-.NewBoard {
+.NewBoard.card {
   height: 100%;
-  box-sizing: border-box;
-  margin-bottom: 2rem;
+  border: none;
+  box-shadow: inset 10px 10px 88px -33px rgba(0, 0, 0, 0.75);
+}
+
+.NewBoard .btn.round {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  background: none;
+  font-size: 2.5rem;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.NewBoard .btn.round:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* VIEW BOARDS */

@@ -27,17 +27,17 @@ class Boards extends Component {
 
   renderBoardList = (boards = []) => {
     return (
-      <div className="row">
+      <div className="grid">
         {boards.map(board => {
           return (
-            <div className="col-md-4 col-sm-6 col-xs-12">
+            <div className="">
               <div className="board-card card clearfix ">
                 <div className="card-body">
                   <h5 className="card-title">{board.name}</h5>
                   <div className="card-text">{console.log(board)}</div>
-                  <button className="btn btn-danger left">Delete</button>
+                  <button className="btn btn-danger pull-left">Delete</button>
                   <Link to={'/board/' + board.id} key={board.id}>
-                    <button className="btn btn-primary right">View</button>
+                    <button className="btn btn-primary pull-right">View</button>
                   </Link>
                 </div>
               </div>

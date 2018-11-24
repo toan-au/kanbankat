@@ -51,11 +51,9 @@ export default class NewBoard extends Component {
 
   render() {
     return (
-      <div className="col-md-4 col-xs-1">
-        <div className="NewBoard card">
-          <div className="card-content">
-            {this.state.showForm ? this.renderForm() : this.renderButton()}
-          </div>
+      <div className="NewBoard card">
+        <div className="card-content">
+          {this.state.showForm ? this.renderForm() : this.renderButton()}
         </div>
       </div>
     );
