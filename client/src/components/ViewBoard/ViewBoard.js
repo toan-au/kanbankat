@@ -95,6 +95,8 @@ class ViewBoard extends Component {
             <div ref={provided.innerRef} type="LIST" className="lists">
               <div className="list">
                 <h3 className="title">{this.props.board.name}</h3>
+                <h4 className="title">People</h4>
+                <h4 className="title">About</h4>
               </div>
               {provided.placeholder}
               {this.renderLists(this.props.board.lists)}
@@ -124,7 +126,7 @@ class ViewBoard extends Component {
     }
     return (
       <div className="ViewBoard container-full">
-        <div className="container">{/* <BackButton /> */}</div>
+        {/* <div className="container"><BackButton /></div> */}
         {content}
       </div>
     );

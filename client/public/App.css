@@ -4,6 +4,15 @@
   height: 100vh;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.navbar {
+  z-index: 1000;
+}
+
 /* HOME PAGE*/
 
 .LoginJumbo {
@@ -102,9 +111,6 @@ h3.title {
 
 /* VIEW BOARDS */
 
-.ViewBoard {
-}
-
 .ViewBoard .board-header {
   text-align: center;
 }
@@ -116,7 +122,8 @@ h3.title {
 }
 
 .ViewBoard .lists {
-  overflow: scroll;
+  overflow-x: scoll;
+  overflow-y: auto;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -185,6 +192,21 @@ h3.title {
   cursor: pointer;
   background: rgb(245, 75, 75);
   border: 1px solid rgb(245, 75, 75);
+}
+
+/* Control List */
+
+.control-list {
+  z-index: 1;
+  position: relative;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  width: 250px;
+  min-width: 250px;
+  height: 100vh;
+  padding: 10px;
 }
 
 /**************/
