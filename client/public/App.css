@@ -126,7 +126,7 @@ h3.title {
 }
 
 .ViewBoard .list {
-  background: #ffffff9e;
+  background: #ffffffad;
   width: 250px;
   min-width: 250px;
   margin: 4px;
@@ -271,6 +271,11 @@ h3.title {
   border: none;
 }
 
+/* NEW TASK BUTTOn*/
+.NewTask .btn:hover {
+  background: rgb(223, 223, 223);
+}
+
 /* TASK TAG COLORS*/
 
 .ViewBoard .Task {
@@ -283,7 +288,8 @@ h3.title {
 }
 
 .ViewBoard .Task:hover {
-  background: #ddd;
+  transform: scale(1.02);
+  background: rgb(223, 223, 223);
 }
 
 .Task.green {

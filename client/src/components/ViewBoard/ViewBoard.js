@@ -108,7 +108,7 @@ class ViewBoard extends Component {
 
   renderSpinner() {
     return (
-      <div className="spinner mt-3">
+      <div className="spinner pt-3">
         <BeatLoader />
         <span className="small">Retrieving board...</span>
       </div>
