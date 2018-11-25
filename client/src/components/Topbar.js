@@ -62,9 +62,9 @@ class Topbar extends Component {
                   Home <span className="sr-only">(current)</span>
                 </Link>
               </li>
+              <li className="nav-item">{this.renderUserMenu()}</li>
             </ul>
           </div>
-          {this.renderUserMenu()}
         </div>
       </nav>
     );

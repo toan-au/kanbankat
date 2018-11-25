@@ -22,7 +22,7 @@ const Task = props => {
   const renderColorOptions = () => {
     const colors = ['none', 'green', 'red', 'blue', 'purple'];
     return colors.map(c => (
-      <a className={'dropdown-item ' + c} onClick={() => handleTag(c)}>
+      <a key={c} className={'dropdown-item ' + c} onClick={() => handleTag(c)}>
         Tag {c}
       </a>
     ));

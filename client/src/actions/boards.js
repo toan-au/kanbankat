@@ -211,7 +211,7 @@ export const renameTask = (boardId, listId, taskId, description) => {
     const tasks = [...list.tasks];
     const newTask = tasks.find((t, i) => {
       taskIdx = i;
-      return t._id == taskId;
+      return t._id === taskId;
     });
 
     // update task
@@ -248,7 +248,7 @@ export const tagTask = (boardId, listId, taskId, color) => {
     const tasks = [...list.tasks];
     const newTask = tasks.find((t, i) => {
       taskIdx = i;
-      return t._id == taskId;
+      return t._id === taskId;
     });
 
     // update task
