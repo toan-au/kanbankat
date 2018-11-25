@@ -54,7 +54,7 @@ class Boards extends Component {
 
     return (
       <div className="Boards">
-        <div className="container">
+        <div className="container pt-5">
           <h2 className="title mb-3">My boards</h2>
           {this.renderBoardList(user.boards)}
         </div>

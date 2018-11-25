@@ -86,9 +86,6 @@ class ViewBoard extends Component {
   renderBoard() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-        <div className="container">
-          <h2 className="title">{this.props.board.name}</h2>
-        </div>
         <Droppable
           droppableId={this.props.match.params.boardId}
           type="LIST"
@@ -96,6 +93,9 @@ class ViewBoard extends Component {
         >
           {(provided, snapshot) => (
             <div ref={provided.innerRef} type="LIST" className="lists">
+              <div className="list">
+                <h3 className="title">{this.props.board.name}</h3>
+              </div>
               {provided.placeholder}
               {this.renderLists(this.props.board.lists)}
               <NewList handleSubmit={this.handleCreateList.bind(this)} />
@@ -124,9 +124,7 @@ class ViewBoard extends Component {
     }
     return (
       <div className="ViewBoard container-full">
-        <div className="container">
-          <BackButton />
-        </div>
+        <div className="container">{/* <BackButton /> */}</div>
         {content}
       </div>
     );
