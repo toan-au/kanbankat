@@ -6,8 +6,8 @@ import { PersonIcon } from 'react-octicons';
 class Topbar extends Component {
   renderUserMenu() {
     const userDropdown = (
-      <ul className="navbar-nav float-right">
-        <li className="nav-item dropdown float-right" key="userDropdown">
+      <ul className="navbar-nav">
+        <li className="nav-item dropdown" key="userDropdown">
           <a
             className="nav-link dropdown-toggle"
             href="#"
