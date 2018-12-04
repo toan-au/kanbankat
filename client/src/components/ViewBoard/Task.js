@@ -1,6 +1,5 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import DeleteButton from '../DeleteButton';
 import EditableLabel from './EditableLabel';
 import DropDown from '../DropDown';
 

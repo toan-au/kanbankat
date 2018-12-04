@@ -97,6 +97,7 @@ class ViewBoard extends Component {
                 <h3 className="title">{this.props.board.name}</h3>
                 <h4 className="title">People</h4>
                 <h4 className="title">About</h4>
+                <p>{this.props.board.about}</p>
               </div>
               {provided.placeholder}
               {this.renderLists(this.props.board.lists)}

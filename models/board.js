@@ -11,8 +11,11 @@ const ListSchema = new Schema({
   tasks: [TaskSchema]
 });
 
+const def =
+  'Double click to edit text. You can edit tasks, list names, and this about section!';
 const BoardSchema = new Schema({
   name: { type: String, required: true, max: 255 },
+  about: { type: String, required: false, default: def },
   lists: [ListSchema]
 });
 
