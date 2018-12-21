@@ -249,6 +249,14 @@ h3.title {
   border-radius: 7px;
 }
 
+.about .EditableLabel form textarea {
+  left: 0px;
+  width: 100%;
+  text-align: left;
+  font-size: inherit;
+  font-weight: initial;
+}
+
 .Task .EditableLabel form textarea {
   left: 0px;
   width: 100%;

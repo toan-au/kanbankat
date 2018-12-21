@@ -97,10 +97,15 @@ class ViewBoard extends Component {
               <div className="list">
                 <h3 className="title">{this.props.board.name}</h3>
                 <h4 className="title">People</h4>
-                <h4 className="title">About</h4>
-                <EditableLabel label={this.props.board.about}>
-                  {this.props.board.about}
-                </EditableLabel>
+                <section className="about">
+                  <h4 className="title">About</h4>
+                  <EditableLabel
+                    className="left"
+                    label={this.props.board.about}
+                  >
+                    {this.props.board.about}
+                  </EditableLabel>
+                </section>
               </div>
               {provided.placeholder}
               {this.renderLists(this.props.board.lists)}
