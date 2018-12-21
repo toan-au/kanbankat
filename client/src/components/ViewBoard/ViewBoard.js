@@ -7,6 +7,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import NewList from './NewList';
 import List from './List';
 import { BeatLoader } from 'react-spinners';
+import EditableLabel from './EditableLabel';
 
 class ViewBoard extends Component {
   state = { loading: true };
@@ -97,7 +98,9 @@ class ViewBoard extends Component {
                 <h3 className="title">{this.props.board.name}</h3>
                 <h4 className="title">People</h4>
                 <h4 className="title">About</h4>
-                <p>{this.props.board.about}</p>
+                <EditableLabel label={this.props.board.about}>
+                  {this.props.board.about}
+                </EditableLabel>
               </div>
               {provided.placeholder}
               {this.renderLists(this.props.board.lists)}
