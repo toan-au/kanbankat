@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
-const requireLogin = require('../middleware/requireLogin');
-const requireOwnBoard = require('../middleware/requireOwnBoard');
+const mongoose = require("mongoose");
+const requireLogin = require("../middleware/requireLogin");
+const requireOwnBoard = require("../middleware/requireOwnBoard");
 
-const Board = mongoose.model('boards');
+const Board = mongoose.model("boards");
 
-module.exports = app => {
-  app.get('/api/test', (req, res) => res.send({ test: true }));
+module.exports = (app) => {
+  app.get("/api/test", (req, res) => res.send({ test: true }));
   // *************
   // BOARD STUFF
   // *************
 
   // create a new board
-  app.post('/api/board', requireLogin, async (req, res) => {
+  app.post("/api/board", requireLogin, async (req, res) => {
     const { name } = req.body;
     const board = await new Board({ name }).save();
 
@@ -23,14 +23,14 @@ module.exports = app => {
   });
 
   // get list of user's boards
-  app.get('/api/boards', requireLogin, requireOwnBoard, async (req, res) => {
+  app.get("/api/boards", requireLogin, requireOwnBoard, async (req, res) => {
     const boards = await Board.find({ _id: { $in: req.user.boardIds } });
     res.send(boards);
   });
 
   // get a specific board
   app.get(
-    '/api/board/:boardId',
+    "/api/board/:boardId",
     requireLogin,
     requireOwnBoard,
     async (req, res) => {
@@ -41,15 +41,16 @@ module.exports = app => {
 
   // delete a board
   app.delete(
-    '/api/board/:boardId',
+    "/api/board/:boardId",
     requireLogin,
     requireOwnBoard,
     async (req, res) => {
-      const board = await Board.findByIdAndRemove(req.params.boardId);
+      await Board.findByIdAndDelete(req.params.boardId);
 
       // remove id from boardIds
-      let idx = req.user.boards.indexOf({ id: board._id, name: board.name });
-      req.user.boards.splice(idx, 1);
+      req.user.boards = req.user.boards.filter(
+        (x) => x.id != req.params.boardId
+      );
 
       const user = await req.user.save();
       res.send(user);
@@ -57,7 +58,7 @@ module.exports = app => {
   );
 
   // shifting lists within board
-  app.patch('/api/board/:boardId/shift', requireLogin, async (req, res) => {
+  app.patch("/api/board/:boardId/shift", requireLogin, async (req, res) => {
     let board = await Board.findById(req.params.boardId);
     board.lists = req.body;
     board = await board.save();
@@ -69,7 +70,7 @@ module.exports = app => {
   // *************
 
   // create a new list
-  app.post('/api/board/list/:boardId/', async (req, res) => {
+  app.post("/api/board/list/:boardId/", async (req, res) => {
     const { name } = req.body;
     let board = await Board.findById(req.params.boardId);
 
@@ -80,7 +81,7 @@ module.exports = app => {
   });
 
   // shifting tasks within lists
-  app.patch('/api/board/list/:boardId/', requireLogin, async (req, res) => {
+  app.patch("/api/board/list/:boardId/", requireLogin, async (req, res) => {
     const { newerLists } = req.body;
     const board = await Board.findById(req.params.boardId);
     board.lists = [...newerLists];
@@ -89,7 +90,7 @@ module.exports = app => {
   });
 
   // delete a list
-  app.delete('/api/board/list/:boardId/:listId', async (req, res) => {
+  app.delete("/api/board/list/:boardId/:listId", async (req, res) => {
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
 
@@ -104,7 +105,7 @@ module.exports = app => {
   // *************
 
   // create a new task
-  app.post('/api/board/task/:boardId/:listId', async (req, res) => {
+  app.post("/api/board/task/:boardId/:listId", async (req, res) => {
     const { _id, description, color } = req.body;
     const { boardId, listId } = req.params;
     let board = await Board.findById(boardId);
@@ -117,7 +118,7 @@ module.exports = app => {
   });
 
   // delete a task
-  app.delete('/api/board/task/:boardId/:listId/:taskId', async (req, res) => {
+  app.delete("/api/board/task/:boardId/:listId/:taskId", async (req, res) => {
     const { boardId, listId, taskId } = req.params;
     let board = await Board.findById(boardId);
     const list = board.lists.id(listId);
