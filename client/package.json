@@ -4,10 +4,10 @@
   "private": true,
   "proxy": {
     "/api/*": {
-      "target": "http://localhost:5000"
+      "target": "http://127.0.0.1:5000"
     },
     "/auth/*": {
-      "target": "http://localhost:5000"
+      "target": "http://127.0.0.1:5000"
     }
   },
   "dependencies": {
@@ -15,9 +15,11 @@
     "bootstrap": "^4.0.0",
     "bson-objectid": "^1.2.2",
     "jquery": "^3.3.1",
+    "passport-google-oauth20": "^2.0.0",
     "popper.js": "^1.14.1",
     "react": "^16.2.0",
     "react-autosize-textarea": "^3.0.2",
+    "react-beautiful-dnd": "^5.0.0",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.2.0",
     "react-octicons": "^0.2.0",
@@ -26,11 +28,10 @@
     "react-scripts": "1.1.1",
     "react-spinners": "^0.2.6",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "react-beautiful-dnd": "^5.0.0"
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --ignore client",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
