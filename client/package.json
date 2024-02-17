@@ -2,38 +2,42 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/api/*": {
-      "target": "http://127.0.0.1:5000"
-    },
-    "/auth/*": {
-      "target": "http://127.0.0.1:5000"
-    }
-  },
   "dependencies": {
-    "axios": "^0.18.0",
-    "bootstrap": "^4.0.0",
-    "bson-objectid": "^1.2.2",
-    "jquery": "^3.3.1",
+    "axios": "^1.6.7",
+    "bootstrap": "^5.3.2",
+    "bson-objectid": "^2.0.4",
+    "jquery": "^3.7.1",
     "passport-google-oauth20": "^2.0.0",
     "popper.js": "^1.14.1",
-    "react": "^16.2.0",
-    "react-autosize-textarea": "^3.0.2",
-    "react-beautiful-dnd": "^5.0.0",
+    "react": "^18.2.0",
+    "react-autosize-textarea": "^7.1.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-click-outside": "^3.0.1",
-    "react-dom": "^16.2.0",
+    "react-dom": "^18.2.0",
     "react-octicons": "^0.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
-    "react-spinners": "^0.2.6",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.0",
+    "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.8",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start --ignore client",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
