@@ -1,9 +1,9 @@
-import React from "react";
+import Boards from "../components/dashboard/Boards";
 
 function Dashboard() {
   return (
-    <main id="dashboard" className="flex">
-      Dashboard
+    <main id="dashboard" className="container mx-auto max-w-screen-xl">
+      <Boards></Boards>
     </main>
   );
 }
