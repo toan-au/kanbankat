@@ -12,7 +12,7 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <main id="home" className="h-screen">
+    <main id="home" className="h-screen py-5">
       <div className="container mx-auto">
         {!currentUser.loggedIn && (
           <a

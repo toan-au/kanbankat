@@ -8,11 +8,11 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://localhost:5000",
-        changeOrigin: true,
+        changeOrigin: false,
       },
       "/auth": {
         target: "http://localhost:5000",
-        changeOrigin: true,
+        changeOrigin: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },

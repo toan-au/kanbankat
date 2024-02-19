@@ -1,10 +1,10 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const keys = require('../config/keys');
-const mongoose = require('mongoose');
-const requireLogin = require('../middleware/requireLogin');
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const keys = require("../config/keys");
+const mongoose = require("mongoose");
+const requireLogin = require("../middleware/requireLogin");
 
-const User = mongoose.model('users');
+const User = mongoose.model("users");
 
 // configure passport
 
@@ -23,15 +23,15 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback',
-      proxy: true
+      callbackURL: "/auth/google/callback",
+      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       // console.log(profile);
       // check if user exists in DB
       console.log(profile);
       const existingUser = await User.findOne({
-        googleId: profile.id
+        googleId: profile.id,
       });
 
       if (existingUser) {
@@ -40,7 +40,7 @@ passport.use(
 
       const newUser = await new User({
         googleId: profile.id,
-        displayName: profile.displayName
+        displayName: profile.displayName,
       }).save();
       done(null, newUser);
     }
@@ -49,24 +49,26 @@ passport.use(
 
 // auth routes
 
-module.exports = app => {
+module.exports = (app) => {
   app.get(
-    '/auth/google',
-    passport.authenticate('google', { scope: ['profile'] })
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile"] })
   );
 
   app.get(
-    '/auth/google/callback',
-    passport.authenticate('google'),
+    "/auth/google/callback",
+    passport.authenticate("google"),
     (req, res) => {
-      res.redirect('/boards');
+      res.redirect("/dashboard");
     }
   );
 
-  app.get('/auth/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
+  app.get("/auth/logout", (req, res) => {
+    req.logout((err) => {
+      if (err) return next(err);
+      res.redirect("/");
+    });
   });
 
-  app.get('/auth/current', (req, res) => res.send(req.user));
+  app.get("/auth/current", (req, res) => res.send(req.user));
 };
