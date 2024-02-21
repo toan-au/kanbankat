@@ -1,34 +1,26 @@
 import { Link } from "react-router-dom";
 import NewBoardButton from "./NewBoardButton";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state/store";
+import { getBoardsAsync } from "../../state/boards.ts/boards";
+import { SlOptionsVertical } from "react-icons/sl";
+import BoardListItem from "./BoardListItem";
 
 function Boards() {
+  const boards = useSelector((state: RootState) => state.boards);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getBoardsAsync());
+  }, [dispatch]);
+
   return (
     <div className="pt-10">
-      <ul className="flex flex-row gap-5 mb-5">
-        <li>
-          <Link
-            to="/boards/1"
-            className="block bg-blue-500 hover:bg-blue-400 w-52 h-32 p-2 text-center"
-          >
-            <h3 className="text-white">Board 1</h3>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/boards/1"
-            className="block bg-blue-500 hover:bg-blue-400 w-52 h-32 p-2"
-          >
-            <h3 className="text-white">Board 2</h3>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/boards/1"
-            className="block bg-blue-500 hover:bg-blue-400 w-52 h-32 p-2"
-          >
-            <h3 className="text-white">Board 3</h3>
-          </Link>
-        </li>
+      <ul className="flex flex-row flex-wrap gap-5 mb-5">
+        {boards.userBoards.map((board) => (
+          <BoardListItem key={board._id} board={board}></BoardListItem>
+        ))}
         <li>
           <NewBoardButton></NewBoardButton>
         </li>

@@ -4,7 +4,7 @@ const keys = require("../config/keys");
 const mongoose = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
 
-const User = mongoose.model("users");
+const User = mongoose.model("User");
 
 // configure passport
 

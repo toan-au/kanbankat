@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
 const requireOwnBoard = require("../middleware/requireOwnBoard");
 
-const Board = mongoose.model("boards");
+const Board = mongoose.model("Board");
+const User = mongoose.model("User");
 
 module.exports = (app) => {
   app.get("/api/test", (req, res) => res.send({ test: true }));
@@ -13,19 +14,25 @@ module.exports = (app) => {
   // create a new board
   app.post("/api/board", requireLogin, async (req, res) => {
     const { name } = req.body;
-    const board = await new Board({ name }).save();
+    const board = await new Board({ name });
+    const user = await User.findOne({ _id: req.user._id });
+
+    board.user = req.user;
+    board.save();
+    user.boards.push(board);
+    user.save();
 
     // attach board to user then persist to DB
-    req.user.boards.push({ id: board._id, name: board.name });
-    req.user.save();
 
     res.send(board);
   });
 
   // get list of user's boards
   app.get("/api/boards", requireLogin, requireOwnBoard, async (req, res) => {
-    const boards = await Board.find({ _id: { $in: req.user.boardIds } });
-    res.send(boards);
+    const user = await User.findOne({ _id: req.user._id })
+      .populate({ path: "boards", select: "-lists -__v" })
+      .exec();
+    res.send(user.boards);
   });
 
   // get a specific board
