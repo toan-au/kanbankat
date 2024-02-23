@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
+import Topbar from "../Topbar";
+import { Outlet, useNavigate } from "react-router-dom";
 import { RootState } from "../../state/store";
 import { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
-import Topbar from "../Topbar";
 
-function Authguard() {
+function Template() {
   const user = useSelector((state: RootState) => state.currentUser);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user.loggedIn) return navigate("/");
-  }, [user.loggedIn, navigate]);
+    if (user.loggedIn) return navigate("/dashboard");
+  }, [user, navigate]);
 
   return (
     <>
@@ -20,4 +20,4 @@ function Authguard() {
   );
 }
 
-export default Authguard;
+export default Template;

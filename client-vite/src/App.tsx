@@ -1,8 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
-import Template from "./pages/Template";
+import Template from "./components/templates/Template";
 import Dashboard from "./pages/Dashboard";
 import Authguard from "./components/templates/Authguard";
+import Board from "./pages/Board";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,8 +24,8 @@ function App() {
           element: <Dashboard></Dashboard>,
         },
         {
-          path: "/board/:id",
-          element: <></>,
+          path: "/board/:boardId",
+          element: <Board></Board>,
         },
       ],
     },
