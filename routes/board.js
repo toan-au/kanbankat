@@ -30,7 +30,11 @@ module.exports = (app) => {
   // get list of user's boards
   app.get("/api/boards", requireLogin, requireOwnBoard, async (req, res) => {
     const user = await User.findOne({ _id: req.user._id })
-      .populate({ path: "boards", select: "-lists -__v" })
+      .populate({
+        path: "boards",
+        select: "_id  name about user",
+        match: { $or: [{ deleted: false }, { deleted: null }] },
+      })
       .exec();
     res.send(user.boards);
   });
@@ -52,15 +56,12 @@ module.exports = (app) => {
     requireLogin,
     requireOwnBoard,
     async (req, res) => {
-      await Board.findByIdAndDelete(req.params.boardId);
-
-      // remove id from boardIds
-      req.user.boards = req.user.boards.filter(
-        (x) => x.id != req.params.boardId
-      );
-
-      const user = await req.user.save();
-      res.send(user);
+      const board = await Board.findById(req.params.boardId);
+      board.deleted = true;
+      board.deletedOn = Date.now();
+      board.save();
+      console.log(board);
+      res.send(board);
     }
   );
 
@@ -112,27 +113,37 @@ module.exports = (app) => {
   // *************
 
   // create a new task
-  app.post("/api/board/task/:boardId/:listId", async (req, res) => {
-    const { _id, description, color } = req.body;
-    const { boardId, listId } = req.params;
-    let board = await Board.findById(boardId);
-    const list = await board.lists.id(listId);
+  app.post(
+    "/api/board/task/:boardId/:listId",
+    requireLogin,
+    requireOwnBoard,
+    async (req, res) => {
+      const { _id, description, color } = req.body;
+      const { boardId, listId } = req.params;
+      let board = await Board.findById(boardId);
+      const list = await board.lists.id(listId);
 
-    // push new task increment counter
-    list.tasks.push({ _id, description, color });
-    board = await board.save();
-    res.send(board);
-  });
+      // push new task increment counter
+      list.tasks.push({ _id, description, color });
+      board = await board.save();
+      res.send(board);
+    }
+  );
 
   // delete a task
-  app.delete("/api/board/task/:boardId/:listId/:taskId", async (req, res) => {
-    const { boardId, listId, taskId } = req.params;
-    let board = await Board.findById(boardId);
-    const list = board.lists.id(listId);
+  app.delete(
+    "/api/board/task/:boardId/:listId/:taskId",
+    requireLogin,
+    requireOwnBoard,
+    async (req, res) => {
+      const { boardId, listId, taskId } = req.params;
+      let board = await Board.findById(boardId);
+      const list = board.lists.id(listId);
 
-    // remove a task decrement counter
-    list.tasks.id(taskId).remove();
-    board = await board.save();
-    res.send(board);
-  });
+      // remove a task decrement counter
+      list.tasks.id(taskId).remove();
+      board = await board.save();
+      res.send(board);
+    }
+  );
 };

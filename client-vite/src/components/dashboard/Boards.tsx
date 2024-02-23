@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom";
 import NewBoardButton from "./NewBoardButton";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { getBoardsAsync } from "../../state/boards.ts/boards";
-import { SlOptionsVertical } from "react-icons/sl";
 import BoardListItem from "./BoardListItem";
 
 function Boards() {

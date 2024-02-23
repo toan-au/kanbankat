@@ -21,18 +21,28 @@ const boardsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      createBoardAsync.fulfilled,
-      (state, action: PayloadAction<Board>) => {
-        state.userBoards.push(action.payload);
-      }
-    );
-    builder.addCase(
-      getBoardsAsync.fulfilled,
-      (state, action: PayloadAction<Board[]>) => {
-        state.userBoards = action.payload;
-      }
-    );
+    builder
+      .addCase(
+        createBoardAsync.fulfilled,
+        (state, action: PayloadAction<Board>) => {
+          state.userBoards.push(action.payload);
+        }
+      )
+      .addCase(
+        getBoardsAsync.fulfilled,
+        (state, action: PayloadAction<Board[]>) => {
+          state.userBoards = action.payload;
+        }
+      )
+      .addCase(
+        deleteBoardAsync.fulfilled,
+        (state, action: PayloadAction<Board>) => {
+          console.log(action.payload);
+          state.userBoards = state.userBoards.filter(
+            (board) => board._id != action.payload._id
+          );
+        }
+      );
   },
 });
 
@@ -51,6 +61,14 @@ export const getBoardsAsync = createAsyncThunk<Board[]>(
     const response = await axios.get("/api/boards");
     const boards: Board[] = response.data;
     return boards;
+  }
+);
+
+export const deleteBoardAsync = createAsyncThunk(
+  "boards/deleteBoardAsync",
+  async (boardId: string) => {
+    const response = await axios.delete(`/api/board/${boardId}`);
+    return response.data;
   }
 );
 

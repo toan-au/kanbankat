@@ -41,3 +41,10 @@
 #new-board-button:hover {
   transform: scale(1.05);
 }
+
+.board-list-item-menu {
+  position: absolute;
+  top: 0px;
+  right: -77px;
+  z-index: 99;
+}
