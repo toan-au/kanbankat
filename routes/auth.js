@@ -9,7 +9,6 @@ const User = mongoose.model("User");
 // configure passport
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, user.id);
 });
 

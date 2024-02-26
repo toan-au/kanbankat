@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { getBoardAsync } from "../state/boards.ts/boards";
 
 function Board() {
-  const board = useSelector((state: RootState) => state.boards);
+  const { activeBoard } = useSelector((state: RootState) => state.boards);
   const dispatch = useDispatch<AppDispatch>();
   const { boardId } = useParams();
 

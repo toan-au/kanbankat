@@ -1,4 +1,5 @@
 const express = require("express");
+require("express-async-errors");
 const cookieSession = require("cookie-session");
 const keys = require("./config/keys");
 const passport = require("passport");
@@ -45,6 +46,17 @@ app.use(passport.session());
 // routes
 require("./routes/auth")(app);
 require("./routes/board")(app);
+
+// error handling
+
+app.use((error, req, res, next) => {
+  error.statusCode ??= 500;
+  error.status ??= "error";
+  res.status(error.statusCode).json({
+    status: error.status,
+    message: error.message,
+  });
+});
 
 // client app
 if (process.env.NODE_ENV === "production") {
