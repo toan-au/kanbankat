@@ -65,6 +65,24 @@ module.exports = (app) => {
     })
   );
 
+  // edit a board
+  app.patch(
+    "/api/board/:boardId",
+    requireLogin,
+    requireOwnBoard,
+    asyncHandler(async (req, res) => {
+      const update = {
+        name: req.body.name,
+      };
+      const board = await Board.findOneAndUpdate(
+        { _id: req.params.boardId },
+        update
+      );
+
+      res.send(board);
+    })
+  );
+
   // delete a board
   app.delete(
     "/api/board/:boardId",

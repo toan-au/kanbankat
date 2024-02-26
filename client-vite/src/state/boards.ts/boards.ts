@@ -60,18 +60,24 @@ const boardsSlice = createSlice({
         }
       )
       .addCase(
+        getBoardAsync.fulfilled,
+        (state, action: PayloadAction<Board>) => {
+          state.activeBoard = action.payload;
+        }
+      )
+      .addCase(
+        renameBoardAsync.fulfilled,
+        (state, action: PayloadAction<Board>) => {
+          console.log(action.payload);
+        }
+      )
+      .addCase(
         deleteBoardAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary>) => {
           console.log(action.payload);
           state.userBoards = state.userBoards.filter(
             (board) => board._id != action.payload._id
           );
-        }
-      )
-      .addCase(
-        getBoardAsync.fulfilled,
-        (state, action: PayloadAction<Board>) => {
-          state.activeBoard = action.payload;
         }
       );
   },
@@ -103,6 +109,15 @@ export const getBoardAsync = createAsyncThunk(
     return board;
   }
 );
+
+export const renameBoardAsync = createAsyncThunk<
+  Board,
+  { boardId: string; name: string }
+>("boards/renameBoardAsync", async ({ boardId, name }) => {
+  const response = await axios.patch(`/api/board/${boardId}`, { name });
+  const board: Board = response.data;
+  return board;
+});
 
 export const deleteBoardAsync = createAsyncThunk(
   "boards/deleteBoardAsync",
