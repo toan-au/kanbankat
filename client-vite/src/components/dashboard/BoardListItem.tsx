@@ -49,12 +49,13 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   }
 
   function handleRenameSubmit(e: FormEvent, boardId: string) {
-    e.stopPropagation();
+    e.preventDefault();
     const payload = {
       boardId,
       name: displayName,
     };
     dispatch(renameBoardAsync(payload));
+    setEditing(false);
   }
 
   function handleDeleteClick(e: MouseEvent, boardId: string) {
@@ -81,9 +82,9 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
               {displayName}
             </h3>
             <form
-              action=""
               hidden={!editing}
               onSubmit={(e) => handleRenameSubmit(e, _id)}
+              onClick={(e) => e.stopPropagation()}
             >
               <input
                 ref={renameRef}

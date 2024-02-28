@@ -9,7 +9,7 @@ function Template() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.loggedIn) return navigate("/dashboard");
+    if (user.loggedIn) return navigate(-1);
   }, [user, navigate]);
 
   return (

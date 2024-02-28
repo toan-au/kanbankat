@@ -19,7 +19,7 @@
 }
 
 #new-board-button::after {
-  background-color: #3b82f6;
+  /* background-color: #3b82f6; */
   content: "";
   display: block;
   height: 100%;

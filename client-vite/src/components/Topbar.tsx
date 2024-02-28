@@ -48,13 +48,13 @@ function Topbar() {
     return (
       <>
         <li>
-          <a
-            href="/dashboard"
+          <Link
+            to="/dashboard"
             className="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500"
             aria-current="page"
           >
             Dashboard
-          </a>
+          </Link>
         </li>
       </>
     );

@@ -2,7 +2,7 @@ import NewBoardButton from "./NewBoardButton";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-import { getBoardsAsync } from "../../state/boards.ts/boards";
+import { createBoardAsync, getBoardsAsync } from "../../state/boards.ts/boards";
 import BoardListItem from "./BoardListItem";
 
 function Boards() {
@@ -13,6 +13,10 @@ function Boards() {
     dispatch(getBoardsAsync());
   }, [dispatch]);
 
+  function handleSave(value: string) {
+    dispatch(createBoardAsync(value));
+  }
+
   return (
     <div className="pt-10">
       <ul className="flex flex-row flex-wrap gap-5 mb-5">
@@ -20,7 +24,10 @@ function Boards() {
           <BoardListItem key={board._id} board={board}></BoardListItem>
         ))}
         <li>
-          <NewBoardButton></NewBoardButton>
+          <NewBoardButton
+            placeholder="Enter a board name"
+            onSave={handleSave}
+          ></NewBoardButton>
         </li>
       </ul>
     </div>
