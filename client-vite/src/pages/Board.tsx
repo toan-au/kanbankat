@@ -17,7 +17,7 @@ function Board() {
   return (
     <main id="board" className="p-10 mx-auto">
       <div id="board-info" className="flex align-top justify-start gap-5">
-        <div className="w-60 bg-blue-300 p-2">
+        <div className="w-60 bg-blue-500 p-2 text-white">
           <span className="font-bold">{activeBoard.name}</span>
           <hr className="my-2" />
           <p>{activeBoard.about}</p>
@@ -25,7 +25,6 @@ function Board() {
         <NewBoardButton
           placeholder="Enter a list name"
           onSave={() => alert("new")}
-          hoverColor="bg-slate-300"
         ></NewBoardButton>
       </div>
     </main>

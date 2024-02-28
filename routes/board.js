@@ -76,9 +76,9 @@ module.exports = (app) => {
       };
       const board = await Board.findOneAndUpdate(
         { _id: req.params.boardId },
-        update
+        update,
+        { new: true }
       );
-
       res.send(board);
     })
   );

@@ -5,7 +5,6 @@ import Button from "../UI/Button";
 interface NewBoardButtonProps {
   placeholder?: string;
   onSave: (value: string) => void;
-  hoverColor?: string;
 }
 
 function NewBoardButton(props: NewBoardButtonProps) {
@@ -29,7 +28,7 @@ function NewBoardButton(props: NewBoardButtonProps) {
       {!editing && (
         <button
           id="new-board-button"
-          className={`flex items-center justify-center border-dashed border-4 border-blue-950 w-52 h-32 p-2 text-gray-800 hover:text-white after:bg-blue-300`}
+          className={`flex items-center justify-center border-dashed border-4 border-blue-950 w-52 h-32 p-2 text-gray-800 hover:text-white after:bg-blue-500`}
           onClick={handleClick}
         >
           <FiPlusCircle size="40" />

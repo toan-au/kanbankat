@@ -68,7 +68,11 @@ const boardsSlice = createSlice({
       .addCase(
         renameBoardAsync.fulfilled,
         (state, action: PayloadAction<Board>) => {
-          console.log(action.payload);
+          const { _id, about, name, user } = action.payload;
+          const id = state.userBoards.findIndex(
+            (board) => board._id == action.payload._id
+          );
+          state.userBoards.splice(id, 1, { _id, about, name, user });
         }
       )
       .addCase(
@@ -79,9 +83,20 @@ const boardsSlice = createSlice({
             (board) => board._id != action.payload._id
           );
         }
+      )
+      .addCase(
+        createListAsync.fulfilled,
+        (state, action: PayloadAction<List>) => {
+          console.log(action.payload);
+          state.userBoards = state.userBoards.filter(
+            (board) => board._id != action.payload._id
+          );
+        }
       );
   },
 });
+
+// BOARD ACTIONS
 
 export const createBoardAsync = createAsyncThunk(
   "boards/createBoardAsync",
@@ -126,5 +141,18 @@ export const deleteBoardAsync = createAsyncThunk(
     return response.data;
   }
 );
+
+// LIST ACTIONS
+
+export const createListAsync = createAsyncThunk<
+  List,
+  { boardId: string; listName: string }
+>("boards/createListAsync", async ({ boardId, listName }) => {
+  const response = await axios.post(`/api/board/list/${boardId}`, {
+    name: listName,
+  });
+  const list: List = response.data;
+  return list;
+});
 
 export default boardsSlice.reducer;
