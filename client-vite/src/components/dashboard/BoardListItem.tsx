@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
-import { Link } from "react-router-dom";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
@@ -15,6 +14,7 @@ import {
   renameBoardAsync,
 } from "../../state/boards.ts/boards";
 import { FaPen, FaTrash } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 function BoardListItem(props: { board: { _id: string; name: string } }) {
   const { _id, name } = props.board;
@@ -22,6 +22,7 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   const [displayName, setDisplayName] = useState("");
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const ref = useDetectClickOutside({ onTriggered: handleOutsideClick });
   const renameRef = useRef<HTMLInputElement>(null);
 
@@ -35,12 +36,11 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   }
 
   function handleMenuClick(e: MouseEvent) {
-    e.preventDefault();
     setShowMenu(!showMenu);
   }
 
   function handleRenameClick(e: MouseEvent, boardId: string) {
-    e.preventDefault();
+    e.stopPropagation();
     setEditing(true);
     setTimeout(() => {
       setShowMenu(false);
@@ -49,7 +49,7 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   }
 
   function handleRenameSubmit(e: FormEvent, boardId: string) {
-    e.preventDefault();
+    e.stopPropagation();
     const payload = {
       boardId,
       name: displayName,
@@ -58,20 +58,27 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   }
 
   function handleDeleteClick(e: MouseEvent, boardId: string) {
-    e.preventDefault();
+    e.stopPropagation();
     dispatch(deleteBoardAsync(boardId));
   }
 
+  function handleBoardClick() {
+    navigate(`/board/${_id}`);
+  }
+
   return (
-    <li ref={ref}>
+    <li ref={ref} className="board-list-item cursor-pointer">
       <div className="block bg-blue-500 hover:bg-blue-400 w-52 h-32 text-center">
         <div className="flex flex-col relative h-full">
-          <button className="px-1 py-2 self-end" onClick={handleMenuClick}>
+          <button
+            className="text-transparent more-options-button px-1 py-2 self-end"
+            onClick={handleMenuClick}
+          >
             <SlOptionsVertical fontSize={17} />
           </button>
-          <div className="mt-3 px-2">
-            <h3 className="text-white" hidden={editing}>
-              {name}
+          <div className="pt-3 px-2 h-full" onClick={handleBoardClick}>
+            <h3 className="text-white select-none" hidden={editing}>
+              {displayName}
             </h3>
             <form
               action=""
