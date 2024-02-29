@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../state/store";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getBoardAsync } from "../state/boards.ts/boards";
+import { createListAsync, getBoardAsync } from "../state/boards/boards";
 import NewBoardButton from "../components/dashboard/NewBoardButton";
+import List from "../components/board/List";
 
 function Board() {
   const { activeBoard } = useSelector((state: RootState) => state.boards);
@@ -14,6 +15,11 @@ function Board() {
     boardId && dispatch(getBoardAsync(boardId));
   }, [boardId]);
 
+  function handleNewList(value: string) {
+    const payload = { boardId: activeBoard._id, listName: value };
+    dispatch(createListAsync(payload));
+  }
+
   return (
     <main id="board" className="p-10 mx-auto">
       <div id="board-info" className="flex align-top justify-start gap-5">
@@ -22,9 +28,12 @@ function Board() {
           <hr className="my-2" />
           <p>{activeBoard.about}</p>
         </div>
+        {activeBoard.lists.map((list) => (
+          <List key={list._id} boardId={activeBoard._id} list={list} />
+        ))}
         <NewBoardButton
           placeholder="Enter a list name"
-          onSave={() => alert("new")}
+          onSave={(value) => handleNewList(value)}
         ></NewBoardButton>
       </div>
     </main>

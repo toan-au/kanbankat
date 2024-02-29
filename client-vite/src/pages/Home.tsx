@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../state/store";
-import { getUserAsync, logoutAsync } from "../state/current-user/current-user";
+import { logoutAsync } from "../state/current-user/current-user";
 
 function Home() {
   const currentUser = useSelector((state: RootState) => state.currentUser);
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(getUserAsync());
-  }, [dispatch]);
 
   return (
     <main id="home" className="h-screen py-5">

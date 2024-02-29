@@ -1,20 +1,11 @@
-import React, {
-  FormEvent,
-  MouseEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { SlOptionsVertical } from "react-icons/sl";
+import { FormEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
-import {
-  deleteBoardAsync,
-  renameBoardAsync,
-} from "../../state/boards.ts/boards";
+import { deleteBoardAsync, renameBoardAsync } from "../../state/boards/boards";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import MoreOptionsButton from "../UI/MoreOptionsButton";
 
 function BoardListItem(props: { board: { _id: string; name: string } }) {
   const { _id, name } = props.board;
@@ -35,11 +26,11 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
     setEditing(false);
   }
 
-  function handleMenuClick(e: MouseEvent) {
+  function handleMenuClick() {
     setShowMenu(!showMenu);
   }
 
-  function handleRenameClick(e: MouseEvent, boardId: string) {
+  function handleRenameClick(e: MouseEvent) {
     e.stopPropagation();
     setEditing(true);
     setTimeout(() => {
@@ -69,15 +60,9 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
 
   return (
     <li ref={ref} className="board-list-item cursor-pointer">
-      <div className="block bg-blue-500 hover:bg-blue-400 w-52 h-32 text-center">
-        <div className="flex flex-col relative h-full">
-          <button
-            className="text-transparent more-options-button px-1 py-2 self-end"
-            onClick={handleMenuClick}
-          >
-            <SlOptionsVertical fontSize={17} />
-          </button>
-          <div className="pt-3 px-2 h-full" onClick={handleBoardClick}>
+      <div className="block bg-blue-500 hover:bg-blue-400 w-52 h-32">
+        <div className="flex relative h-full">
+          <div className="h-full w-full p-2" onClick={handleBoardClick}>
             <h3 className="text-white select-none" hidden={editing}>
               {displayName}
             </h3>
@@ -95,12 +80,12 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
               ></input>
             </form>
           </div>
+          <div className="ml-auto p-2">
+            <MoreOptionsButton onClick={handleMenuClick} />
+          </div>
           {showMenu && (
             <div className="flex flex-col bg-slate-300 px-2 py-1 board-list-item-menu ">
-              <button
-                className="text-md text-left"
-                onClick={(e) => handleRenameClick(e, _id)}
-              >
+              <button className="text-md text-left" onClick={handleRenameClick}>
                 <FaPen className="inline text-xs mr-2" />
                 Rename
               </button>

@@ -124,7 +124,9 @@ module.exports = (app) => {
       // add a list then subtract 1 from numLists
       board.lists.push({ name });
       board = await board.save();
-      res.send(board);
+      const list = board.lists.pop();
+      console.log(list);
+      res.send(list);
     })
   );
 
@@ -146,12 +148,17 @@ module.exports = (app) => {
     "/api/board/list/:boardId/:listId",
     asyncHandler(async (req, res) => {
       const { boardId, listId } = req.params;
-      let board = await Board.findById(boardId);
+      console.log(req.params);
+      const board = await Board.findById(boardId);
+      console.log(board.lists);
 
-      // remove list then subtract form numLists
-      board.lists.id(listId).remove();
-      board = await board.save();
-      res.send(board);
+      const index = board.lists.findIndex((list) => list._id == listId);
+      console.log("index to delete", index);
+
+      board.lists.splice(index, 1);
+      await board.save();
+
+      res.send(listId);
     })
   );
 

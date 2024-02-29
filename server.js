@@ -50,6 +50,7 @@ require("./routes/board")(app);
 // error handling
 
 app.use((error, req, res, next) => {
+  console.error(error);
   error.statusCode ??= 500;
   error.status ??= "error";
   res.status(error.statusCode).json({

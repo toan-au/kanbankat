@@ -78,7 +78,6 @@ const boardsSlice = createSlice({
       .addCase(
         deleteBoardAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary>) => {
-          console.log(action.payload);
           state.userBoards = state.userBoards.filter(
             (board) => board._id != action.payload._id
           );
@@ -87,10 +86,16 @@ const boardsSlice = createSlice({
       .addCase(
         createListAsync.fulfilled,
         (state, action: PayloadAction<List>) => {
-          console.log(action.payload);
-          state.userBoards = state.userBoards.filter(
-            (board) => board._id != action.payload._id
+          state.activeBoard.lists.push(action.payload);
+        }
+      )
+      .addCase(
+        deleteListAsync.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          const index = state.activeBoard.lists.findIndex(
+            (list) => list._id == action.payload
           );
+          state.activeBoard.lists.splice(index, 1);
         }
       );
   },
@@ -153,6 +158,15 @@ export const createListAsync = createAsyncThunk<
   });
   const list: List = response.data;
   return list;
+});
+
+export const deleteListAsync = createAsyncThunk<
+  string,
+  { boardId: string; listId: string }
+>("boards/deleteListAsync", async ({ boardId, listId }) => {
+  const response = await axios.delete(`/api/board/list/${boardId}/${listId}`);
+  const id = response.data;
+  return id;
 });
 
 export default boardsSlice.reducer;

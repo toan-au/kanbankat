@@ -4,8 +4,19 @@ import Template from "./components/templates/Template";
 import Dashboard from "./pages/Dashboard";
 import Authguard from "./components/templates/Authguard";
 import Board from "./pages/Board";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./state/store";
+import { useEffect } from "react";
+import { getUserAsync } from "./state/current-user/current-user";
 
 function App() {
+  const { loggedIn } = useSelector((state: RootState) => state.currentUser);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getUserAsync());
+  }, [dispatch]);
+
   const router = createBrowserRouter([
     {
       element: <Template></Template>,
@@ -17,7 +28,7 @@ function App() {
       ],
     },
     {
-      element: <Authguard></Authguard>,
+      element: <Authguard verify_user={loggedIn}></Authguard>,
       children: [
         {
           path: "/dashboard",

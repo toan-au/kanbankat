@@ -28,9 +28,7 @@ const currentUserSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Retrieving current logged in user
-      .addCase(getUserAsync.pending, () => {
-        console.log("Retriving current user...");
-      })
+      .addCase(getUserAsync.pending, () => {})
       .addCase(
         getUserAsync.fulfilled,
         (state, action: PayloadAction<UserAPIResponse>) => {
