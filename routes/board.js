@@ -116,7 +116,9 @@ module.exports = (app) => {
 
   // create a new list
   app.post(
-    "/api/board/list/:boardId/",
+    "/api/board/:boardId/list/",
+    requireLogin,
+    requireOwnBoard,
     asyncHandler(async (req, res) => {
       const { name } = req.body;
       let board = await Board.findById(req.params.boardId);
@@ -127,6 +129,26 @@ module.exports = (app) => {
       const list = board.lists.pop();
       console.log(list);
       res.send(list);
+    })
+  );
+
+  // Edit list
+  app.patch(
+    "/api/board/:boardId/list/:listId/",
+    requireLogin,
+    requireOwnBoard,
+    asyncHandler(async (req, res) => {
+      const { boardId, listId } = req.params;
+
+      // Find the list
+      const board = await Board.findById(boardId);
+      const index = board.lists.findIndex((list) => list._id == listId);
+      const list = board.lists[index];
+
+      // Update the list
+      list.name = req.body.name;
+
+      board.save();
     })
   );
 
@@ -145,7 +167,7 @@ module.exports = (app) => {
 
   // delete a list
   app.delete(
-    "/api/board/list/:boardId/:listId",
+    "/api/board/:boardId/list/:listId",
     asyncHandler(async (req, res) => {
       const { boardId, listId } = req.params;
       console.log(req.params);

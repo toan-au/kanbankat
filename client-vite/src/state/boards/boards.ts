@@ -153,7 +153,7 @@ export const createListAsync = createAsyncThunk<
   List,
   { boardId: string; listName: string }
 >("boards/createListAsync", async ({ boardId, listName }) => {
-  const response = await axios.post(`/api/board/list/${boardId}`, {
+  const response = await axios.post(`/api/board/${boardId}/list`, {
     name: listName,
   });
   const list: List = response.data;
@@ -164,9 +164,20 @@ export const deleteListAsync = createAsyncThunk<
   string,
   { boardId: string; listId: string }
 >("boards/deleteListAsync", async ({ boardId, listId }) => {
-  const response = await axios.delete(`/api/board/list/${boardId}/${listId}`);
+  const response = await axios.delete(`/api/board/${boardId}/list/${listId}`);
   const id = response.data;
   return id;
+});
+
+export const renameListAsync = createAsyncThunk<
+  string,
+  { boardId: string; listId: string; name: string }
+>("boards/renameListAsync", async ({ boardId, listId, name }) => {
+  const response = await axios.patch(`/api/board/${boardId}/list/${listId}`, {
+    name,
+  });
+  const newName: string = response.data;
+  return newName;
 });
 
 export default boardsSlice.reducer;
