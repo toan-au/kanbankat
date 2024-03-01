@@ -196,7 +196,7 @@ module.exports = (app) => {
 
   // create a new task
   app.post(
-    "/api/board/task/:boardId/:listId",
+    "/api/board/:boardId/list/:listId/task",
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
