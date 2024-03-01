@@ -110,6 +110,17 @@ const boardsSlice = createSlice({
             name,
           };
         }
+      )
+      .addCase(
+        createTaskAsync.fulfilled,
+        (state, action: PayloadAction<{ task: Task; listId: string }>) => {
+          const { task, listId } = action.payload;
+          const listIndex = state.activeBoard.lists.findIndex(
+            (list) => list._id == listId
+          );
+
+          state.activeBoard.lists[listIndex].tasks.push(task);
+        }
       );
   },
 });
@@ -191,6 +202,20 @@ export const renameListAsync = createAsyncThunk<
   });
   const list: List = response.data;
   return list;
+});
+
+export const createTaskAsync = createAsyncThunk<
+  { task: Task; listId: string },
+  { boardId: string; listId: string; content: string }
+>("boards/createTaskAsync", async ({ boardId, listId, content }) => {
+  const response = await axios.post(
+    `/api/board/${boardId}/list/${listId}/task`,
+    {
+      content,
+    }
+  );
+  const res: { task: Task; listId: string } = response.data;
+  return res;
 });
 
 export default boardsSlice.reducer;

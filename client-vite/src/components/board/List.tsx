@@ -94,7 +94,7 @@ function List({ boardId, list }: ListProps) {
           <MoreOptionsButton onClick={handleMenuClick} />
         </div>
       </div>
-      <NewCardButton />
+      <NewCardButton boardId={boardId} listId={list._id} />
       {openMenu && (
         <div className="flex flex-col bg-slate-300 px-2 py-1 board-list-item-menu ">
           <button className="text-md text-left" onClick={handleRenameClick}>

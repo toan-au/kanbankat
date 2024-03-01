@@ -13,7 +13,7 @@ function Board() {
 
   useEffect(() => {
     boardId && dispatch(getBoardAsync(boardId));
-  }, [boardId]);
+  }, [boardId, dispatch]);
 
   function handleNewList(value: string) {
     const payload = { boardId: activeBoard._id, listName: value };

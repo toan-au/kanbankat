@@ -200,15 +200,15 @@ module.exports = (app) => {
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
-      const { _id, description, color } = req.body;
+      const { _id, content, color } = req.body;
       const { boardId, listId } = req.params;
       let board = await Board.findById(boardId);
       const list = await board.lists.id(listId);
 
       // push new task increment counter
-      list.tasks.push({ _id, description, color });
+      list.tasks.push({ _id, content, color });
       board = await board.save();
-      res.send(board);
+      res.send({ task: list.tasks.pop(), listId });
     })
   );
 
