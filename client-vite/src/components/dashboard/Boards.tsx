@@ -18,7 +18,8 @@ function Boards() {
   }
 
   return (
-    <div className="pt-10">
+    <div className="pt-7">
+      <h1 className="text-4xl my-5">Your boards</h1>
       <ul className="flex flex-row flex-wrap gap-5 mb-5">
         {boards.userBoards.map((board) => (
           <BoardListItem key={board._id} board={board}></BoardListItem>

@@ -5,6 +5,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { deleteListAsync, renameListAsync } from "../../state/boards/boards";
 import { AppDispatch } from "../../state/store";
+import NewCardButton from "./NewCardButton";
 
 interface Task {
   _id: string;
@@ -88,15 +89,12 @@ function List({ boardId, list }: ListProps) {
   return (
     <div className="w-60 bg-blue-500 p-2 relative h-fit" ref={ref}>
       <div className="info flex text-white">
-        <div>
-          {}
-          {editing ? renderRenameForm() : renderName()}
-        </div>
+        <div>{editing ? renderRenameForm() : renderName()}</div>
         <div className="ml-auto">
           <MoreOptionsButton onClick={handleMenuClick} />
         </div>
       </div>
-      <div>Add new card</div>
+      <NewCardButton />
       {openMenu && (
         <div className="flex flex-col bg-slate-300 px-2 py-1 board-list-item-menu ">
           <button className="text-md text-left" onClick={handleRenameClick}>
