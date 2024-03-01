@@ -97,6 +97,19 @@ const boardsSlice = createSlice({
           );
           state.activeBoard.lists.splice(index, 1);
         }
+      )
+      .addCase(
+        renameListAsync.fulfilled,
+        (state, action: PayloadAction<List>) => {
+          const { _id, name } = action.payload;
+          const index = state.activeBoard.lists.findIndex(
+            (list) => list._id == _id
+          );
+          state.activeBoard.lists[index] = {
+            ...state.activeBoard.lists[index],
+            name,
+          };
+        }
       );
   },
 });
@@ -170,14 +183,14 @@ export const deleteListAsync = createAsyncThunk<
 });
 
 export const renameListAsync = createAsyncThunk<
-  string,
+  List,
   { boardId: string; listId: string; name: string }
 >("boards/renameListAsync", async ({ boardId, listId, name }) => {
   const response = await axios.patch(`/api/board/${boardId}/list/${listId}`, {
     name,
   });
-  const newName: string = response.data;
-  return newName;
+  const list: List = response.data;
+  return list;
 });
 
 export default boardsSlice.reducer;

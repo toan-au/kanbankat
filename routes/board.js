@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
 const requireOwnBoard = require("../middleware/requireOwnBoard");
+const _ = require("lodash");
 
 const Board = mongoose.model("Board");
 const User = mongoose.model("User");
-
 module.exports = (app) => {
   function asyncHandler(routeHandler) {
     return async (req, res, next) => {
@@ -143,12 +143,18 @@ module.exports = (app) => {
       // Find the list
       const board = await Board.findById(boardId);
       const index = board.lists.findIndex((list) => list._id == listId);
-      const list = board.lists[index];
+
+      console.log(board.lists[index]);
+
+      // safe properties
+      const safeParams = _.pick(req.body, ["name", "tasks"]);
 
       // Update the list
-      list.name = req.body.name;
+      if (safeParams.name) board.lists[index].name = safeParams.name;
+      console.log(board.lists[index]);
 
       board.save();
+      res.send(board.lists[index]);
     })
   );
 
