@@ -1,19 +1,21 @@
-import { FormEvent, useRef, useState } from "react";
+import { KeyboardEvent, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
 import { createTaskAsync } from "../../state/boards/boards";
+import TextareaAutosize from "react-textarea-autosize";
 
-interface NewCardButtonProps {
+interface NewTaskButtonProps {
   boardId: string;
   listId: string;
 }
 
-function NewCardButton({ boardId, listId }: NewCardButtonProps) {
+function NewTaskButton({ boardId, listId }: NewTaskButtonProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState("");
-  const focusRef = useRef<HTMLInputElement>(null);
+  const focusRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const outsideClickRef = useDetectClickOutside({
     onTriggered: handleOutsideClick,
   });
@@ -27,10 +29,17 @@ function NewCardButton({ boardId, listId }: NewCardButtonProps) {
     setTimeout(() => focusRef.current?.focus(), 0);
   }
 
-  function handleSubmit(e: FormEvent) {
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key == "Enter" && !e.shiftKey) {
+      handleSubmit(e);
+    }
+  }
+
+  function handleSubmit(e: Event) {
     e.preventDefault();
     const payload = { boardId, listId, content };
     dispatch(createTaskAsync(payload));
+    setContent("");
     setEditing(false);
   }
 
@@ -48,13 +57,13 @@ function NewCardButton({ boardId, listId }: NewCardButtonProps) {
 
   function renderForm() {
     return (
-      <form hidden={!editing} onSubmit={(e) => handleSubmit(e)}>
-        <input
-          type="text"
+      <form hidden={!editing} ref={formRef} onSubmit={(e) => handleSubmit(e)}>
+        <TextareaAutosize
           ref={focusRef}
-          className="w-full rounded-sm p-0.5"
+          className="w-full rounded-sm p-0.5 h-fit resize-none"
           placeholder="Enter anything..."
           value={content}
+          onKeyDown={(e) => handleKeyDown(e)}
           onChange={(e) => setContent(e.target.value)}
         />
       </form>
@@ -69,4 +78,4 @@ function NewCardButton({ boardId, listId }: NewCardButtonProps) {
   );
 }
 
-export default NewCardButton;
+export default NewTaskButton;
