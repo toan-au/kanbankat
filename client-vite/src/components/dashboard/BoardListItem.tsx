@@ -76,7 +76,6 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
               <input
                 ref={renameRef}
                 type="text"
-                className="text-center"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
               ></input>

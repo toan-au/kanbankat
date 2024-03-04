@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import Submenu from "../UI/submenu/Submenu";
 import IconMenuButton from "../UI/submenu/IconMenuButton";
@@ -7,6 +7,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { deleteTaskAsync } from "../../state/boards/boards";
+import { hideShroud, showShroud } from "../../state/ui/ui";
 
 interface Task {
   _id: string;
@@ -27,16 +28,29 @@ function Task({ task, listId }: TaskProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const [inputText, setInputText] = useState(task.content);
-
+  const [inputText, setInputText] = useState(task.name);
   const parentRef = useDetectClickOutside({
     onTriggered: handleOutsideClick,
   });
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  useEffect(() => {
+    showMenu ? dispatch(showShroud()) : dispatch(hideShroud());
+  }, [showMenu, dispatch]);
+
   function handleOutsideClick() {
     setShowMenu(false);
     setEditing(false);
+  }
+
+  function handleFocus(e: FocusEvent<HTMLTextAreaElement>) {
+    e.target.select();
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key == "Enter" && !e.shiftKey) {
+      console.log("submitted");
+    }
   }
 
   function handleShowMenu() {
@@ -51,23 +65,28 @@ function Task({ task, listId }: TaskProps) {
   function handleDeleteClick() {
     const payload = { boardId: activeBoard._id, listId, taskId: task._id };
     dispatch(deleteTaskAsync(payload));
+    setEditing(false);
+    setShowMenu(false);
   }
 
   return (
     <>
       <div
-        className="relative flex bg-slate-100 px-0.5 py-1 my-1 rounded-sm items-start group"
-        key={task._id}
+        className={`relative flex bg-slate-100 px-0.5 py-1 my-1 rounded-sm items-start group ${
+          showMenu && "z-50"
+        }`}
         ref={parentRef}
       >
         <div className="flex-1 leading-6 break-words max-w-[calc(100%-20px)]">
-          {!editing && task.content}
+          {!editing && task.name}
           <ReactTextareaAutosize
             hidden={!editing}
             ref={textAreaRef}
             className="resize-none"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
+            onFocus={handleFocus}
+            onKeyDown={handleKeyDown}
           ></ReactTextareaAutosize>
         </div>
         <button

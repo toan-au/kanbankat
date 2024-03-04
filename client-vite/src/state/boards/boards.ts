@@ -230,12 +230,12 @@ export const renameListAsync = createAsyncThunk<
 
 export const createTaskAsync = createAsyncThunk<
   { task: Task; listId: string },
-  { boardId: string; listId: string; content: string }
->("boards/createTaskAsync", async ({ boardId, listId, content }) => {
+  { boardId: string; listId: string; name: string }
+>("boards/createTaskAsync", async ({ boardId, listId, name }) => {
   const response = await axios.post(
     `/api/board/${boardId}/list/${listId}/task`,
     {
-      content,
+      name,
     }
   );
   const res: { task: Task; listId: string } = response.data;

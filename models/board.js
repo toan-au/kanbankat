@@ -2,13 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TaskSchema = new Schema({
-  content: { type: String, max: 255 },
+  name: { type: String, max: 255 },
+  content: { type: String, max: 10_000 },
   color: { type: String, default: "none" },
 });
 
 const ListSchema = new Schema({
   name: { type: String, required: true, max: 255 },
   tasks: [TaskSchema],
+  deleted: { type: Boolean, required: false, default: false },
+  deletedOn: { type: Date },
 });
 
 const def =

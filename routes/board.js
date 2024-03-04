@@ -200,16 +200,28 @@ module.exports = (app) => {
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
-      const { _id, content, color } = req.body;
+      const { _id, name, content, color } = req.body;
+      console.log(
+        `POST /api/board/:boardId/list/:listId/task params`,
+        req.body
+      );
       const { boardId, listId } = req.params;
       let board = await Board.findById(boardId);
       const list = await board.lists.id(listId);
 
       // push new task increment counter
-      list.tasks.push({ _id, content, color });
+      list.tasks.push({ _id, name, content, color });
       board = await board.save();
       res.send({ task: list.tasks.pop(), listId });
     })
+  );
+
+  // Edit task
+  app.patch(
+    "/api/board/:boardId/list/:listId/task/:taskId",
+    requireLogin,
+    requireOwnBoard,
+    asyncHandler(async (req, res) => {})
   );
 
   // delete a task

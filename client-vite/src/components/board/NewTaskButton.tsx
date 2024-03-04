@@ -37,7 +37,7 @@ function NewTaskButton({ boardId, listId }: NewTaskButtonProps) {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const payload = { boardId, listId, content };
+    const payload = { boardId, listId, name: content };
     dispatch(createTaskAsync(payload));
     setContent("");
     setEditing(false);

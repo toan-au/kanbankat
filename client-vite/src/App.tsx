@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./state/store";
 import { useEffect } from "react";
 import { getUserAsync } from "./state/current-user/current-user";
+import Overlay from "./components/UI/Overlay";
 
 function App() {
   const { loggedIn } = useSelector((state: RootState) => state.currentUser);
@@ -28,7 +29,7 @@ function App() {
       ],
     },
     {
-      element: <Authguard verify_user={loggedIn}></Authguard>,
+      element: <Authguard></Authguard>,
       children: [
         {
           path: "/dashboard",
@@ -42,7 +43,12 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <>
+      <Overlay></Overlay>
+      <RouterProvider router={router}></RouterProvider>
+    </>
+  );
 }
 
 export default App;
