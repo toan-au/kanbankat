@@ -6,7 +6,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-import { deleteTaskAsync } from "../../state/boards/boards";
+import { deleteTaskAsync, renameTaskAsync } from "../../state/boards/boards";
 import { hideShroud, showShroud } from "../../state/ui/ui";
 
 interface Task {
@@ -49,7 +49,14 @@ function Task({ task, listId }: TaskProps) {
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key == "Enter" && !e.shiftKey) {
-      console.log("submitted");
+      const payload = {
+        boardId: activeBoard._id,
+        listId,
+        taskId: task._id,
+        name: inputText,
+      };
+      dispatch(renameTaskAsync(payload));
+      setEditing(false);
     }
   }
 

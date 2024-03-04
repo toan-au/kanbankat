@@ -145,6 +145,21 @@ const boardsSlice = createSlice({
           );
           state.activeBoard.lists[listIndex].tasks.splice(taskIndex, 1);
         }
+      )
+      // renameTaskAsync.fulfilled
+      .addCase(
+        renameTaskAsync.fulfilled,
+        (state, action: PayloadAction<{ task: Task; listId: string }>) => {
+          const { task, listId } = action.payload;
+          const listIndex = state.activeBoard.lists.findIndex(
+            (list) => list._id == listId
+          );
+
+          const taskId = state.activeBoard.lists[listIndex].tasks.findIndex(
+            (t) => t._id == task._id
+          );
+          state.activeBoard.lists[listIndex].tasks.splice(taskId, 1, task);
+        }
       );
   },
 });
@@ -250,6 +265,20 @@ export const deleteTaskAsync = createAsyncThunk<
     `/api/board/${boardId}/list/${listId}/task/${taskId}`
   );
 
+  const res: { task: Task; listId: string } = response.data;
+  return res;
+});
+
+export const renameTaskAsync = createAsyncThunk<
+  { task: Task; listId: string },
+  { boardId: string; listId: string; taskId: string; name: string }
+>("boards/renameTaskAsync", async ({ boardId, listId, name, taskId }) => {
+  const response = await axios.patch(
+    `/api/board/${boardId}/list/${listId}/task/${taskId}`,
+    {
+      name,
+    }
+  );
   const res: { task: Task; listId: string } = response.data;
   return res;
 });

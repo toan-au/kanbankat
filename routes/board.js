@@ -221,7 +221,37 @@ module.exports = (app) => {
     "/api/board/:boardId/list/:listId/task/:taskId",
     requireLogin,
     requireOwnBoard,
-    asyncHandler(async (req, res) => {})
+    asyncHandler(async (req, res) => {
+      const { name, content, color } = req.body;
+      console.log(
+        `PATCH /api/board/:boardId/list/:listId/task params`,
+        req.params,
+        "body: ",
+        req.body
+      );
+
+      const { boardId, listId, taskId } = req.params;
+      console.log(`Searching Board by ID: ${boardId}`);
+      let board = await Board.findById(boardId);
+      console.log(board);
+
+      console.log(`Searching board's list by ID: ${listId}`);
+      const list = await board.lists.id(listId);
+      console.log(list);
+
+      // push new task increment counter
+      console.log(`Searching list's task by ID: ${taskId}`);
+      const taskIndex = list.tasks.findIndex((task) => task._id == taskId);
+      console.log(list.tasks[taskIndex]);
+      console.log("updating task...");
+      if (name) list.tasks[taskIndex].name = name;
+      if (content) list.tasks[taskIndex].content = content;
+      if (color) list.tasks[taskIndex].color = color;
+      console.log(list.tasks[taskIndex]);
+      board = await board.save();
+
+      res.send({ task: list.tasks[taskIndex], listId });
+    })
   );
 
   // delete a task
