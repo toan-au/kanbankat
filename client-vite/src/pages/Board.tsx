@@ -21,9 +21,12 @@ function Board() {
   }
 
   return (
-    <main id="board" className="p-10 mx-auto">
-      <div id="board-info" className="flex align-top justify-start gap-5">
-        <div className="w-60 bg-blue-500 p-2 text-white h-fit">
+    <main id="board" className="mx-auto flex flex-col">
+      <div
+        id="board-info"
+        className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
+      >
+        <div className="w-60 min-w-60 bg-blue-500 p-2 text-white h-fit">
           <span className="font-bold">{activeBoard.name}</span>
           <hr className="my-2" />
           <p>{activeBoard.about}</p>

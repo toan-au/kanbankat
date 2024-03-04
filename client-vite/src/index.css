@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root,
+main {
+  height: 100%;
+}
+
+main {
+  padding-top: 3.5em;
+}
+
 #home {
   background-image: url("images/splash.jpg");
   background-size: cover;
@@ -43,9 +54,8 @@
 }
 
 .board-list-item-menu {
-  position: absolute;
   top: 0px;
-  right: -97px;
+  left: 256px;
   z-index: 99;
 }
 

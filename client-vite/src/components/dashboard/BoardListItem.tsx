@@ -6,6 +6,8 @@ import { deleteBoardAsync, renameBoardAsync } from "../../state/boards/boards";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import MoreOptionsButton from "../UI/MoreOptionsButton";
+import Submenu from "../UI/submenu/Submenu";
+import IconMenuButton from "../UI/submenu/IconMenuButton";
 
 function BoardListItem(props: { board: { _id: string; name: string } }) {
   const { _id, name } = props.board;
@@ -60,7 +62,7 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
 
   return (
     <li ref={ref} className="board-list-item cursor-pointer">
-      <div className="block bg-blue-500 hover:bg-blue-400 w-52 h-32">
+      <div className="block bg-blue-500 hover:bg-blue-400 w-64 h-32">
         <div className="flex relative h-full">
           <div className="h-full w-full p-2" onClick={handleBoardClick}>
             <h3 className="text-white select-none" hidden={editing}>
@@ -84,19 +86,18 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
             <MoreOptionsButton onClick={handleMenuClick} />
           </div>
           {showMenu && (
-            <div className="flex flex-col bg-slate-300 px-2 py-1 board-list-item-menu ">
-              <button className="text-md text-left" onClick={handleRenameClick}>
-                <FaPen className="inline text-xs mr-2" />
-                Rename
-              </button>
-              <button
-                className="text-md text-left"
+            <Submenu showMenu={showMenu}>
+              <IconMenuButton
+                icon={<FaPen />}
+                onClick={handleRenameClick}
+                text="Rename"
+              />
+              <IconMenuButton
+                icon={<FaTrash />}
                 onClick={(e) => handleDeleteClick(e, _id)}
-              >
-                <FaTrash className="inline text-xs mr-2" />
-                Delete
-              </button>
-            </div>
+                text="Delete"
+              />
+            </Submenu>
           )}
         </div>
       </div>

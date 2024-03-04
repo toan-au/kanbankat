@@ -7,6 +7,8 @@ import { deleteListAsync, renameListAsync } from "../../state/boards/boards";
 import { AppDispatch } from "../../state/store";
 import NewTaskButton from "./NewTaskButton";
 import TaskList from "./TaskList";
+import Submenu from "../UI/submenu/Submenu";
+import IconMenuButton from "../UI/submenu/IconMenuButton";
 
 interface Task {
   _id: string;
@@ -84,33 +86,35 @@ function List({ boardId, list }: ListProps) {
   }
 
   function renderName() {
-    return <span>{displayName}</span>;
+    return <span className="text-white">{displayName}</span>;
   }
 
   return (
-    <div className="w-60 bg-blue-500 p-2 relative h-fit" ref={ref}>
-      <div className="info flex text-white">
+    <div className="w-64 min-w-64 bg-blue-500 p-2 relative h-fit">
+      <div className="info flex">
         <div>{editing ? renderRenameForm() : renderName()}</div>
-        <div className="ml-auto">
+        <div className="ml-auto" ref={ref}>
           <MoreOptionsButton onClick={handleMenuClick} />
+          {openMenu && (
+            <Submenu showMenu={openMenu}>
+              <IconMenuButton
+                icon={<FaPen />}
+                onClick={handleRenameClick}
+                text="Rename"
+              />
+              <IconMenuButton
+                icon={<FaTrash />}
+                onClick={handleDelete}
+                text="Delete"
+              />
+            </Submenu>
+          )}
         </div>
       </div>
       <div>
         <TaskList tasks={list.tasks} />
       </div>
       <NewTaskButton boardId={boardId} listId={list._id} />
-      {openMenu && (
-        <div className="flex flex-col bg-slate-300 px-2 py-1 board-list-item-menu ">
-          <button className="text-md text-left" onClick={handleRenameClick}>
-            <FaPen className="inline text-xs mr-2" />
-            Rename
-          </button>
-          <button className="text-md text-left" onClick={handleDelete}>
-            <FaTrash className="inline text-xs mr-2" />
-            Delete
-          </button>
-        </div>
-      )}
     </div>
   );
 }

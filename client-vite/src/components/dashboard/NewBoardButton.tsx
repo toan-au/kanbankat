@@ -28,14 +28,14 @@ function NewBoardButton(props: NewBoardButtonProps) {
       {!editing && (
         <button
           id="new-board-button"
-          className={`flex items-center justify-center border-dashed border-4 border-blue-950 w-52 h-32 p-2 text-gray-800 hover:text-white after:bg-blue-500`}
+          className={`flex items-center justify-center border-dashed border-4 border-blue-950 w-52 min-w-52 h-32 p-2 text-gray-800 hover:text-white after:bg-blue-500`}
           onClick={handleClick}
         >
           <FiPlusCircle size="40" />
         </button>
       )}
       {editing && (
-        <div className="flex flex-col items-center justify-start bg-blue-500 w-52 h-32 text-gray-800 gap-2 p-2">
+        <div className="flex flex-col items-center justify-start bg-blue-500 min-w-52 w-52 h-32 text-gray-800 gap-2 p-2">
           <form
             onSubmit={(e) => {
               e.preventDefault();

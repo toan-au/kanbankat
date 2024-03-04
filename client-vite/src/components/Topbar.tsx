@@ -54,8 +54,8 @@ function Topbar() {
   }
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="container flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="fixed w-full bg-white border-gray-200 dark:bg-gray-900 z-10">
+      <div className="container flex flex-wrap items-center justify-between mx-auto p-2">
         <Link
           to={user.loggedIn ? "/dashboard" : "/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"

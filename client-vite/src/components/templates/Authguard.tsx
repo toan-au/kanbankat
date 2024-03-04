@@ -9,8 +9,6 @@ function Authguard() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  
-
   useEffect(() => {
     function authorize() {
       if (!user.loggedIn) return navigate("/");
