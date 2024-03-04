@@ -9,13 +9,14 @@ interface TaskType {
 
 interface TaskListProps {
   tasks: TaskType[];
+  listId: string;
 }
 
-function TaskList({ tasks }: TaskListProps) {
+function TaskList({ tasks, listId }: TaskListProps) {
   return (
     <>
       {tasks.map((task) => (
-        <Task key={task._id} task={task}></Task>
+        <Task key={task._id} task={task} listId={listId}></Task>
       ))}
     </>
   );

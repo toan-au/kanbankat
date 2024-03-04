@@ -1,4 +1,4 @@
-import { KeyboardEvent, useRef, useState } from "react";
+import React, { FormEvent, KeyboardEvent, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
@@ -31,11 +31,11 @@ function NewTaskButton({ boardId, listId }: NewTaskButtonProps) {
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key == "Enter" && !e.shiftKey) {
-      handleSubmit(e);
+      handleSubmit(e as FormEvent);
     }
   }
 
-  function handleSubmit(e: Event) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const payload = { boardId, listId, content };
     dispatch(createTaskAsync(payload));

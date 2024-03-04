@@ -214,18 +214,43 @@ module.exports = (app) => {
 
   // delete a task
   app.delete(
-    "/api/board/task/:boardId/:listId/:taskId",
+    "/api/board/:boardId/list/:listId/task/:taskId",
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
       const { boardId, listId, taskId } = req.params;
-      let board = await Board.findById(boardId);
-      const list = board.lists.id(listId);
+      console.log(
+        "/api/board/:boardId/list/:listId/task/:taskId",
+        boardId,
+        listId,
+        taskId
+      );
 
-      // remove a task decrement counter
-      list.tasks.id(taskId).remove();
-      board = await board.save();
-      res.send(board);
+      // Find board
+      console.log(`Searching Board by ID: ${boardId}`);
+      let board = await Board.findById(boardId);
+      console.log(board);
+
+      console.log(`Searching board's list by ID: ${listId}`);
+      const listIndex = board.lists.findIndex((list) => list._id == listId);
+      console.log(`Found list at index: ${listIndex}`);
+      const list = board.lists[listIndex];
+      console.log(list);
+
+      // Find list
+      console.log(`Searching list's task by ID: ${taskId}`);
+      const taskIndex = list.tasks.findIndex((task) => task._id == taskId);
+      console.log(`Found task at index: ${taskIndex}`);
+
+      const task = list.tasks[taskIndex];
+      console.log(task);
+
+      // Delete task
+      list.tasks.splice(taskIndex, 1);
+      board.save();
+
+      const response = { task, listId };
+      res.send(response);
     })
   );
 };

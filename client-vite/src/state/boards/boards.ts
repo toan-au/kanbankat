@@ -47,24 +47,28 @@ const boardsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // createBoardAsync.fulfilled
       .addCase(
         createBoardAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary>) => {
           state.userBoards.push(action.payload);
         }
       )
+      // getBoardsAsync.fulfilled
       .addCase(
         getBoardsAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary[]>) => {
           state.userBoards = action.payload;
         }
       )
+      // getBoardAsync.fulfilled
       .addCase(
         getBoardAsync.fulfilled,
         (state, action: PayloadAction<Board>) => {
           state.activeBoard = action.payload;
         }
       )
+      // renameBoardAsync.fulfilled
       .addCase(
         renameBoardAsync.fulfilled,
         (state, action: PayloadAction<Board>) => {
@@ -75,6 +79,7 @@ const boardsSlice = createSlice({
           state.userBoards.splice(id, 1, { _id, about, name, user });
         }
       )
+      // deleteBoardAsync.fulfilled
       .addCase(
         deleteBoardAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary>) => {
@@ -83,12 +88,14 @@ const boardsSlice = createSlice({
           );
         }
       )
+      // createListAsync.fulfilled
       .addCase(
         createListAsync.fulfilled,
         (state, action: PayloadAction<List>) => {
           state.activeBoard.lists.push(action.payload);
         }
       )
+      // deleteListAsync.fulfilled
       .addCase(
         deleteListAsync.fulfilled,
         (state, action: PayloadAction<string>) => {
@@ -98,6 +105,7 @@ const boardsSlice = createSlice({
           state.activeBoard.lists.splice(index, 1);
         }
       )
+      // renameListAsync.fulfilled
       .addCase(
         renameListAsync.fulfilled,
         (state, action: PayloadAction<List>) => {
@@ -111,6 +119,7 @@ const boardsSlice = createSlice({
           };
         }
       )
+      // createTaskAsync.fulfilled
       .addCase(
         createTaskAsync.fulfilled,
         (state, action: PayloadAction<{ task: Task; listId: string }>) => {
@@ -120,6 +129,21 @@ const boardsSlice = createSlice({
           );
 
           state.activeBoard.lists[listIndex].tasks.push(task);
+        }
+      )
+      // deleteTaskAsync.fulfilled
+      .addCase(
+        deleteTaskAsync.fulfilled,
+        (state, action: PayloadAction<{ task: Task; listId: string }>) => {
+          const { task, listId } = action.payload;
+          const listIndex = state.activeBoard.lists.findIndex(
+            (list) => list._id == listId
+          );
+
+          const taskIndex = state.activeBoard.lists[listIndex].tasks.findIndex(
+            (t) => t._id == task._id
+          );
+          state.activeBoard.lists[listIndex].tasks.splice(taskIndex, 1);
         }
       );
   },
@@ -214,6 +238,18 @@ export const createTaskAsync = createAsyncThunk<
       content,
     }
   );
+  const res: { task: Task; listId: string } = response.data;
+  return res;
+});
+
+export const deleteTaskAsync = createAsyncThunk<
+  { task: Task; listId: string },
+  { boardId: string; listId: string; taskId: string }
+>("boards/deleteTaskAsync", async ({ boardId, listId, taskId }) => {
+  const response = await axios.delete(
+    `/api/board/${boardId}/list/${listId}/task/${taskId}`
+  );
+
   const res: { task: Task; listId: string } = response.data;
   return res;
 });

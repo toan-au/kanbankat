@@ -112,7 +112,7 @@ function List({ boardId, list }: ListProps) {
         </div>
       </div>
       <div>
-        <TaskList tasks={list.tasks} />
+        <TaskList tasks={list.tasks} listId={list._id} />
       </div>
       <NewTaskButton boardId={boardId} listId={list._id} />
     </div>
