@@ -69,5 +69,10 @@ module.exports = (app) => {
     });
   });
 
-  app.get("/auth/current", (req, res) => res.send(req.user));
+  app.get("/auth/current", (req, res) => {
+    if (req.user) {
+      return res.send(req.user);
+    }
+    res.send({});
+  });
 };

@@ -7,15 +7,15 @@ import Board from "./pages/Board";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./state/store";
 import { useEffect } from "react";
-import { getUserAsync } from "./state/current-user/current-user";
+import { syncUser } from "./state/current-user/current-user";
 import Overlay from "./components/UI/Overlay";
 
 function App() {
-  const { loggedIn } = useSelector((state: RootState) => state.currentUser);
+  const { loadingUser } = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getUserAsync());
+    dispatch(syncUser());
   }, [dispatch]);
 
   const router = createBrowserRouter([
@@ -46,7 +46,7 @@ function App() {
   return (
     <>
       <Overlay></Overlay>
-      <RouterProvider router={router}></RouterProvider>
+      {!loadingUser && <RouterProvider router={router}></RouterProvider>}
     </>
   );
 }

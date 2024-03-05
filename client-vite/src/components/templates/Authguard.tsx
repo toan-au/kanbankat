@@ -1,20 +1,17 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import { useEffect } from "react";
-import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import Topbar from "../Topbar";
 
 function Authguard() {
+  const { loadingUser } = useSelector((state: RootState) => state.ui);
   const user = useSelector((state: RootState) => state.currentUser);
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    function authorize() {
-      if (!user.loggedIn) return navigate("/");
-    }
-    setTimeout(authorize, 100);
-  }, [user.loggedIn, navigate, location.pathname]);
+    if (!user.loggedIn) return navigate("/");
+  }, [loadingUser, user.loggedIn, navigate]);
 
   return (
     <>

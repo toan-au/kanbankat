@@ -1,5 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { stopLoadingUser } from "../ui/ui";
+import { isEmpty } from "lodash";
 
 interface UserAPIResponse {
   _id: string;
@@ -32,10 +34,12 @@ const currentUserSlice = createSlice({
       .addCase(
         getUserAsync.fulfilled,
         (state, action: PayloadAction<UserAPIResponse>) => {
-          state.id = action.payload._id;
-          state.googleId = action.payload.googleId;
-          state.displayName = action.payload.displayName;
-          state.loggedIn = action.payload._id.length > 0;
+          if (!isEmpty(action.payload)) {
+            state.id = action.payload._id;
+            state.googleId = action.payload.googleId;
+            state.displayName = action.payload.displayName;
+            state.loggedIn = action.payload._id.length > 0;
+          }
         }
       )
 
@@ -52,6 +56,14 @@ export const getUserAsync = createAsyncThunk<UserAPIResponse>(
     const response = await axios.get("/auth/current");
     const user: UserAPIResponse = response.data;
     return user;
+  }
+);
+
+export const syncUser = createAsyncThunk(
+  "currentUser/syncUser",
+  async (_, thunkApi) => {
+    await thunkApi.dispatch(getUserAsync());
+    await thunkApi.dispatch(stopLoadingUser());
   }
 );
 
