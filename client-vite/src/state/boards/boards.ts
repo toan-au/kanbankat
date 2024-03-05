@@ -327,7 +327,7 @@ export const renameTaskAsync = createAsyncThunk<
 export const shiftTaskAsync = createAsyncThunk<TaskShift, TaskShift>(
   "boards/shiftTaskAsync",
   async (taskShift: TaskShift) => {
-    axios.patch(`/api/board/${taskShift.boardId}/lists`, taskShift);
+    axios.patch(`/api/board/${taskShift.boardId}/lists/tasks`, taskShift);
     return taskShift;
   }
 );
