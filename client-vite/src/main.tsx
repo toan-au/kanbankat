@@ -3,9 +3,12 @@ import App from "./App.tsx";
 import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./state/store.ts";
+import AppDragDropContext from "./components/AppDragDropContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <App />
+    <AppDragDropContext>
+      <App />
+    </AppDragDropContext>
   </Provider>
 );

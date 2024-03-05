@@ -14,6 +14,14 @@ interface List {
   tasks: Task[];
 }
 
+interface TaskShift {
+  boardId: string;
+  sourceListId: string;
+  sourceIndex: number;
+  destinationListId: string;
+  destinationIndex: number;
+}
+
 interface BoardSummary {
   _id: string;
   name: string;
@@ -160,6 +168,39 @@ const boardsSlice = createSlice({
           );
           state.activeBoard.lists[listIndex].tasks.splice(taskId, 1, task);
         }
+      )
+      .addCase(
+        shiftTaskAsync.fulfilled,
+        (state, action: PayloadAction<TaskShift>) => {
+          const {
+            sourceListId,
+            sourceIndex,
+            destinationListId,
+            destinationIndex,
+          } = action.payload;
+          const board = state.activeBoard;
+
+          // Find source and destination lsits
+          const sourceListIndex = board.lists.findIndex(
+            (list) => list._id == sourceListId
+          );
+          const destinationListIndex = board.lists.findIndex(
+            (list) => list._id == destinationListId
+          );
+
+          // splice task from source
+          const task = board.lists[sourceListIndex].tasks.splice(
+            sourceIndex,
+            1
+          );
+
+          // insert into destination
+          board.lists[destinationListIndex].tasks.splice(
+            destinationIndex,
+            0,
+            task[0]
+          );
+        }
       );
   },
 });
@@ -282,5 +323,13 @@ export const renameTaskAsync = createAsyncThunk<
   const res: { task: Task; listId: string } = response.data;
   return res;
 });
+
+export const shiftTaskAsync = createAsyncThunk<TaskShift, TaskShift>(
+  "boards/shiftTaskAsync",
+  async (taskShift: TaskShift) => {
+    axios.patch(`/api/board/${taskShift.boardId}/lists`, taskShift);
+    return taskShift;
+  }
+);
 
 export default boardsSlice.reducer;

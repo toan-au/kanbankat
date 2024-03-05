@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { deleteTaskAsync, renameTaskAsync } from "../../state/boards/boards";
 import { hideShroud, showShroud } from "../../state/ui/ui";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 interface Task {
   _id: string;
@@ -19,9 +20,11 @@ interface Task {
 interface TaskProps {
   task: Task;
   listId: string;
+  innerRef: (element: HTMLElement | null) => void;
+  provided: DraggableProvided;
 }
 
-function Task({ task, listId }: TaskProps) {
+function Task({ task, listId, innerRef, provided }: TaskProps) {
   const activeBoard = useSelector(
     (state: RootState) => state.boards.activeBoard
   );
@@ -77,7 +80,11 @@ function Task({ task, listId }: TaskProps) {
   }
 
   return (
-    <>
+    <div
+      ref={innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
       <div
         className={`relative flex bg-slate-100 px-0.5 py-1 my-1 rounded-sm items-start group ${
           showMenu && "z-50"
@@ -117,7 +124,7 @@ function Task({ task, listId }: TaskProps) {
           </Submenu>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
