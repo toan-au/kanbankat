@@ -20,9 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+  "typeRoots": ["./typings", "./node_modules/@types/"],
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "paths": {
-    "react-beautiful-dnd": ["./node_modules/@types/react-beautiful-dnd"]
-  }
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
