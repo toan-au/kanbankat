@@ -9,6 +9,7 @@ import NewTaskButton from "./NewTaskButton";
 import TaskList from "./TaskList";
 import Submenu from "../UI/submenu/Submenu";
 import IconMenuButton from "../UI/submenu/IconMenuButton";
+import { Draggable } from "react-beautiful-dnd";
 
 interface Task {
   _id: string;
@@ -26,9 +27,10 @@ interface List {
 interface ListProps {
   boardId: string;
   list: List;
+  index: number;
 }
 
-function List({ boardId, list }: ListProps) {
+function List({ boardId, list, index }: ListProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [editing, setEditing] = useState(false);
@@ -90,32 +92,41 @@ function List({ boardId, list }: ListProps) {
   }
 
   return (
-    <div className="w-64 min-w-64 bg-blue-500 p-2 relative h-fit">
-      <div className="info flex">
-        <div>{editing ? renderRenameForm() : renderName()}</div>
-        <div className="ml-auto" ref={ref}>
-          <MoreOptionsButton onClick={handleMenuClick} />
-          {openMenu && (
-            <Submenu showMenu={openMenu}>
-              <IconMenuButton
-                icon={<FaPen />}
-                onClick={handleRenameClick}
-                text="Rename"
-              />
-              <IconMenuButton
-                icon={<FaTrash />}
-                onClick={handleDelete}
-                text="Delete"
-              />
-            </Submenu>
-          )}
+    <Draggable draggableId={list._id} index={index}>
+      {(provided) => (
+        <div
+          className="w-64 min-w-64 bg-blue-500 p-2 relative h-fit"
+          ref={provided.innerRef}
+          {...provided.dragHandleProps}
+          {...provided.draggableProps}
+        >
+          <div className="info flex">
+            <div>{editing ? renderRenameForm() : renderName()}</div>
+            <div className="ml-auto" ref={ref}>
+              <MoreOptionsButton onClick={handleMenuClick} />
+              {openMenu && (
+                <Submenu showMenu={openMenu}>
+                  <IconMenuButton
+                    icon={<FaPen />}
+                    onClick={handleRenameClick}
+                    text="Rename"
+                  />
+                  <IconMenuButton
+                    icon={<FaTrash />}
+                    onClick={handleDelete}
+                    text="Delete"
+                  />
+                </Submenu>
+              )}
+            </div>
+          </div>
+          <div>
+            <TaskList tasks={list.tasks} listId={list._id} />
+          </div>
+          <NewTaskButton boardId={boardId} listId={list._id} />
         </div>
-      </div>
-      <div>
-        <TaskList tasks={list.tasks} listId={list._id} />
-      </div>
-      <NewTaskButton boardId={boardId} listId={list._id} />
-    </div>
+      )}
+    </Draggable>
   );
 }
 

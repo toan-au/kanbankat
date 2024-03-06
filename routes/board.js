@@ -160,14 +160,44 @@ module.exports = (app) => {
 
   // shifting tasks within lists
   app.patch(
-    "/api/board/list/:boardId/",
+    "/api/board/:boardId/lists/tasks",
     requireLogin,
     asyncHandler(async (req, res) => {
-      const { newerLists } = req.body;
+      const {
+        boardId,
+        sourceListId,
+        sourceIndex,
+        destinationListId,
+        destinationIndex,
+      } = req.body;
       const board = await Board.findById(req.params.boardId);
-      board.lists = [...newerLists];
+
+      // Find source and destination lsits
+      const sourceListIndex = board.lists.findIndex(
+        (list) => list._id == sourceListId
+      );
+      const destinationListIndex = board.lists.findIndex(
+        (list) => list._id == destinationListId
+      );
+
+      // splice task from source
+      const task = board.lists[sourceListIndex].tasks.splice(sourceIndex, 1);
+
+      // insert into destination
+      board.lists[destinationListIndex].tasks.splice(
+        destinationIndex,
+        0,
+        task[0]
+      );
+
       await board.save();
-      res.send(board);
+      res.send({
+        boardId,
+        sourceListId,
+        sourceIndex,
+        destinationListId,
+        destinationIndex,
+      });
     })
   );
 
