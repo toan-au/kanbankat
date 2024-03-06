@@ -31,40 +31,46 @@ function Board() {
     );
   }
 
+  function renderLists() {
+    return (
+      <Droppable
+        droppableId={activeBoard._id}
+        direction="horizontal"
+        type="LIST"
+      >
+        {(provided) => (
+          <ul
+            className="flex align-top justify-start overflow-x-auto gap-4"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {renderInfo()}
+            {activeBoard.lists.map((list, index) => (
+              <List
+                key={list._id}
+                boardId={activeBoard._id}
+                list={list}
+                index={index}
+              />
+            ))}
+            {provided.placeholder}
+            <NewBoardButton
+              placeholder="Enter a list name"
+              onSave={(value) => handleNewList(value)}
+            ></NewBoardButton>
+          </ul>
+        )}
+      </Droppable>
+    );
+  }
+
   return (
     <main id="board" className="mx-auto flex flex-col">
       <div
         id="board-info"
         className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
       >
-        <Droppable
-          droppableId={activeBoard._id}
-          direction="horizontal"
-          type="LIST"
-        >
-          {(provided) => (
-            <ul
-              className="flex align-top justify-start overflow-x-auto gap-4"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {renderInfo()}
-              {activeBoard.lists.map((list, index) => (
-                <List
-                  key={list._id}
-                  boardId={activeBoard._id}
-                  list={list}
-                  index={index}
-                />
-              ))}
-              {provided.placeholder}
-              <NewBoardButton
-                placeholder="Enter a list name"
-                onSave={(value) => handleNewList(value)}
-              ></NewBoardButton>
-            </ul>
-          )}
-        </Droppable>
+        {activeBoard._id && renderLists()}
       </div>
     </main>
   );

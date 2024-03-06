@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { AppDispatch, RootState } from "../state/store";
 import { useDispatch } from "react-redux";
-import { shiftTaskAsync } from "../state/boards/boards";
+import { shiftListAsync, shiftTaskAsync } from "../state/boards/boards";
 import { useSelector } from "react-redux";
 
 interface AppDragDropContextProps {
@@ -29,8 +29,17 @@ function AppDragDropContext({ children }: AppDragDropContextProps) {
         dispatch(shiftTaskAsync(payload));
         break;
       }
-      case "LIST":
+      case "LIST": {
+        console.log(result);
+        const payload = {
+          boardId: activeBoard._id,
+          sourceIndex: source.index,
+          destinationIndex: destination.index,
+        };
+
+        dispatch(shiftListAsync(payload));
         break;
+      }
     }
   }
 

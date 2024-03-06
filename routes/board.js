@@ -100,13 +100,15 @@ module.exports = (app) => {
 
   // shifting lists within board
   app.patch(
-    "/api/board/:boardId/shift",
+    "/api/board/:boardId/lists",
     requireLogin,
     asyncHandler(async (req, res) => {
-      let board = await Board.findById(req.params.boardId);
-      board.lists = req.body;
-      board = await board.save();
-      res.send(board);
+      const { boardId, sourceIndex, destinationIndex } = req.body;
+      let board = await Board.findById(boardId);
+      const list = board.lists.splice(sourceIndex, 1)[0];
+      board.lists.splice(destinationIndex, 0, list);
+      board.save();
+      res.send(boardId, sourceIndex, destinationIndex);
     })
   );
 

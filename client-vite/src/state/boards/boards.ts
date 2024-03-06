@@ -22,6 +22,12 @@ interface TaskShift {
   destinationIndex: number;
 }
 
+interface ListShift {
+  boardId: string;
+  sourceIndex: number;
+  destinationIndex: number;
+}
+
 interface BoardSummary {
   _id: string;
   name: string;
@@ -125,6 +131,14 @@ const boardsSlice = createSlice({
             ...state.activeBoard.lists[index],
             name,
           };
+        }
+      )
+      .addCase(
+        shiftListAsync.fulfilled,
+        (state, action: PayloadAction<ListShift>) => {
+          const { sourceIndex, destinationIndex } = action.payload;
+          const list = state.activeBoard.lists.splice(sourceIndex, 1)[0];
+          state.activeBoard.lists.splice(destinationIndex, 0, list);
         }
       )
       // createTaskAsync.fulfilled
@@ -283,6 +297,14 @@ export const renameListAsync = createAsyncThunk<
   const list: List = response.data;
   return list;
 });
+
+export const shiftListAsync = createAsyncThunk<ListShift, ListShift>(
+  "boards/shiftListAsync",
+  async (listShift: ListShift) => {
+    axios.patch(`/api/board/${listShift.boardId}/lists`, listShift);
+    return listShift;
+  }
+);
 
 export const createTaskAsync = createAsyncThunk<
   { task: Task; listId: string },
