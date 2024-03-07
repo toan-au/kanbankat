@@ -52,7 +52,8 @@ module.exports = (app) => {
         })
         .exec();
       console.log("user.boards: ", user.boards);
-      res.send(user.boards);
+      const response = user.boards || [];
+      res.send(response);
     })
   );
 
