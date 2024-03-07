@@ -5,6 +5,9 @@ const keys = require("./config/keys");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const handleErrors = require("./middleware/handleErrors.js");
+const forceHttps = require("./middleware/forceHttps.js");
 
 // models
 require("./models/user");
@@ -17,6 +20,7 @@ const app = express();
 
 // middleware
 
+app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(
   cookieSession({
@@ -26,12 +30,7 @@ app.use(
 );
 
 app.enable("trust proxy");
-app.use(function (req, res, next) {
-  if (req.protocol === "http" && process.env.NODE_ENV === "production") {
-    return res.redirect("https://" + req.headers.host + req.url);
-  }
-  next();
-});
+app.use(forceHttps);
 
 // register regenerate & save after the cookieSession middleware initialization
 app.use(function (request, response, next) {
@@ -56,16 +55,7 @@ require("./routes/auth")(app);
 require("./routes/board")(app);
 
 // error handling
-
-app.use((error, req, res, next) => {
-  console.error(error);
-  error.statusCode ??= 500;
-  error.status ??= "error";
-  res.status(error.statusCode).json({
-    status: error.status,
-    message: error.message,
-  });
-});
+app.use(handleErrors);
 
 // client app
 if (process.env.NODE_ENV === "production") {

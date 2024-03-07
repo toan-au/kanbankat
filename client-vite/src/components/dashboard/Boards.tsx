@@ -6,7 +6,7 @@ import { createBoardAsync, getBoardsAsync } from "../../state/boards/boards";
 import BoardListItem from "./BoardListItem";
 
 function Boards() {
-  const boards = useSelector((state: RootState) => state.boards);
+  const { userBoards } = useSelector((state: RootState) => state.boards);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function Boards() {
     <div className="pt-7">
       <h1 className="text-4xl my-5">Your boards</h1>
       <ul className="flex flex-row flex-wrap gap-5 mb-5">
-        {boards.userBoards.map((board) => (
+        {userBoards.map((board) => (
           <BoardListItem key={board._id} board={board}></BoardListItem>
         ))}
         <li>

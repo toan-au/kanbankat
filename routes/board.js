@@ -43,13 +43,15 @@ module.exports = (app) => {
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
+      console.log("user id: ", req.user._id);
       const user = await User.findOne({ _id: req.user._id })
         .populate({
           path: "boards",
-          select: "_id  name about user",
+          select: "_id name about user",
           match: { $or: [{ deleted: false }, { deleted: null }] },
         })
         .exec();
+      console.log("user.boards: ", user.boards);
       res.send(user.boards);
     })
   );
