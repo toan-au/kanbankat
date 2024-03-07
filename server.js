@@ -25,6 +25,14 @@ app.use(
   })
 );
 
+app.enable("trust proxy");
+app.use(function (req, res, next) {
+  if (req.protocol === "http" && process.env.NODE_ENV === "production") {
+    return res.redirect("https://" + req.headers.host + req.url);
+  }
+  next();
+});
+
 // register regenerate & save after the cookieSession middleware initialization
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
