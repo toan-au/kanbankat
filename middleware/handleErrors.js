@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+module.exports = (error, req, res, next) => {
   console.error(error);
   error.statusCode ??= 500;
   error.status ??= "error";
