@@ -1,6 +1,6 @@
 import { FaPen, FaTrash } from "react-icons/fa6";
 import MoreOptionsButton from "../UI/MoreOptionsButton";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { deleteListAsync, renameListAsync } from "../../state/boards/boards";
@@ -71,6 +71,20 @@ function List({ boardId, list, index }: ListProps) {
     setEditing(false);
   }
 
+  function handleKeyDown(e: KeyboardEvent) {
+    switch (e.key) {
+      case "Enter": {
+        if (e.shiftKey) break;
+        handleRenameListSubmit(e as FormEvent);
+        break;
+      }
+      case "Escape": {
+        setEditing(false);
+        break;
+      }
+    }
+  }
+
   function renderRenameForm() {
     return (
       <form
@@ -83,6 +97,7 @@ function List({ boardId, list, index }: ListProps) {
           className="rounded-md resize-none font-bold w-full"
           ref={focusRef}
           value={displayName}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </form>
@@ -128,7 +143,7 @@ function List({ boardId, list, index }: ListProps) {
               )}
             </div>
           </div>
-          <div>
+          <div className="mb-2">
             <TaskList tasks={list.tasks} listId={list._id} />
           </div>
           <NewTaskButton boardId={boardId} listId={list._id} />
