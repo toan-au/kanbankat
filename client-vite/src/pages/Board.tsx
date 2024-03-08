@@ -21,15 +21,15 @@ function Board() {
     dispatch(createListAsync(payload));
   }
 
-  function renderInfo() {
-    return (
-      <div className="w-60 min-w-60 bg-blue-500 p-2 text-white h-fit">
-        <span className="font-bold">{activeBoard.name}</span>
-        <hr className="my-2" />
-        <p>{activeBoard.about}</p>
-      </div>
-    );
-  }
+  // function renderInfo() {
+  //   return (
+  //     <div className="w-60 min-w-60 bg-blue-500 p-2 text-white h-fit">
+  //       <span className="font-bold">{activeBoard.name}</span>
+  //       <hr className="my-2" />
+  //       <p>{activeBoard.about}</p>
+  //     </div>
+  //   );
+  // }
 
   function renderLists() {
     return (
