@@ -13,6 +13,12 @@ main {
   padding-top: 3.5em;
 }
 
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  color: theme("colors.catBlack");
+  background: theme("colors.catBeige");
+}
+
 #home {
   background-image: url("images/splash.jpg");
   background-size: cover;
@@ -45,9 +51,9 @@ main {
   z-index: -1;
 }
 
-#new-board-button:hover::after {
+/* #new-board-button:hover::after {
   transform: translate(0, 0);
-}
+} */
 
 #new-board-button:hover {
   transform: scale(1.05);

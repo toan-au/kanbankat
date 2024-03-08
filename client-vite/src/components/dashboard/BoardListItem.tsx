@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import MoreOptionsButton from "../UI/MoreOptionsButton";
 import Submenu from "../UI/submenu/Submenu";
 import IconMenuButton from "../UI/submenu/IconMenuButton";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 function BoardListItem(props: { board: { _id: string; name: string } }) {
   const { _id, name } = props.board;
@@ -17,7 +18,7 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const ref = useDetectClickOutside({ onTriggered: handleOutsideClick });
-  const renameRef = useRef<HTMLInputElement>(null);
+  const renameRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setDisplayName(name);
@@ -41,10 +42,9 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
     }, 0);
   }
 
-  function handleRenameSubmit(e: FormEvent, boardId: string) {
-    e.preventDefault();
+  function handleRename() {
     const payload = {
-      boardId,
+      boardId: _id,
       name: displayName,
     };
     dispatch(renameBoardAsync(payload));
@@ -60,25 +60,43 @@ function BoardListItem(props: { board: { _id: string; name: string } }) {
     navigate(`/board/${_id}`);
   }
 
+  function handleKeyDown(e: KeyboardEvent) {
+    switch (e.key) {
+      case "Enter": {
+        handleRename();
+        break;
+      }
+      case "Escape": {
+        break;
+      }
+    }
+  }
+
   return (
-    <li ref={ref} className="board-list-item cursor-pointer">
-      <div className="block bg-blue-500 hover:bg-blue-400 w-64 h-32">
+    <li
+      ref={ref}
+      className="board-list-item border-solid border-0 border-gray-300 bg-white cursor-pointer rounded-md"
+    >
+      <div className="block w-64 h-32">
         <div className="flex relative h-full">
-          <div className="h-full w-full p-2" onClick={handleBoardClick}>
-            <h3 className="text-white select-none" hidden={editing}>
+          <div
+            className="h-full w-[calc(100%-0.5em-33px)] p-2 overflow-clip"
+            onClick={handleBoardClick}
+          >
+            <h3
+              className="select-none text-lg font-bold break-words "
+              hidden={editing}
+            >
               {displayName}
             </h3>
-            <form
-              hidden={!editing}
-              onSubmit={(e) => handleRenameSubmit(e, _id)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <input
+            <form hidden={!editing} onClick={(e) => e.stopPropagation()}>
+              <ReactTextareaAutosize
+                className=" mb-2 w-full rounded-md font-bold text-lg resize-none max-h-28"
                 ref={renameRef}
-                type="text"
                 value={displayName}
+                onKeyDown={handleKeyDown}
                 onChange={(e) => setDisplayName(e.target.value)}
-              ></input>
+              />
             </form>
           </div>
           <div className="ml-auto p-2">

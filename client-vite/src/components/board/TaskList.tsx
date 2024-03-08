@@ -13,19 +13,14 @@ interface TaskListProps {
   listId: string;
 }
 
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? "lightblue" : "",
-});
-
 function TaskList({ tasks, listId }: TaskListProps) {
   return (
     <Droppable droppableId={listId} direction="vertical" type="TASK">
-      {(provided, snapshot) => (
+      {(provided) => (
         <ul
-          className="min-h-10"
+          className="min-h-1"
           {...provided.droppableProps}
           ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver)}
         >
           {tasks.map((task, index) => (
             <Draggable key={task._id} draggableId={task._id} index={index}>

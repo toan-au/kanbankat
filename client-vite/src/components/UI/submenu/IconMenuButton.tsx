@@ -13,7 +13,10 @@ function IconMenuButton(props: IconMenuButtonProps) {
   }
 
   return (
-    <button className="flex text-md text-left" onClick={(e) => handleClick(e)}>
+    <button
+      className="flex text-lg text-left text-white bg-catLightBlue px-3 py-1 mb-1 hover:bg-catDarkBlue"
+      onClick={(e) => handleClick(e)}
+    >
       <span className="inline text-xs mr-2 self-center">{icon}</span>
       {text}
     </button>

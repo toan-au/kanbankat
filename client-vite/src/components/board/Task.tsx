@@ -86,7 +86,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
       {...provided.dragHandleProps}
     >
       <div
-        className={`relative flex bg-slate-100 px-0.5 py-1 my-1 rounded-sm items-start group ${
+        className={`relative flex bg-white shadow-lg border-2 rounded-sm px-1.5 py-2.5 mb-1.5 items-start group ${
           showMenu && "z-50"
         }`}
         ref={parentRef}

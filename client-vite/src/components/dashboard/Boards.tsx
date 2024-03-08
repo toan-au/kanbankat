@@ -18,14 +18,15 @@ function Boards() {
   }
 
   return (
-    <div className="pt-7">
-      <h1 className="text-4xl my-5">Your boards</h1>
+    <div className="mt-7">
+      <h1 className="text-5xl mb-7">Your boards</h1>
       <ul className="flex flex-row flex-wrap gap-5 mb-5">
         {userBoards.map((board) => (
           <BoardListItem key={board._id} board={board}></BoardListItem>
         ))}
         <li>
           <NewBoardButton
+            text="New board"
             placeholder="Enter a board name"
             onSave={handleSave}
           ></NewBoardButton>

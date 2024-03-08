@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
 import { createTaskAsync } from "../../state/boards/boards";
 import TextareaAutosize from "react-textarea-autosize";
+import { FaPlus } from "react-icons/fa6";
 
 interface NewTaskButtonProps {
   boardId: string;
@@ -46,11 +47,12 @@ function NewTaskButton({ boardId, listId }: NewTaskButtonProps) {
   function renderButton() {
     return (
       <button
-        className="p-0.5 w-full text-left"
+        className=" p-0.5 py-1 w-full text-sm text-catBlack rounded-full text-center hover:bg-catLightBlue hover:text-white relative"
         onClick={handleEditClick}
         hidden={editing}
       >
-        Add new card
+        <FaPlus className="inline relative -top-0.5 mr-1"></FaPlus>
+        Add a Task
       </button>
     );
   }

@@ -40,11 +40,11 @@ function Board() {
       >
         {(provided) => (
           <ul
-            className="flex align-top justify-start overflow-x-auto gap-4"
+            className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {renderInfo()}
+            {/* {renderInfo()} */}
             {activeBoard.lists.map((list, index) => (
               <List
                 key={list._id}
@@ -55,6 +55,7 @@ function Board() {
             ))}
             {provided.placeholder}
             <NewBoardButton
+              text="New list"
               placeholder="Enter a list name"
               onSave={(value) => handleNewList(value)}
             ></NewBoardButton>
@@ -66,12 +67,7 @@ function Board() {
 
   return (
     <main id="board" className="mx-auto flex flex-col">
-      <div
-        id="board-info"
-        className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
-      >
-        {activeBoard._id && renderLists()}
-      </div>
+      {activeBoard._id && renderLists()}
     </main>
   );
 }

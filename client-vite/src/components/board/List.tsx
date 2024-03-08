@@ -10,6 +10,7 @@ import TaskList from "./TaskList";
 import Submenu from "../UI/submenu/Submenu";
 import IconMenuButton from "../UI/submenu/IconMenuButton";
 import { Draggable } from "react-beautiful-dnd";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 interface Task {
   _id: string;
@@ -36,7 +37,7 @@ function List({ boardId, list, index }: ListProps) {
   const [editing, setEditing] = useState(false);
   const ref = useDetectClickOutside({ onTriggered: handleOutsideClick });
   const dispatch = useDispatch<AppDispatch>();
-  const focusRef = useRef<HTMLInputElement>(null);
+  const focusRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setDisplayName(list.name);
@@ -75,10 +76,11 @@ function List({ boardId, list, index }: ListProps) {
       <form
         className="p-0 m-0 text-blue-950"
         onSubmit={(e) => handleRenameListSubmit(e)}
+        onClick={(e) => e.stopPropagation()}
         hidden={!editing}
       >
-        <input
-          type="text"
+        <ReactTextareaAutosize
+          className="rounded-md resize-none font-bold w-full"
           ref={focusRef}
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -88,24 +90,30 @@ function List({ boardId, list, index }: ListProps) {
   }
 
   function renderName() {
-    return <span className="text-white">{displayName}</span>;
+    return <span className="font-bold break-words">{displayName}</span>;
   }
 
   return (
     <Draggable draggableId={list._id} index={index}>
       {(provided) => (
         <div
-          className="w-64 min-w-64 bg-blue-500 p-2 relative h-fit"
+          className="w-64 min-w-64 bg-white rounded-md p-2 relative h-fit"
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
         >
-          <div className="info flex">
-            <div>{editing ? renderRenameForm() : renderName()}</div>
-            <div className="ml-auto" ref={ref}>
+          <div className="flex">
+            <div className="w-[calc(100%-33px)] mb-4">
+              {editing ? renderRenameForm() : renderName()}
+            </div>
+            <div className="relative ml-auto -top-1" ref={ref}>
               <MoreOptionsButton onClick={handleMenuClick} />
               {openMenu && (
-                <Submenu showMenu={openMenu}>
+                <Submenu
+                  showMenu={openMenu}
+                  horizontalOffset={33}
+                  verticalOffset={-8}
+                >
                   <IconMenuButton
                     icon={<FaPen />}
                     onClick={handleRenameClick}
