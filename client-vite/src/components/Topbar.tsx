@@ -8,7 +8,7 @@ function Topbar() {
   function LoggedOutMenu() {
     return (
       <>
-        <li>
+        {/* <li>
           <a
             href="#"
             className="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
@@ -32,7 +32,7 @@ function Topbar() {
           >
             Plans
           </a>
-        </li>
+        </li> */}
       </>
     );
   }
