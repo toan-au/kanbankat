@@ -9,6 +9,8 @@ export default {
         catDarkBlue: "#3F5565",
         catBlack: "#2A261E",
         catCream: "#F5E6C8",
+        catOrange: "#cd9057",
+        catDarkOrange: "#904617",
       },
     },
   },

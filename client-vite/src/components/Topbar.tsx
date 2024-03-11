@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { Link } from "react-router-dom";
+import logo from "../assets/images/kanbankat-logo.png";
 
 function Topbar() {
   const user = useSelector((state: RootState) => state.currentUser);
@@ -60,21 +61,14 @@ function Topbar() {
           to={user.loggedIn ? "/dashboard" : "/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Flowbite Logo"
-          />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap">
-            Kanban Kat
-          </span>
+          <img src={logo} className="h-10" alt="Flowbite Logo" />
         </Link>
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           {!user.loggedIn && (
             <a
               type="button"
               href="/auth/google"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
+              className="  hover:bg-catOrange hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
             >
               Get started
             </a>
@@ -83,7 +77,7 @@ function Topbar() {
             <a
               type="button"
               href="/auth/logout"
-              className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
+              className="text-white bg-catOrange hover:bg-catDarkOrange focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
             >
               Log out
             </a>

@@ -20,7 +20,7 @@ function Board() {
     if (fetchingBoard) {
       setLoading(true);
     } else {
-      setTimeout(() => setLoading(false), 400);
+      setTimeout(() => setLoading(false), 1000);
     }
   }, [fetchingBoard]);
 

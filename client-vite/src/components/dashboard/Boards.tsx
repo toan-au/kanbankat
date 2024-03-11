@@ -17,7 +17,7 @@ function Boards() {
     if (fetchingBoards) {
       setLoading(true);
     } else {
-      setTimeout(() => setLoading(false), 400);
+      setTimeout(() => setLoading(false), 1000);
     }
   }, [fetchingBoards]);
 
