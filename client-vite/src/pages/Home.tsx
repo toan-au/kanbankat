@@ -1,4 +1,5 @@
 import { FaGoogle } from "react-icons/fa6";
+import logo from "../assets/images/kanbankat-logo.png";
 
 function Home() {
   return (
@@ -19,8 +20,10 @@ function Home() {
             </a>
           </div>
           <div className="flex-1">
-            <h1 className="text-5xl font-bold">Kanban Kat</h1>
-            <h3>Easy project management for cats and cat lovers</h3>
+            <img src={logo} className="h-18" alt="Flowbite Logo" />
+            <h3 className="text-center mr-5">
+              Easy project management for cats and cat lovers
+            </h3>
           </div>
         </div>
       </div>
