@@ -1,16 +1,28 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../state/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createListAsync, getBoardAsync } from "../state/boards/boards";
 import NewBoardButton from "../components/dashboard/NewBoardButton";
 import List from "../components/board/List";
 import { Droppable } from "react-beautiful-dnd";
+import Spinner from "../components/UI/Spinner";
 
 function Board() {
-  const { activeBoard } = useSelector((state: RootState) => state.boards);
+  const { activeBoard, fetchingBoard } = useSelector(
+    (state: RootState) => state.boards
+  );
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { boardId } = useParams();
+
+  useEffect(() => {
+    if (fetchingBoard) {
+      setLoading(true);
+    } else {
+      setTimeout(() => setLoading(false), 400);
+    }
+  }, [fetchingBoard]);
 
   useEffect(() => {
     boardId && dispatch(getBoardAsync(boardId));
@@ -67,7 +79,12 @@ function Board() {
 
   return (
     <main id="board" className="mx-auto flex flex-col">
-      {activeBoard._id && renderLists()}
+      {loading && (
+        <div className="px-5 py-5">
+          <Spinner />
+        </div>
+      )}
+      {!loading && renderLists()}
     </main>
   );
 }

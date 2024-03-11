@@ -42,6 +42,8 @@ interface Board extends BoardSummary {
 interface BoardsState {
   userBoards: BoardSummary[];
   activeBoard: Board;
+  fetchingBoards: boolean;
+  fetchingBoard: boolean;
 }
 
 const initialState: BoardsState = {
@@ -53,12 +55,21 @@ const initialState: BoardsState = {
     about: "",
     user: "",
   },
+  fetchingBoards: false,
+  fetchingBoard: false,
 };
 
 const boardsSlice = createSlice({
   name: "boards",
   initialState,
-  reducers: {},
+  reducers: {
+    startLoadingBoards(state: BoardsState) {
+      state.fetchingBoards = true;
+    },
+    startLoadingBoard(state: BoardsState) {
+      state.fetchingBoard = true;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // createBoardAsync.fulfilled
@@ -68,18 +79,28 @@ const boardsSlice = createSlice({
           state.userBoards.push(action.payload);
         }
       )
+      // getBoardsAsync.pending
+      .addCase(getBoardsAsync.pending, (state) => {
+        state.fetchingBoards = true;
+      })
       // getBoardsAsync.fulfilled
       .addCase(
         getBoardsAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary[]>) => {
           state.userBoards = action.payload;
+          state.fetchingBoards = false;
         }
       )
+      // getBoardAsync.pending
+      .addCase(getBoardAsync.pending, (state) => {
+        state.fetchingBoard = true;
+      })
       // getBoardAsync.fulfilled
       .addCase(
         getBoardAsync.fulfilled,
         (state, action: PayloadAction<Board>) => {
           state.activeBoard = action.payload;
+          state.fetchingBoard = false;
         }
       )
       // renameBoardAsync.fulfilled
