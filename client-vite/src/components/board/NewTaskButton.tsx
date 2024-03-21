@@ -41,7 +41,6 @@ function NewTaskButton({ boardId, listId }: NewTaskButtonProps) {
     const payload = { boardId, listId, name: content };
     dispatch(createTaskAsync(payload));
     setContent("");
-    setEditing(false);
   }
 
   function renderButton() {

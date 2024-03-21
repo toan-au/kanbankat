@@ -69,7 +69,7 @@ function Board() {
             <NewBoardButton
               text="New list"
               placeholder="Enter a list name"
-              onSave={(value) => handleNewList(value)}
+              onSave={handleNewList}
             ></NewBoardButton>
           </ul>
         )}
