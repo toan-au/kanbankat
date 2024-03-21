@@ -41,6 +41,7 @@ interface Board extends BoardSummary {
 
 interface BoardsState {
   userBoards: BoardSummary[];
+  archivedUserBoards: BoardSummary[];
   activeBoard: Board;
   fetchingBoards: boolean;
   fetchingBoard: boolean;
@@ -48,6 +49,7 @@ interface BoardsState {
 
 const initialState: BoardsState = {
   userBoards: [],
+  archivedUserBoards: [],
   activeBoard: {
     lists: [],
     _id: "",
@@ -91,6 +93,13 @@ const boardsSlice = createSlice({
           state.fetchingBoards = false;
         }
       )
+      // getArchivedBoardsAsync.fulfilled
+      .addCase(
+        getArchivedBoardsAsync.fulfilled,
+        (state, action: PayloadAction<BoardSummary[]>) => {
+          state.archivedUserBoards = action.payload;
+        }
+      )
       // getBoardAsync.pending
       .addCase(getBoardAsync.pending, (state) => {
         state.fetchingBoard = true;
@@ -118,9 +127,31 @@ const boardsSlice = createSlice({
       .addCase(
         deleteBoardAsync.fulfilled,
         (state, action: PayloadAction<BoardSummary>) => {
-          state.userBoards = state.userBoards.filter(
+          const boardIndex = state.userBoards.findIndex(
+            (board) => board._id == action.payload._id
+          );
+          const board = state.userBoards.splice(boardIndex, 1)[0];
+          state.archivedUserBoards.push(board);
+        }
+      )
+      // destroyBoardAsync.fulfilled
+      .addCase(
+        destroyBoardAsync.fulfilled,
+        (state, action: PayloadAction<BoardSummary>) => {
+          state.archivedUserBoards = state.archivedUserBoards.filter(
             (board) => board._id != action.payload._id
           );
+        }
+      )
+      // restoreBoardAsync.fulfilled
+      .addCase(
+        restoreBoardAsync.fulfilled,
+        (state, action: PayloadAction<BoardSummary>) => {
+          const boardIndex = state.archivedUserBoards.findIndex(
+            (board) => board._id == action.payload._id
+          );
+          const board = state.archivedUserBoards.splice(boardIndex, 1)[0];
+          state.userBoards.push(board);
         }
       )
       // createListAsync.fulfilled
@@ -260,6 +291,15 @@ export const getBoardsAsync = createAsyncThunk<Board[]>(
   }
 );
 
+export const getArchivedBoardsAsync = createAsyncThunk<Board[]>(
+  "boards/getArchivedBoardsAsync",
+  async () => {
+    const response = await axios.get("/api/boards?deleted=true");
+    const boards: Board[] = response.data;
+    return boards;
+  }
+);
+
 export const getBoardAsync = createAsyncThunk(
   "boards/getBoardAsync",
   async (boardId: string) => {
@@ -282,6 +322,24 @@ export const deleteBoardAsync = createAsyncThunk(
   "boards/deleteBoardAsync",
   async (boardId: string) => {
     const response = await axios.delete(`/api/board/${boardId}`);
+    return response.data;
+  }
+);
+
+export const destroyBoardAsync = createAsyncThunk(
+  "boards/destroyBoardAsync",
+  async (boardId: string) => {
+    const response = await axios.delete(`/api/board/destroy/${boardId}`);
+    return response.data;
+  }
+);
+
+export const restoreBoardAsync = createAsyncThunk(
+  "boards/restoreBoardAsync",
+  async (boardId: string) => {
+    const response = await axios.patch(`/api/board/${boardId}`, {
+      deleted: false,
+    });
     return response.data;
   }
 );

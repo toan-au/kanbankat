@@ -44,11 +44,12 @@ module.exports = (app) => {
     requireOwnBoard,
     asyncHandler(async (req, res) => {
       console.log("user id: ", req.user._id);
+      const { deleted } = req.query;
       const user = await User.findOne({ _id: req.user._id })
         .populate({
           path: "boards",
           select: "_id name about user",
-          match: { $or: [{ deleted: false }, { deleted: null }] },
+          match: { $or: [{ deleted: deleted || false }, { deleted: null }] },
         })
         .exec();
       console.log("user.boards: ", user.boards);
@@ -74,9 +75,13 @@ module.exports = (app) => {
     requireLogin,
     requireOwnBoard,
     asyncHandler(async (req, res) => {
-      const update = {
-        name: req.body.name,
+      const { name, deleted } = req.body;
+      let update = {
+        name,
+        deleted,
       };
+      update = _.omitBy(update, _.isNil);
+
       const board = await Board.findOneAndUpdate(
         { _id: req.params.boardId },
         update,
@@ -97,6 +102,16 @@ module.exports = (app) => {
       board.deletedOn = Date.now();
       board.save();
       console.log(board);
+      res.send(board);
+    })
+  );
+
+  app.delete(
+    "/api/board/destroy/:boardId",
+    requireLogin,
+    requireOwnBoard,
+    asyncHandler(async (req, res) => {
+      const board = await Board.findOneAndDelete({ _id: req.params.boardId });
       res.send(board);
     })
   );
