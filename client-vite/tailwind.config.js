@@ -11,6 +11,7 @@ export default {
         catCream: "#F5E6C8",
         catOrange: "#cd9057",
         catDarkOrange: "#904617",
+        catTagRed: "#db4040",
       },
     },
   },

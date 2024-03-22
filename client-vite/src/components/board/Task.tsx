@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "../../state/store";
 import { deleteTaskAsync, renameTaskAsync } from "../../state/boards/boards";
 import { hideShroud, showShroud } from "../../state/ui/ui";
 import { DraggableProvided } from "react-beautiful-dnd";
+import ColorPallete from "../UI/submenu/ColorPallete";
 
 interface Task {
   _id: string;
@@ -121,6 +122,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
               onClick={handleDeleteClick}
               text="Delete"
             />
+            <ColorPallete />
           </Submenu>
         )}
       </div>
