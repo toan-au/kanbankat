@@ -14,12 +14,10 @@ const ListSchema = new Schema({
   deletedOn: { type: Date },
 });
 
-const def =
-  "Double click to edit text. You can edit tasks, list names, and this about section!";
 const BoardSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
   name: { type: String, required: true, max: 255 },
-  about: { type: String, required: false, default: def },
+  about: { type: String, required: false, default: "" },
   lists: [ListSchema],
   deleted: { type: Boolean, required: false, default: false },
   deletedOn: { type: Date },
