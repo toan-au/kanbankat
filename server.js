@@ -51,8 +51,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-require("./routes/auth")(app);
-require("./routes/board")(app);
+const authRoutes = require("./routes/auth");
+const boardRoutes = require("./routes/board.js");
+
+app.use("/auth", authRoutes);
+app.use("/", boardRoutes);
 
 // error handling
 app.use(handleErrors);
