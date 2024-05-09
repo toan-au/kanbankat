@@ -17,11 +17,7 @@ function Board() {
   const { boardId } = useParams();
 
   useEffect(() => {
-    if (fetchingBoard) {
-      setLoading(true);
-    } else {
-      setTimeout(() => setLoading(false), 1000);
-    }
+    setLoading(fetchingBoard);
   }, [fetchingBoard]);
 
   useEffect(() => {

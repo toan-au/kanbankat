@@ -14,11 +14,7 @@ function Boards() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (fetchingBoards) {
-      setLoading(true);
-    } else {
-      setTimeout(() => setLoading(false), 1000);
-    }
+    setLoading(fetchingBoards);
   }, [fetchingBoards]);
 
   useEffect(() => {
