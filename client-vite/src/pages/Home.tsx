@@ -1,5 +1,6 @@
-import { FaGoogle } from "react-icons/fa6";
+import { FaGoogle, FaGithub } from "react-icons/fa6";
 import logo from "../assets/images/kanbankat-logo.png";
+import { BsPersonCircle } from "react-icons/bs";
 
 function Home() {
   return (
@@ -72,10 +73,10 @@ function Home() {
               <li>
                 <a
                   className="inline-block relative bg-catLightBlue hover:bg-catDarkBlue text-white font-bold py-2 px-4 rounded w-full"
-                  href="/auth/google"
+                  href="/auth/github"
                 >
-                  <FaGoogle className="inline mr-1 relative -top-0.5" />
-                  Continue with Google
+                  <FaGithub className="inline mr-1 relative -top-0.5" />
+                  Github
                 </a>
               </li>
               <li>
@@ -84,6 +85,15 @@ function Home() {
                   href="/auth/google"
                 >
                   <FaGoogle className="inline mr-1 relative -top-0.5" />
+                  Google
+                </a>
+              </li>
+              <li>
+                <a
+                  className="inline-block relative bg-slate-300 hover:bg-slate-400 text-black font-bold py-2 px-4 rounded w-full"
+                  href="/"
+                >
+                  <BsPersonCircle className="inline mr-1 relative -top-0.5" />
                   Continue as guest
                 </a>
               </li>

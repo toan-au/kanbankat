@@ -15,18 +15,21 @@ const getListById = async (boardId, listId) => {
 
 // Business logic for boards
 const createBoard = async (name, user) => {
-  const board = new Board({ name });
-  board.user = user;
+  const board = await new Board({ name });
+  const dbUser = await User.findOne({ _id: user._id });
+  board.user = dbUser;
+  dbUser.boards.push(board);
   await board.save();
+  await dbUser.save();
   return board;
 };
 
-const getBoards = async (user, deleted) => {
+const getBoards = async (user, deleted = false) => {
   const userBoards = await User.findOne({ _id: user._id })
     .populate({
       path: "boards",
       select: "_id name about user",
-      match: { $or: [{ deleted: deleted || false }, { deleted: null }] },
+      match: { $or: [{ deleted: deleted }] },
     })
     .exec();
   return userBoards.boards || [];
