@@ -17,8 +17,10 @@ const getListById = async (boardId, listId) => {
 const createBoard = async (name, user) => {
   const board = await new Board({ name });
   const dbUser = await User.findOne({ _id: user._id });
+
   board.user = dbUser;
-  dbUser.boards.push(board);
+  dbUser.boards.push(board._id);
+
   await board.save();
   await dbUser.save();
   return board;
