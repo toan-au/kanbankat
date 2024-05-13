@@ -1,7 +1,7 @@
 {
-  "name": "agiboard",
+  "name": "kanbankat-api",
   "version": "1.0.0",
-  "description": "trello clone",
+  "description": "REST API for Kanbankat",
   "main": "server.js",
   "engines": {
     "node": "v21.7.3",
@@ -10,10 +10,7 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "server": "nodemon server",
-    "client": "npm run dev --prefix ../client-vite",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client-vite && npm install && npm run build"
+    "dev": "nodemon server"
   },
   "author": "Toan Au",
   "license": "ISC",

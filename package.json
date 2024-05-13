@@ -1,0 +1,22 @@
+{
+  "name": "kanbankat",
+  "version": "0.1.0",
+  "description": "Kanban board for cat lovers",
+  "main": "server.js",
+  "engines": {
+    "node": "v21.7.3",
+    "npm": "10.5.0"
+  },
+  "scripts": {
+    "start": "cd server && node server.js",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client-vite",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client-vite && npm install && npm run build"
+  },
+  "author": "Toan Au",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
