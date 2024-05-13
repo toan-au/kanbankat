@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "./state/store";
 import { useEffect } from "react";
 import { syncUser } from "./state/current-user/current-user";
 import Overlay from "./components/UI/Overlay";
+import Authenticated from "./pages/Authenticated";
 
 function App() {
   const { loadingUser } = useSelector((state: RootState) => state.ui);
@@ -31,6 +32,10 @@ function App() {
     {
       element: <Authguard></Authguard>,
       children: [
+        {
+          path: "/oauth/success",
+          element: <Authenticated></Authenticated>,
+        },
         {
           path: "/dashboard",
           element: <Dashboard></Dashboard>,

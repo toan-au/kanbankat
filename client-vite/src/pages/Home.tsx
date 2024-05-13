@@ -1,8 +1,15 @@
 import { FaGoogle, FaGithub } from "react-icons/fa6";
 import logo from "../assets/images/kanbankat-logo.png";
-import { BsPersonCircle } from "react-icons/bs";
+// import { BsPersonCircle } from "react-icons/bs";
 
 function Home() {
+  function handleOauthClick(service: string) {
+    const url = `/auth/${service}`;
+    const name = `${service}_login`;
+    const specs = "width=500,height=500";
+    window.open(url, name, specs);
+  }
+
   return (
     <main id="home" className="h-full">
       <div className="flex container mx-auto mt-5 flex-col gap-5 md:flex-row-reverse">
@@ -68,27 +75,29 @@ function Home() {
             <img src={logo} className="h-18" alt="Flowbite Logo" />
           </div>
           <div className="flex flex-col flex-1">
-            <h3 className="font-bold mb-2">Sign in to your account </h3>
+            <h3 className="font-bold mb-2 text-center">
+              Sign in to your account{" "}
+            </h3>
             <ul className="flex flex-col content-stretch gap-2 w-full">
               <li>
-                <a
+                <button
                   className="inline-block relative bg-catLightBlue hover:bg-catDarkBlue text-white font-bold py-2 px-4 rounded w-full"
-                  href="/auth/github"
+                  onClick={() => handleOauthClick("github")}
                 >
                   <FaGithub className="inline mr-1 relative -top-0.5" />
                   Github
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   className="inline-block relative bg-catLightBlue hover:bg-catDarkBlue text-white font-bold py-2 px-4 rounded w-full"
-                  href="/auth/google"
+                  onClick={() => handleOauthClick("google")}
                 >
                   <FaGoogle className="inline mr-1 relative -top-0.5" />
                   Google
-                </a>
+                </button>
               </li>
-              <li>
+              {/* <li>
                 <a
                   className="inline-block relative bg-slate-300 hover:bg-slate-400 text-black font-bold py-2 px-4 rounded w-full"
                   href="/"
@@ -96,7 +105,7 @@ function Home() {
                   <BsPersonCircle className="inline mr-1 relative -top-0.5" />
                   Continue as guest
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
