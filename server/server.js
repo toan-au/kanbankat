@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("../client-vite/dist/"));
 
   // express will serve our client app if it doesn't recognize the route
-  app.get("*", (req, res) => {
+  app.get("*", (_req, res) => {
     res.sendFile(
       path.resolve(__dirname, "../", "client-vite", "dist", "index.html")
     );
