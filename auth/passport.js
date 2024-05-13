@@ -23,7 +23,7 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (_accessToken, _refreshToken, profile, done) => {
       // console.log(profile);
       // check if user exists in DB
       console.log(profile);
@@ -52,8 +52,7 @@ passport.use(
       callbackURL: "/auth/github/callback",
       proxy: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
+    async (_accessToken, _refreshToken, profile, done) => {
       const existingUser = await User.findOne({
         githubId: profile.id,
       });

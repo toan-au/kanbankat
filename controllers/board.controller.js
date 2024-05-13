@@ -10,7 +10,7 @@ const getBoardById = async (boardId) => {
 
 const getListById = async (boardId, listId) => {
   const board = await getBoardById(boardId);
-  return board.lists.id(listId);
+  return await board.lists.id(listId);
 };
 
 // Business logic for boards
@@ -111,7 +111,9 @@ const deleteList = async (boardId, listId) => {
 // Business logic for tasks
 const createTask = async (boardId, listId, task) => {
   const board = await getBoardById(boardId);
-  const list = await getListById(boardId, listId);
+  const list = await board.lists.id(listId);
+
+  // push new task increment counter
   list.tasks.push(task);
   await board.save();
   return { task: list.tasks.pop(), listId };

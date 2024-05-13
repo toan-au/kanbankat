@@ -1,64 +1,12 @@
 const express = require("express");
 require("express-async-errors");
-const cookieSession = require("cookie-session");
 const keys = require("./config/keys");
-const passport = require("passport");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const handleErrors = require("./middleware/handleErrors.js");
-const forceHttps = require("./middleware/forceHttps.js");
-
-// models
-require("./models/user");
-require("./models/board.js");
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
-const app = express();
-
-// middleware
-
-app.use(morgan("combined"));
-app.use(bodyParser.json());
-app.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey],
-  })
-);
-
-app.enable("trust proxy");
-app.use(forceHttps);
-
-// register regenerate & save after the cookieSession middleware initialization
-app.use(function (request, response, next) {
-  if (request.session && !request.session.regenerate) {
-    request.session.regenerate = (cb) => {
-      cb();
-    };
-  }
-  if (request.session && !request.session.save) {
-    request.session.save = (cb) => {
-      cb();
-    };
-  }
-  next();
-});
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-// routes
-const authRoutes = require("./routes/auth");
-const boardRoutes = require("./routes/board.js");
-
-app.use("/auth", authRoutes);
-app.use("/", boardRoutes);
-
-// error handling
-app.use(handleErrors);
+const app = require("./app.js");
 
 // client app
 if (process.env.NODE_ENV === "production") {
