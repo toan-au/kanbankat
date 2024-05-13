@@ -3,7 +3,7 @@ import logo from "../assets/images/kanbankat-logo.png";
 // import { BsPersonCircle } from "react-icons/bs";
 
 function Home() {
-  function handleOauthClick(service) {
+  function handleOauthClick(service: string) {
     const url = `/auth/${service}`;
     const name = `${service}_login`;
     const specs = "width=500,height=500";
