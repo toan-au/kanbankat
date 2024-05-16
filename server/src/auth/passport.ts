@@ -1,8 +1,8 @@
-const passport = require("passport");
+import passport from "passport";
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github").Strategy;
-const keys = require("../config/keys");
-const mongoose = require("mongoose");
+import keys from "../../config/keys";
+import mongoose from "mongoose";
 
 const User = mongoose.model("User");
 
@@ -70,4 +70,4 @@ passport.use(
   )
 );
 
-module.exports = passport;
+export default passport;

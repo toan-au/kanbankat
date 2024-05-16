@@ -1,11 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const passport = require("../auth/passport");
+import express, { Router } from "express";
+import passport from "../auth/passport";
 
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["email"], display: "popup" })
-);
+const router: Router = express.Router();
+
+router.get("/google", passport.authenticate("google", { scope: ["email"] }));
 
 router.get(
   "/google/callback",
@@ -31,7 +29,7 @@ router.get(
   }
 );
 
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
     res.redirect("/");
@@ -45,4 +43,4 @@ router.get("/current", (req, res) => {
   res.send({});
 });
 
-module.exports = router;
+export default router;

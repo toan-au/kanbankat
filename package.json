@@ -15,8 +15,5 @@
     "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install"
   },
   "author": "Toan Au",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "license": "ISC"
 }

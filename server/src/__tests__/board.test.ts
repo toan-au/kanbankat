@@ -1,5 +1,6 @@
-const app = require("../app");
-const supertest = require("supertest");
+import { describe, it } from "node:test";
+import app from "../app";
+import supertest from "supertest";
 
 const testApp = supertest(app);
 

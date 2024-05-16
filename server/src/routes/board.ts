@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const requireLogin = require("../middleware/requireLogin");
-const requireOwnBoard = require("../middleware/requireOwnBoard");
-const asyncHandler = require("../middleware/asyncHandler");
-const boardController = require("../controllers/board.controller");
+import express, { Router } from "express";
+import requireLogin from "../middleware/requireLogin";
+import requireOwnBoard from "../middleware/requireOwnBoard";
+import asyncHandler from "../middleware/asyncHandler";
+import boardController from "../controllers/board.controller";
+
+const router: Router = express.Router();
 
 router.get("/api/test", (req, res) => res.send({ test: true }));
 
@@ -204,4 +205,4 @@ router.delete(
   })
 );
 
-module.exports = router;
+export default router;
