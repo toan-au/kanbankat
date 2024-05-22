@@ -1,10 +1,12 @@
 import passport from "passport";
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GitHubStrategy = require("passport-github").Strategy;
+import PassportGoogle from "passport-google-oauth20";
+import PassportGitHub from "passport-github";
 import keys from "../../config/keys";
 import mongoose from "mongoose";
 
 const User = mongoose.model("User");
+const GitHubStrategy = PassportGitHub.Strategy;
+const GoogleStrategy = PassportGoogle.Strategy;
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

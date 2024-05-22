@@ -4,8 +4,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import cookieSession from "cookie-session";
-const handleErrors = require("./middleware/handleErrors.js");
-const forceHttps = require("./middleware/forceHttps.js");
+import handleErrors from "./middleware/handleErrors";
+import forceHttps from "./middleware/forceHttps";
 import keys from "../config/keys";
 import passport from "passport";
 

@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Request, Response, Router } from "express";
 import requireLogin from "../middleware/requireLogin";
 import requireOwnBoard from "../middleware/requireOwnBoard";
 import asyncHandler from "../middleware/asyncHandler";
@@ -15,7 +15,7 @@ router.get("/api/test", (req, res) => res.send({ test: true }));
 router.post(
   "/api/board",
   requireLogin,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const { name } = req.body;
     const board = await boardController.createBoard(name, req.user);
     res.send(board);
@@ -26,7 +26,7 @@ router.get(
   "/api/boards",
   requireLogin,
   requireOwnBoard,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const { deleted } = req.query;
     const boards = await boardController.getBoards(req.user, deleted);
     res.send(boards);
