@@ -26,6 +26,7 @@ interface Board {
 }
 
 export interface UserModel extends Document {
+  _id: string;
   googleId: String;
   githubId: String;
   displayName: String;

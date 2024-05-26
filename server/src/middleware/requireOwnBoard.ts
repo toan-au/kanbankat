@@ -12,9 +12,9 @@ const requireOwnBoard = async (
     );
     if (match && match.length == 0)
       res.status(401).send({ error: "this is not your board" });
-    next();
+    return next();
   }
-  next();
+  return next();
 };
 
 export default requireOwnBoard;

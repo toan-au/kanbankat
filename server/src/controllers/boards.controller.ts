@@ -1,22 +1,22 @@
-const mongoose = require("mongoose");
+import mongoose, { UpdateQuery } from "mongoose";
 const Board = mongoose.model("Board");
 const User = mongoose.model("User");
-const _ = require("lodash");
+import _ from "lodash";
 
 // Extracted functions for repeated logic
-const getBoardById = async (boardId) => {
+const getBoardById = async (boardId: string) => {
   return await Board.findById(boardId);
 };
 
-const getListById = async (boardId, listId) => {
+const getListById = async (boardId: string, listId: string) => {
   const board = await getBoardById(boardId);
   return await board.lists.id(listId);
 };
 
 // Business logic for boards
-const createBoard = async (name, user) => {
+const createBoard = async (name: string, userId: string) => {
   const board = await new Board({ name });
-  const dbUser = await User.findOne({ _id: user._id });
+  const dbUser = await User.findOne({ _id: userId });
 
   board.user = dbUser;
   dbUser.boards.push(board._id);
@@ -26,8 +26,8 @@ const createBoard = async (name, user) => {
   return board;
 };
 
-const getBoards = async (user, deleted = false) => {
-  const userBoards = await User.findOne({ _id: user._id })
+const getBoards = async (userId: string, deleted = false) => {
+  const userBoards = await User.findOne({ _id: userId })
     .populate({
       path: "boards",
       select: "_id name about user",
@@ -37,15 +37,21 @@ const getBoards = async (user, deleted = false) => {
   return userBoards.boards || [];
 };
 
-const getBoard = async (boardId) => {
-  return await getBoardById(boardId);
+const getBoard = async (boardId: string) => {
+  const board = await Board.findById(boardId);
+  return board;
 };
 
-const editBoard = async (boardId, update) => {
+interface BoardUpdate {
+  name: string;
+  deleted: string;
+}
+
+const editBoard = async (boardId: string, update: UpdateQuery<BoardUpdate>) => {
   return await Board.findOneAndUpdate({ _id: boardId }, update, { new: true });
 };
 
-const deleteBoard = async (boardId) => {
+const deleteBoard = async (boardId: string) => {
   const board = await getBoardById(boardId);
   board.deleted = true;
   board.deletedOn = Date.now();
@@ -53,11 +59,15 @@ const deleteBoard = async (boardId) => {
   return board;
 };
 
-const destroyBoard = async (boardId) => {
+const destroyBoard = async (boardId: string) => {
   return await Board.findOneAndDelete({ _id: boardId });
 };
 
-const shiftLists = async (boardId, sourceIndex, destinationIndex) => {
+const shiftLists = async (
+  boardId: string,
+  sourceIndex: number,
+  destinationIndex: number
+) => {
   const board = await getBoardById(boardId);
   const list = board.lists.splice(sourceIndex, 1)[0];
   board.lists.splice(destinationIndex, 0, list);
@@ -66,14 +76,14 @@ const shiftLists = async (boardId, sourceIndex, destinationIndex) => {
 };
 
 // Business logic for lists
-const createList = async (boardId, name) => {
+const createList = async (boardId: string, name: string) => {
   const board = await getBoardById(boardId);
   board.lists.push({ name });
   await board.save();
   return board.lists.pop();
 };
 
-const editList = async (boardId, listId, update) => {
+const editList = async (boardId: string, listId: string, update) => {
   const list = await getListById(boardId, listId);
   if (update.name) list.name = update.name;
   await list.save();
@@ -81,11 +91,11 @@ const editList = async (boardId, listId, update) => {
 };
 
 const shiftTasks = async (
-  boardId,
-  sourceListId,
-  sourceIndex,
-  destinationListId,
-  destinationIndex
+  boardId: string,
+  sourceListId: number,
+  sourceIndex: number,
+  destinationListId: number,
+  destinationIndex: number
 ) => {
   const board = await getBoardById(boardId);
   const sourceListIndex = board.lists.findIndex(
@@ -100,7 +110,7 @@ const shiftTasks = async (
   return board;
 };
 
-const deleteList = async (boardId, listId) => {
+const deleteList = async (boardId: string, listId: string) => {
   const board = await getBoardById(boardId);
   const index = board.lists.findIndex((list) => list._id == listId);
   board.lists.splice(index, 1);
@@ -109,7 +119,7 @@ const deleteList = async (boardId, listId) => {
 };
 
 // Business logic for tasks
-const createTask = async (boardId, listId, task) => {
+const createTask = async (boardId: string, listId: string, task: Object) => {
   const board = await getBoardById(boardId);
   const list = await board.lists.id(listId);
 
@@ -119,7 +129,12 @@ const createTask = async (boardId, listId, task) => {
   return { task: list.tasks.pop(), listId };
 };
 
-const editTask = async (boardId, listId, taskId, update) => {
+const editTask = async (
+  boardId: string,
+  listId: string,
+  taskId: string,
+  update
+) => {
   const board = await getBoardById(boardId);
   const list = await getListById(boardId, listId);
   const taskIndex = list.tasks.findIndex((task) => task._id == taskId);
@@ -130,7 +145,7 @@ const editTask = async (boardId, listId, taskId, update) => {
   return { task: list.tasks[taskIndex], listId };
 };
 
-const deleteTask = async (boardId, listId, taskId) => {
+const deleteTask = async (boardId: string, listId: string, taskId: string) => {
   const board = await getBoardById(boardId);
   const list = await getListById(boardId, listId);
   const taskIndex = list.tasks.findIndex((task) => task._id == taskId);
@@ -140,7 +155,7 @@ const deleteTask = async (boardId, listId, taskId) => {
   return { task, listId };
 };
 
-module.exports = {
+export default {
   createBoard,
   getBoards,
   getBoard,
