@@ -25,7 +25,7 @@ interface Board {
   deletedOn?: Date;
 }
 
-export interface UserModel extends Document {
+export interface UserDocument extends Document {
   _id: string;
   googleId: String;
   githubId: String;
@@ -35,6 +35,6 @@ export interface UserModel extends Document {
 
 declare global {
   namespace Express {
-    export interface User extends UserModel {}
+    export interface User extends UserDocument {}
   }
 }
