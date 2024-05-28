@@ -1,36 +1,36 @@
-import { Model, Types } from "mongoose";
+import mongoose, { Model, Types } from "mongoose";
 
-interface Task {
+export interface TaskDocument {
   _id: Types.ObjectId;
   name: string;
   content: string;
   color: string;
 }
 
-interface List {
+export interface ListDocument {
   _id: Types.ObjectId;
   name: string;
-  tasks: Task[];
+  tasks: TaskDocument[];
   deleted: boolean;
   deletedOn?: Date;
 }
 
-interface Board {
+export interface BoardDocument extends mongoose.Document {
   _id: Types.ObjectId;
   user: Types.ObjectId;
   name: string;
   about: string;
-  lists: List[];
+  lists: mongoose.Types.DocumentArray<ListDocument>;
   deleted: boolean;
   deletedOn?: Date;
 }
 
-export interface UserDocument extends Document {
+export interface UserDocument extends mongoose.Document {
   _id: string;
   googleId: String;
   githubId: String;
   displayName: String;
-  boards: Board[];
+  boards: BoardDocument[];
 }
 
 declare global {

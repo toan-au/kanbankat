@@ -1,5 +1,6 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import Label from "./label.model";
+import { UserDocument } from "../types";
 
 const Schema = mongoose.Schema;
 
@@ -50,5 +51,6 @@ userSchema.pre(
   }
 );
 
-const user = mongoose.model("User", userSchema);
-export default user;
+const UserModel = mongoose.model<UserDocument>("User", userSchema);
+
+export default UserModel;
