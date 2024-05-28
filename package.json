@@ -2,7 +2,7 @@
   "name": "kanbankat",
   "version": "0.1.0",
   "description": "Kanban board for cat lovers",
-  "main": "server.js",
+  "main": "server/src/app.ts",
   "engines": {
     "node": "v21.7.3",
     "npm": "10.5.0"
@@ -15,5 +15,9 @@
     "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install"
   },
   "author": "Toan Au",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "mongoose-tsgen": "^9.3.2"
+  }
 }
