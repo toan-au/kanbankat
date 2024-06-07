@@ -152,12 +152,14 @@ const editTask = async (
 ) => {
   const board = (await BoardModel.findById(boardId)) as BoardDocument;
   const list = await board.lists.id(listId);
+  if (!list) return null;
+
   const taskIndex = list?.tasks.findIndex(
     (task: TaskDocument) => task._id.toString() == taskId
   );
-  if (update.name) list?.tasks[taskIndex].name = update.name;
-  if (update.content) list?.tasks[taskIndex].content = update.content;
-  if (update.color) list?.tasks[taskIndex].color = update.color;
+  if (update.name) list.tasks[taskIndex].name = update.name;
+  if (update.content) list.tasks[taskIndex].content = update.content;
+  if (update.color) list.tasks[taskIndex].color = update.color;
   await board.save();
   return { task: list?.tasks[taskIndex], listId };
 };
@@ -165,6 +167,8 @@ const editTask = async (
 const deleteTask = async (boardId: string, listId: string, taskId: string) => {
   const board = (await BoardModel.findById(boardId)) as BoardDocument;
   const list = await board.lists.id(listId);
+  if (!list) return null;
+
   const taskIndex = list?.tasks.findIndex(
     (task: TaskDocument) => task._id.toString() == taskId
   );

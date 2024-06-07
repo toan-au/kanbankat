@@ -149,7 +149,7 @@ router.patch(
       destinationListId,
       destinationIndex,
     } = req.body;
-    const board = await boardController.shiftTasks(
+    const board = await boardController.shiftTask(
       boardId,
       sourceListId,
       sourceIndex,

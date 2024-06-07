@@ -1,0 +1,222 @@
+[
+  {
+    "_id": "60d50d072c45ba38e8a26128",
+    "user": "User1",
+    "name": "Home Improvement",
+    "about": "Tasks for home renovation projects",
+    "lists": [
+      {
+        "name": "To-Do",
+        "tasks": [
+          {
+            "name": "Paint living room",
+            "content": "Choose colors and schedule painter",
+            "color": "yellow"
+          },
+          {
+            "name": "Install new kitchen faucet",
+            "content": "Purchase faucet and necessary tools",
+            "color": "blue"
+          },
+          {
+            "name": "Research contractors for roof repair",
+            "content": "Get quotes and compare services",
+            "color": "red"
+          }
+        ]
+      },
+      {
+        "name": "In-Progress",
+        "tasks": [
+          {
+            "name": "Order bathroom tiles",
+            "content": "Decide on design and place order",
+            "color": "green"
+          }
+        ]
+      },
+      {
+        "name": "Done",
+        "tasks": [
+          {
+            "name": "Replace old garage door opener",
+            "content": "Install new opener and program remotes",
+            "color": "none"
+          },
+          {
+            "name": "Deep clean gutters",
+            "content": "Gutters are clean and free from debris",
+            "color": "none"
+          }
+        ]
+      }
+    ],
+    "deleted": false
+  },
+  {
+    "_id": "60d50d072c45ba38e8a26129",
+    "user": "User2",
+    "name": "Personal Projects",
+    "about": "Hobbies and personal goals",
+    "lists": [
+      {
+        "name": "To-Do",
+        "tasks": [
+          {
+            "name": "Learn a new language",
+            "content": "Choose a language and start using language learning apps",
+            "color": "yellow"
+          },
+          {
+            "name": "Plan hiking trip",
+            "content": "Research trails and book camping gear",
+            "color": "blue"
+          }
+        ]
+      },
+      {
+        "name": "In-Progress",
+        "tasks": [
+          {
+            "name": "Build a wooden desk",
+            "content": "Gather materials and design the desk",
+            "color": "green"
+          }
+        ]
+      },
+      {
+        "name": "Done",
+        "tasks": [
+          {
+            "name": "Read 12 books",
+            "content": "Finished reading all the books on my list",
+            "color": "none"
+          }
+        ]
+      }
+    ],
+    "deleted": false
+  },
+  {
+    "_id": "60d50d072c45ba38e8a26130",
+    "user": "User1",
+    "name": "Work Projects",
+    "about": "Professional tasks and deadlines",
+    "lists": [
+      {
+        "name": "Backlog",
+        "tasks": [
+          {
+            "name": "Implement new feature X",
+            "content": "Research and discuss implementation details",
+            "color": "yellow"
+          },
+          {
+            "name": "Update company website",
+            "content": "Design and review content for the new website",
+            "color": "blue"
+          }
+        ]
+      },
+      {
+        "name": "In-Progress",
+        "tasks": [
+          {
+            "name": "Create marketing presentation",
+            "content": "Draft slides and gather feedback",
+            "color": "green"
+          }
+        ]
+      },
+      {
+        "name": "Done",
+        "tasks": [
+          {
+            "name": "Respond to customer inquiries",
+            "content": "Answered all emails and resolved customer issues",
+            "color": "none"
+          },
+          {
+            "name": "Project review meeting",
+            "content": "Minutes are taken and actions are assigned",
+            "color": "none"
+          }
+        ]
+      }
+    ],
+    "deleted": false
+  },
+  {
+    "_id": "60d50d839c75463d34d5a8da",
+    "user": "User3",
+    "name": "Shopping List",
+    "about": "",
+    "lists": [
+      {
+        "name": "To-Buy",
+        "tasks": [
+          {
+            "name": "Groceries",
+            "content": "Pick up milk, bread, fruits, vegetables",
+            "color": "yellow"
+          },
+          {
+            "name": "Electronics",
+            "content": "Buy a new charger and wireless headphones",
+            "color": "blue"
+          },
+          {
+            "name": "Home decor",
+            "content": "Get some plants and a new vase",
+            "color": "red"
+          }
+        ]
+      },
+      {
+        "name": "Bought",
+        "tasks": [
+          {
+            "name": "Clothes",
+            "content": "Bought new work outfits",
+            "color": "none"
+          }
+        ]
+      }
+    ],
+    "deleted": false
+  },
+  {
+    "_id": "60d50d8b9c75463d34d5a8db",
+    "user": "User2",
+    "name": "Travel Planning",
+    "about": "Our upcoming vacation",
+    "lists": [
+      {
+        "name": "To-Do",
+        "tasks": [
+          {
+            "name": "Research hotels",
+            "content": "Compare prices and amenities",
+            "color": "yellow"
+          },
+          {
+            "name": "Book flights",
+            "content": "Find direct flights within the budget",
+            "color": "blue"
+          }
+        ]
+      },
+      {
+        "name": "Done",
+        "tasks": [
+          {
+            "name": "Itinerary",
+            "content": "Planned daily activities and attractions",
+            "color": "none"
+          }
+        ]
+      }
+    ],
+    "deleted": false
+  }
+]
