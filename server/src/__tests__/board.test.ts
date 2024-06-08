@@ -1,4 +1,3 @@
-import { describe, it } from "node:test";
 import app from "../app";
 import supertest from "supertest";
 
@@ -8,7 +7,7 @@ describe("board", () => {
   describe("get boards", () => {
     describe("given the user is not logged in", () => {
       it("should return a 403", () => {
-        expect(true).toBe(true);
+        expect(1 + 2).toBe(3);
       });
     });
     describe("given the user is logged in and has no active boards", () => {
