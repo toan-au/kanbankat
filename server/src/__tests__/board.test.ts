@@ -6,8 +6,8 @@ const testApp = supertest(app);
 describe("board", () => {
   describe("get boards", () => {
     describe("given the user is not logged in", () => {
-      it("should return a 403", () => {
-        expect(1 + 2).toBe(3);
+      it("should return a 403", async () => {
+        await testApp.get("/api/boards").expect(403);
       });
     });
     describe("given the user is logged in and has no active boards", () => {
