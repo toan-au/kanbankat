@@ -1,23 +1,23 @@
-const express = require("express");
-require("express-async-errors");
-const keys = require("./config/keys");
-const mongoose = require("mongoose");
+import { Request, Response } from "express";
+import express from "express";
+import keys from "../config/keys";
+import mongoose from "mongoose";
+import "express-async-errors";
+import app from "./app";
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
-
-const app = require("./app.js");
 
 // client app
 if (process.env.NODE_ENV === "production") {
   const path = require("path");
   // express will serve our static bundle files
-  app.use(express.static("../client-vite/dist/"));
+  app.use(express.static("../../client-vite/dist/"));
 
   // express will serve our client app if it doesn't recognize the route
-  app.get("*", (_req, res) => {
+  app.get("*", (_req: Request, res: Response) => {
     res.sendFile(
-      path.resolve(__dirname, "../", "client-vite", "dist", "index.html")
+      path.resolve(__dirname, "../", "../", "client-vite", "dist", "index.html")
     );
   });
 }

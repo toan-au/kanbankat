@@ -2,7 +2,7 @@
   "name": "kanbankat",
   "version": "0.1.0",
   "description": "Kanban board for cat lovers",
-  "main": "server.js",
+  "main": "server/src/app.ts",
   "engines": {
     "node": "v21.7.3",
     "npm": "10.5.0"
@@ -17,6 +17,8 @@
   "author": "Toan Au",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "mongoose-tsgen": "^9.3.2",
+    "ts-jest": "^29.1.4"
   }
 }

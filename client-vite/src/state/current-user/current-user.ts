@@ -5,20 +5,17 @@ import { isEmpty } from "lodash";
 
 interface UserAPIResponse {
   _id: string;
-  googleId: string;
   displayName: string;
 }
 
 interface CurrentUserState {
   id: string;
-  googleId: string;
   displayName: string;
   loggedIn: boolean;
 }
 
 const initialState: CurrentUserState = {
   id: "",
-  googleId: "",
   displayName: "",
   loggedIn: false,
 };
@@ -36,7 +33,6 @@ const currentUserSlice = createSlice({
         (state, action: PayloadAction<UserAPIResponse>) => {
           if (!isEmpty(action.payload)) {
             state.id = action.payload._id;
-            state.googleId = action.payload.googleId;
             state.displayName = action.payload.displayName;
             state.loggedIn = action.payload._id.length > 0;
           }

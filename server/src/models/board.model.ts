@@ -1,26 +1,27 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+import { BoardDocument } from "../types";
 
-const TaskSchema = new Schema({
+const taskSchema = new mongoose.Schema({
   name: { type: String, max: 255 },
   content: { type: String, max: 10_000 },
   color: { type: String, default: "none" },
 });
 
-const ListSchema = new Schema({
+const listSchema = new mongoose.Schema({
   name: { type: String, required: true, max: 255 },
-  tasks: [TaskSchema],
+  tasks: [taskSchema],
   deleted: { type: Boolean, required: false, default: false },
   deletedOn: { type: Date },
 });
 
-const BoardSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: "User" },
+const baordSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   name: { type: String, required: true, max: 255 },
   about: { type: String, required: false, default: "" },
-  lists: [ListSchema],
+  lists: [listSchema],
   deleted: { type: Boolean, required: false, default: false },
   deletedOn: { type: Date },
 });
 
-mongoose.model("Board", BoardSchema);
+const BoardModel = mongoose.model<BoardDocument>("Board", baordSchema);
+export default BoardModel;

@@ -1,11 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const requireLogin = require("../middleware/requireLogin");
-const requireOwnBoard = require("../middleware/requireOwnBoard");
-const asyncHandler = require("../middleware/asyncHandler");
-const boardController = require("../controllers/board.controller");
+import express, { Request, Response, Router } from "express";
+import requireLogin from "../middleware/requireLogin";
+import requireOwnBoard from "../middleware/requireOwnBoard";
+import asyncHandler from "../middleware/asyncHandler";
+import boardController from "../controllers/boards.controller";
+import _ from "lodash";
 
-router.get("/api/test", (req, res) => res.send({ test: true }));
+const router: Router = express.Router();
+
+router.get("/api/test", (_, res) => res.send({ test: true }));
 
 // *************
 // BOARD STUFF
@@ -14,29 +16,40 @@ router.get("/api/test", (req, res) => res.send({ test: true }));
 router.post(
   "/api/board",
   requireLogin,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const { name } = req.body;
-    const board = await boardController.createBoard(name, req.user);
+    const board = await boardController.createBoard(name, req.user?._id || "");
     res.send(board);
   })
 );
+
+type GetBoardsSchema = {
+  params: {
+    deleted?: boolean;
+  };
+};
 
 router.get(
   "/api/boards",
   requireLogin,
   requireOwnBoard,
-  asyncHandler(async (req, res) => {
-    const { deleted } = req.query;
-    const boards = await boardController.getBoards(req.user, deleted);
-    res.send(boards);
-  })
+  asyncHandler(
+    async (req: Request<GetBoardsSchema["params"]>, res: Response) => {
+      const { deleted } = req.params;
+      const boards = await boardController.getBoards(
+        req.user?._id || "",
+        deleted
+      );
+      res.send(boards);
+    }
+  )
 );
 
 router.get(
   "/api/board/:boardId",
   requireLogin,
   requireOwnBoard,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const board = await boardController.getBoard(req.params.boardId);
     res.send(board);
   })
@@ -48,11 +61,7 @@ router.patch(
   requireOwnBoard,
   asyncHandler(async (req, res) => {
     const { name, deleted } = req.body;
-    let update = {
-      name,
-      deleted,
-    };
-    update = _.omitBy(update, _.isNil);
+    const update = { name, deleted };
     const board = await boardController.editBoard(req.params.boardId, update);
     res.send(board);
   })
@@ -133,7 +142,7 @@ router.patch(
       destinationListId,
       destinationIndex,
     } = req.body;
-    const board = await boardController.shiftTasks(
+    const board = await boardController.shiftTask(
       boardId,
       sourceListId,
       sourceIndex,
@@ -204,4 +213,4 @@ router.delete(
   })
 );
 
-module.exports = router;
+export default router;

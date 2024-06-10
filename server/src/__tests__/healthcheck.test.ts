@@ -1,5 +1,5 @@
-const app = require("../app");
-const supertest = require("supertest");
+import app from "../app";
+import supertest from "supertest";
 
 describe("Healthcheck", () => {
   it("Should return 200 OK", async () => {

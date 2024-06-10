@@ -1,13 +1,15 @@
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GitHubStrategy = require("passport-github").Strategy;
-const keys = require("../config/keys");
-const mongoose = require("mongoose");
+import passport from "passport";
+import PassportGoogle from "passport-google-oauth20";
+import PassportGitHub from "passport-github";
+import keys from "../../config/keys";
+import mongoose from "mongoose";
 
 const User = mongoose.model("User");
+const GitHubStrategy = PassportGitHub.Strategy;
+const GoogleStrategy = PassportGoogle.Strategy;
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
@@ -50,9 +52,8 @@ passport.use(
       clientID: keys.githubClientID,
       clientSecret: keys.githubClientSecret,
       callbackURL: "/auth/github/callback",
-      proxy: true,
     },
-    async (_accessToken, _refreshToken, profile, done) => {
+    async (_accessToken: string, _refreshToken: string, profile, done) => {
       const existingUser = await User.findOne({
         githubId: profile.id,
       });
@@ -70,4 +71,4 @@ passport.use(
   )
 );
 
-module.exports = passport;
+export default passport;

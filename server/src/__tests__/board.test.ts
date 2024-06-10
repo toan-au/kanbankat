@@ -1,13 +1,13 @@
-const app = require("../app");
-const supertest = require("supertest");
+import app from "../app";
+import supertest from "supertest";
 
 const testApp = supertest(app);
 
 describe("board", () => {
   describe("get boards", () => {
     describe("given the user is not logged in", () => {
-      it("should return a 403", () => {
-        expect(true).toBe(true);
+      it("should return a 403", async () => {
+        await testApp.get("/api/boards").expect(403);
       });
     });
     describe("given the user is logged in and has no active boards", () => {
