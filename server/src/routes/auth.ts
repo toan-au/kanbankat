@@ -40,7 +40,7 @@ router.get("/current", (req, res) => {
   if (req.user) {
     return res.send(req.user);
   }
-  res.send({});
+  return res.send({});
 });
 
 export default router;

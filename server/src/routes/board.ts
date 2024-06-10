@@ -1,15 +1,13 @@
-import { UpdateQuery } from "mongoose";
 import express, { Request, Response, Router } from "express";
 import requireLogin from "../middleware/requireLogin";
 import requireOwnBoard from "../middleware/requireOwnBoard";
 import asyncHandler from "../middleware/asyncHandler";
 import boardController from "../controllers/boards.controller";
 import _ from "lodash";
-import { string } from "zod";
 
 const router: Router = express.Router();
 
-router.get("/api/test", (req, res) => res.send({ test: true }));
+router.get("/api/test", (_, res) => res.send({ test: true }));
 
 // *************
 // BOARD STUFF
@@ -56,11 +54,6 @@ router.get(
     res.send(board);
   })
 );
-
-interface BoardUpdate {
-  name: string;
-  deleted: string;
-}
 
 router.patch(
   "/api/board/:boardId",

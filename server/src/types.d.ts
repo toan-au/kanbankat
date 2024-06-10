@@ -1,14 +1,14 @@
 import mongoose, { Model, Types } from "mongoose";
 
 export interface TaskDocument {
-  _id: Types.ObjectId;
+  readonly _id: Types.ObjectId;
   name: string;
   content: string;
   color: string;
 }
 
 export interface ListDocument {
-  _id: Types.ObjectId;
+  readonly _id: Types.ObjectId;
   name: string;
   tasks: TaskDocument[];
   deleted: boolean;
@@ -16,7 +16,7 @@ export interface ListDocument {
 }
 
 export interface BoardDocument extends mongoose.Document {
-  _id: Types.ObjectId;
+  readonly _id: Types.ObjectId;
   user: Types.ObjectId;
   name: string;
   about: string;
@@ -26,7 +26,7 @@ export interface BoardDocument extends mongoose.Document {
 }
 
 export interface UserDocument extends mongoose.Document {
-  _id: string;
+  readonly _id: string;
   googleId: String;
   githubId: String;
   displayName: String;

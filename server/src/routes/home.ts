@@ -1,6 +1,4 @@
 import { Request, Response, Router } from "express";
-import Label from "../models/label.model";
-import User from "../models/user.model";
 
 const express = require("express");
 
