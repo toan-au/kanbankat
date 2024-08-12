@@ -1,5 +1,4 @@
 import prodKeys from "./prodkeys";
-import devKeys from "./devkeys";
 
 export interface Keys {
   googleClientID: string;
@@ -10,11 +9,26 @@ export interface Keys {
   mongoURI: string;
 }
 
-let keys: Keys;
+let keys: Keys = {
+  googleClientID: "",
+  googleClientSecret: "",
+  githubClientID: "",
+  githubClientSecret: "",
+  cookieKey: "",
+  mongoURI: ""
+};
+
+
 if (process.env.NODE_ENV === "production") {
   keys = prodKeys;
 } else {
-  keys = devKeys;
+  // Dynamically import devKeys only when running in development mode
+  import("./devkeys").then(module => {
+    keys = module.default;
+  }).catch(err => {
+    console.error("Failed to load dev keys", err);
+    // Handle the error or set defaults as needed
+  });
 }
 
 export default keys;
