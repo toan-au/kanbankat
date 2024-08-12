@@ -8,11 +8,11 @@
     "npm": "10.5.0"
   },
   "scripts": {
-    "start": "cd server && node server.js",
+    "start": "npm run start --prefix server",
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client-vite",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install"
+    "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "author": "Toan Au",
   "license": "ISC",
