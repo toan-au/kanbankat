@@ -8,6 +8,8 @@
     "npm": "10.5.0"
   },
   "scripts": {
+    "install": "npm i --prefix client-vite && npm i --prefix server",
+    "build": "npm run build --prefix server && npm run build --prefix client-vite",
     "start": "npm run start --prefix server",
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client-vite",
