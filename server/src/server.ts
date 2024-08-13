@@ -12,7 +12,7 @@ mongoose.connect(keys.mongoURI);
 if (process.env.NODE_ENV === "production") {
   const path = require("path");
   // express will serve our static bundle files
-  app.use(express.static("../../client/"));
+  app.use(express.static("../../../client-vite/dist/"));
 
   // express will serve our client app if it doesn't recognize the route
   app.get("*", (_req: Request, res: Response) => {
