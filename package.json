@@ -13,14 +13,9 @@
     "start": "npm run start --prefix server",
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client-vite",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "npx concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "author": "Toan Au",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "mongoose-tsgen": "^9.3.2",
-    "ts-jest": "^29.1.4"
-  }
+  "license": "ISC"
 }
