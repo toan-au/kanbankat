@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
   // express will serve our client app if it doesn't recognize the route
   app.get("*", (_req: Request, res: Response) => {
     res.sendFile(
-      path.resolve(__dirname, "../", "../", "client", "index.html")
+      path.resolve(__dirname, "../", "../", "../", "client-vite", "dist", "index.html")
     );
   });
 }
