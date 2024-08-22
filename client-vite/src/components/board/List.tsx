@@ -58,7 +58,7 @@ function List({ boardId, list, index }: ListProps) {
   }
 
   function handleRenameClick() {
-    setEditing(!editing);
+    setEditing(true);
     setTimeout(() => {
       focusRef.current?.focus();
     }, 0);
@@ -98,6 +98,7 @@ function List({ boardId, list, index }: ListProps) {
           ref={focusRef}
           value={displayName}
           onKeyDown={handleKeyDown}
+          onFocus={e => e.target.select()}
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </form>
