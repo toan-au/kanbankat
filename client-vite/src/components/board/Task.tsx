@@ -29,6 +29,9 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
   const activeBoard = useSelector(
     (state: RootState) => state.boards.activeBoard
   );
+  // const userLabels = useSelector(
+  //   (state: RootState) => state.currentUser.labels
+  // );
   const [showMenu, setShowMenu] = useState(false);
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch<AppDispatch>();

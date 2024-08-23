@@ -17,6 +17,7 @@ import "./models/board.model";
 import authRoutes from "./routes/auth";
 import boardRoutes from "./routes/board";
 import homeRoutes from "./routes/home";
+import labelRoutes from "./routes/label";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use("/", boardRoutes);
 app.use(homeRoutes);
+app.use("/api", labelRoutes)
 
 // error handling
 app.use(handleErrors);

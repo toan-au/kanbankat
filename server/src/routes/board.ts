@@ -35,10 +35,10 @@ router.get(
   requireOwnBoard,
   asyncHandler(
     async (req: Request<GetBoardsSchema["params"]>, res: Response) => {
-      const { deleted } = req.params;
+      const { deleted } = req.query;
       const boards = await boardController.getBoards(
         req.user?._id || "",
-        deleted
+        !!deleted
       );
       res.send(boards);
     }
