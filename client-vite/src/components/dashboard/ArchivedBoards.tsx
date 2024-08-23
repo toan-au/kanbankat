@@ -5,7 +5,7 @@ import { getArchivedBoardsAsync } from "../../state/boards/boards";
 import Spinner from "../UI/Spinner";
 import ArchivedBoardListItem from "./ArchivedBoardListItem";
 
-function Boards() {
+function ArchivedBoards() {
   const { archivedUserBoards, fetchingBoards } = useSelector(
     (state: RootState) => state.boards
   );
@@ -37,4 +37,4 @@ function Boards() {
   );
 }
 
-export default Boards;
+export default ArchivedBoards;

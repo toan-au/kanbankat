@@ -294,7 +294,9 @@ export const getBoardsAsync = createAsyncThunk<Board[]>(
 export const getArchivedBoardsAsync = createAsyncThunk<Board[]>(
   "boards/getArchivedBoardsAsync",
   async () => {
-    const response = await axios.get("/api/boards?deleted=true");
+    const response = await axios.get("/api/boards", { 
+      params: { deleted: true}
+    });
     const boards: Board[] = response.data;
     return boards;
   }
