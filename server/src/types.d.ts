@@ -7,6 +7,13 @@ export interface TaskDocument {
   color: string;
 }
 
+export interface LabelDocument {
+  readonly _id: Types.ObjectId;
+  name: string;
+  hexColour: string;
+  user: UserDocument;
+}
+
 export interface ListDocument {
   readonly _id: Types.ObjectId;
   name: string;
@@ -31,6 +38,7 @@ export interface UserDocument extends mongoose.Document {
   githubId: String;
   displayName: String;
   boards: BoardDocument[];
+  labels: LabelDocument[];
 }
 
 declare global {
