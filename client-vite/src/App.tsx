@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { syncUser } from "./state/current-user/current-user";
 import Overlay from "./components/UI/Overlay";
 import Authenticated from "./pages/Authenticated";
+import Settings from "./pages/Settings";
 
 function App() {
   const { loadingUser } = useSelector((state: RootState) => state.ui);
@@ -43,6 +44,10 @@ function App() {
         {
           path: "/board/:boardId",
           element: <Board></Board>,
+        },
+        {
+          path: "/settings/",
+          element: <Settings></Settings>,
         },
       ],
     },

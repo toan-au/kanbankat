@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/kanbankat-logo.png";
+import TopbarUserMenu from "./ui/TopbarUserMenu";
 
 function Topbar() {
   const user = useSelector((state: RootState) => state.currentUser);
@@ -74,13 +75,8 @@ function Topbar() {
             </a>
           )}
           {user.loggedIn && (
-            <a
-              type="button"
-              href="/auth/logout"
-              className="text-white bg-catOrange hover:bg-catDarkOrange focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
-            >
-              Log out
-            </a>
+            /* Logged in menu */
+            <TopbarUserMenu />
           )}
           <button
             data-collapse-toggle="navbar-cta"
