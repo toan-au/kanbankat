@@ -1,7 +1,17 @@
 import { FaTags } from "react-icons/fa6";
 
-function ColorPallete() {
-  const colorOptions = ["#fa7070", "#6bb7e3", "#faae4b"];
+interface Label {
+  _id: string;
+  text: string;
+  hexColour: string;
+  boardId: string;
+}
+
+interface Props { 
+  labels: Label[]
+}
+
+function ColorPallete({ labels }: Props) {
   return (
     <div className="px-3 py-1 bg-catLightBlue">
       <div className="flex text-white text-lg">
@@ -11,14 +21,14 @@ function ColorPallete() {
         Tag
       </div>
       <ul className="flex flex-col gap-2 mt-1 w-48">
-        {colorOptions.map((color) => (
-          <li className="flex">
+        {labels.map((label) => (
+          <li className="flex" key={label._id}>
             <input type="checkbox" className="p-3 mr-2 scale-150" />
             <div
               className="flex-1 px-2 py-1 rounded-lg text-sm"
-              style={{ background: color }}
+              style={{ background: label.hexColour }}
             >
-              Test
+              {label.text}
             </div>
           </li>
         ))}

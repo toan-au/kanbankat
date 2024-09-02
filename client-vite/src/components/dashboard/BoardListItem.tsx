@@ -5,9 +5,9 @@ import { AppDispatch } from "../../state/store";
 import { deleteBoardAsync, renameBoardAsync } from "../../state/boards/boards";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import MoreOptionsButton from "../UI/MoreOptionsButton";
-import Submenu from "../UI/submenu/Submenu";
-import IconMenuButton from "../UI/submenu/IconMenuButton";
+import MoreOptionsButton from "../ui/MoreOptionsButton";
+import Submenu from "../ui/submenu/Submenu";
+import IconMenuButton from "../ui/submenu/IconMenuButton";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
 function BoardListItem(props: { board: { _id: string; name: string } }) {

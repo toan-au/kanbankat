@@ -1,5 +1,5 @@
 import { FaPen, FaTrash } from "react-icons/fa6";
-import MoreOptionsButton from "../UI/MoreOptionsButton";
+import MoreOptionsButton from "../ui/MoreOptionsButton";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { useDispatch } from "react-redux";
@@ -7,8 +7,8 @@ import { deleteListAsync, renameListAsync } from "../../state/boards/boards";
 import { AppDispatch } from "../../state/store";
 import NewTaskButton from "./NewTaskButton";
 import TaskList from "./TaskList";
-import Submenu from "../UI/submenu/Submenu";
-import IconMenuButton from "../UI/submenu/IconMenuButton";
+import Submenu from "../ui/submenu/Submenu";
+import IconMenuButton from "../ui/submenu/IconMenuButton";
 import { Draggable } from "react-beautiful-dnd";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
@@ -113,7 +113,7 @@ function List({ boardId, list, index }: ListProps) {
     <Draggable draggableId={list._id} index={index}>
       {(provided) => (
         <div
-          className="w-64 min-w-64 bg-white rounded-md p-2 relative h-fit"
+          className="w-80 min-w-80 bg-white rounded-md p-2 relative h-fit"
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}

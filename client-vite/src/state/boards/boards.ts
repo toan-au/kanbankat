@@ -14,6 +14,13 @@ interface List {
   tasks: Task[];
 }
 
+interface Label {
+  _id: string;
+  text: string;
+  hexColour: string;
+  boardId: string;
+}
+
 interface TaskShift {
   boardId: string;
   sourceListId: string;
@@ -37,6 +44,7 @@ interface BoardSummary {
 
 interface Board extends BoardSummary {
   lists: List[];
+  labels: Label[];
 }
 
 interface BoardsState {
@@ -52,6 +60,7 @@ const initialState: BoardsState = {
   archivedUserBoards: [],
   activeBoard: {
     lists: [],
+    labels: [],
     _id: "",
     name: "",
     about: "",

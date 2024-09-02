@@ -6,7 +6,8 @@ import { createListAsync, getBoardAsync } from "../state/boards/boards";
 import NewBoardButton from "../components/dashboard/NewBoardButton";
 import List from "../components/board/List";
 import { Droppable } from "react-beautiful-dnd";
-import Spinner from "../components/UI/Spinner";
+import Spinner from "../components/ui/Spinner";
+import TitleBar from "@/components/board/TitleBar";
 
 function Board() {
   const { activeBoard, fetchingBoard } = useSelector(
@@ -41,35 +42,38 @@ function Board() {
 
   function renderLists() {
     return (
-      <Droppable
-        droppableId={activeBoard._id}
-        direction="horizontal"
-        type="LIST"
-      >
-        {(provided) => (
-          <ul
-            className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {/* {renderInfo()} */}
-            {activeBoard.lists.map((list, index) => (
-              <List
-                key={list._id}
-                boardId={activeBoard._id}
-                list={list}
-                index={index}
-              />
-            ))}
-            {provided.placeholder}
-            <NewBoardButton
-              text="New list"
-              placeholder="Enter a list name"
-              onSave={handleNewList}
-            ></NewBoardButton>
-          </ul>
-        )}
-      </Droppable>
+      <>
+        <TitleBar />
+        <Droppable
+          droppableId={activeBoard._id}
+          direction="horizontal"
+          type="LIST"
+        >
+          {(provided) => (
+            <ul
+              className="flex flex-1 align-top justify-start overflow-x-auto gap-4 max-w-full px-5 py-5"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {/* {renderInfo()} */}
+              {activeBoard.lists.map((list, index) => (
+                <List
+                  key={list._id}
+                  boardId={activeBoard._id}
+                  list={list}
+                  index={index}
+                />
+              ))}
+              {provided.placeholder}
+              <NewBoardButton
+                text="New list"
+                placeholder="Enter a list name"
+                onSave={handleNewList}
+              ></NewBoardButton>
+            </ul>
+          )}
+        </Droppable>
+      </>
     );
   }
 

@@ -1,7 +1,7 @@
 import { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
-import Submenu from "../UI/submenu/Submenu";
-import IconMenuButton from "../UI/submenu/IconMenuButton";
+import Submenu from "../ui/submenu/Submenu";
+import IconMenuButton from "../ui/submenu/IconMenuButton";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "../../state/store";
 import { deleteTaskAsync, renameTaskAsync } from "../../state/boards/boards";
 import { hideShroud, showShroud } from "../../state/ui/ui";
 import { DraggableProvided } from "react-beautiful-dnd";
-import ColorPallete from "../UI/submenu/ColorPallete";
+import ColorPallete from "../ui/submenu/ColorPallete";
 
 interface Task {
   _id: string;
@@ -38,7 +38,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
   const [inputText, setInputText] = useState(task.name);
   const parentRef = useDetectClickOutside({
     onTriggered: handleOutsideClick,
-  });
+  }); 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
       {...provided.dragHandleProps}
     >
       <div
-        className={`relative flex bg-white shadow-lg border-2 rounded-sm px-1.5 py-2.5 mb-1.5 items-start group ${
+        className={`relative flex bg-white shadow-lg border-2 rounded-sm px-2 py-3 mb-1.5 items-start group ${
           showMenu && "z-50"
         }`}
         ref={parentRef}
@@ -114,7 +114,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
           <FaPen />
         </button>
         {showMenu && (
-          <Submenu showMenu={showMenu} horizontalOffset={248}>
+          <Submenu showMenu={showMenu} horizontalOffset={305}>
             <IconMenuButton
               icon={<FaPen />}
               onClick={handleEditClick}
@@ -125,7 +125,7 @@ function Task({ task, listId, innerRef, provided }: TaskProps) {
               onClick={handleDeleteClick}
               text="Delete"
             />
-            <ColorPallete />
+            <ColorPallete labels={activeBoard.labels}/>
           </Submenu>
         )}
       </div>

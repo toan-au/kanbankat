@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { getArchivedBoardsAsync } from "../../state/boards/boards";
-import Spinner from "../UI/Spinner";
+import Spinner from "../ui/Spinner";
 import ArchivedBoardListItem from "./ArchivedBoardListItem";
 
 function ArchivedBoards() {

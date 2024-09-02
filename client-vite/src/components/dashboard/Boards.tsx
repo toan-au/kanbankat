@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { createBoardAsync, getBoardsAsync } from "../../state/boards/boards";
 import BoardListItem from "./BoardListItem";
-import Spinner from "../UI/Spinner";
+import Spinner from "../ui/Spinner";
 
 function Boards() {
   const { userBoards, fetchingBoards } = useSelector(
