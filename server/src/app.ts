@@ -11,6 +11,7 @@ import passport from "passport";
 
 // models
 import "./models/user.model";
+import "./models/label.model";
 import "./models/board.model";
 
 // routes

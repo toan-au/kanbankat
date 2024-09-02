@@ -34,7 +34,7 @@ const getBoards = async (userId: string, deleted = false) => {
 };
 
 const getBoard = async (boardId: string) => {
-  const board = await BoardModel.findById(boardId);
+  const board = await BoardModel.findById(boardId).populate('labels');
   return board;
 };
 

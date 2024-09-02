@@ -3,22 +3,22 @@ import { createLabel, getLabels, findAndUpdateLabel, findAndDeleteLabel } from "
 
 async function createLabelHandler(req: Request, res: Response) {
     const payload = req.body
-    const label = await createLabel({...payload, user: req.user?._id});
+    const label = await createLabel({...payload, board: req.params.boardId});
     return res.send(label);
 }
 
 async function getLabelsHandler(req: Request, res: Response) {
-    const labels = await getLabels({ user: req.user?._id });
+    const labels = await getLabels({ board: req.params.boardId });
     return res.send(labels);
 }
 
 async function editLabelHandler(req: Request, res: Response) {
-    const label = await findAndUpdateLabel({ user: req.user?._id, _id: req.params.id }, req.body);
+    const label = await findAndUpdateLabel({ board: req.params.boardId, _id: req.params.id }, req.body);
     return res.send(label)
 }
 
 async function deleteLabelHandler(req: Request, res: Response) {
-    const label = await findAndDeleteLabel({ user: req.user?._id, _id: req.params.id })
+    const label = await findAndDeleteLabel({ board: req.params.boardId, _id: req.params.id })
     res.send(label)
 }
 

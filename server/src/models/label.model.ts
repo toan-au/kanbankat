@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { LabelDocument } from "../types";
 
 const labelSchema = new mongoose.Schema({
   text: {
@@ -12,13 +13,12 @@ const labelSchema = new mongoose.Schema({
     required: true,
     match: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, // Validate hex color format
   },
-  user: {
+  board: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Board",
     required: true,
   },
 });
 
-const LabelModel = mongoose.model("Label", labelSchema);
-
+const LabelModel = mongoose.model<LabelDocument>("Label", labelSchema);
 export default LabelModel;

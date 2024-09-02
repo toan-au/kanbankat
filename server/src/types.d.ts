@@ -11,7 +11,7 @@ export interface LabelDocument {
   readonly _id: Types.ObjectId;
   name: string;
   hexColour: string;
-  user: UserDocument;
+  board: BoardDocument;
 }
 
 export interface ListDocument {

@@ -5,12 +5,12 @@ const express = require("express");
 
 const router: Router = express.Router();
 
-router.post("/labels", async (req: Request, res: Response) => await createLabelHandler(req, res));
+router.post("/board/:boardId/labels", async (req: Request, res: Response) => await createLabelHandler(req, res));
 
-router.get("/labels", async (req: Request, res: Response) => await getLabelsHandler(req, res));
+router.get("/board/:boardId/labels", async (req: Request, res: Response) => await getLabelsHandler(req, res));
 
-router.patch("/label/:id", async (req: Request, res: Response) => await editLabelHandler(req, res));
+router.patch("/board/:boardId/label/:id", async (req: Request, res: Response) => await editLabelHandler(req, res));
 
-router.delete("/label/:id", async (req: Request, res: Response) => await deleteLabelHandler(req, res));
+router.delete("/board/:boardId/label/:id", async (req: Request, res: Response) => await deleteLabelHandler(req, res));
 
 export default router;
