@@ -1,6 +1,6 @@
 import { FaTags } from "react-icons/fa6";
 
-interface Label {
+export interface Label {
   _id: string;
   text: string;
   hexColour: string;

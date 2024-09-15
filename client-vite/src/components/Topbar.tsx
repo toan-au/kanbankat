@@ -57,7 +57,7 @@ function Topbar() {
 
   return (
     <nav className="fixed w-full bg-white border-gray-200 z-10">
-      <div className="container flex flex-wrap items-center justify-between mx-auto p-2">
+      <div className="container flex flex-wrap items-center justify-between mx-auto py-2">
         <Link
           to={user.loggedIn ? "/dashboard" : "/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"

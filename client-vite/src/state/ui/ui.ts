@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface Ui {
   showShroud: boolean;
+  topDrawer: boolean;
   loadingUser: boolean;
 }
 
 const initialState: Ui = {
   showShroud: false,
+  topDrawer: false,
   loadingUser: true,
 };
 
@@ -14,6 +16,12 @@ const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    showTopDrawer(state) {
+      state.topDrawer = true;
+    },
+    hideTopDrawer(state) {
+      state.topDrawer = false;
+    },
     showShroud(state) {
       state.showShroud = true;
     },
@@ -30,6 +38,6 @@ const uiSlice = createSlice({
 });
 
 const { actions, reducer } = uiSlice;
-export const { showShroud, hideShroud, startLoadingUser, stopLoadingUser } =
+export const { showShroud, hideShroud, startLoadingUser, stopLoadingUser, showTopDrawer, hideTopDrawer } =
   actions;
 export default reducer;
