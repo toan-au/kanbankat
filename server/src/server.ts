@@ -1,27 +1,34 @@
-import { Request, Response } from "express";
 import express from "express";
-import keys from "../config/keys";
 import mongoose from "mongoose";
 import "express-async-errors";
+import path from "path";
+import keys from "../config/keys";
 import app from "./app";
 
+// Set up mongoose promise library
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI);
 
-// client app
+// Connect to MongoDB
+mongoose.connect(keys.mongoURI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log("MongoDB connection error:", err));
+
+// Configure static file serving and catch-all route for production
 if (process.env.NODE_ENV === "production") {
-  const path = require("path");
-  // express will serve our static bundle files
-  app.use(express.static(path.resolve(__dirname, "../", "../", "../", "client-vite", "dist")));
+  const clientPath = path.resolve(__dirname, "../../../client-vite/dist");
 
-  // express will serve our client app if it doesn't recognize the route
-  app.get("*", (_req: Request, res: Response) => {
-    res.sendFile(
-      path.resolve(__dirname, "../", "../", "../", "client-vite", "dist", "index.html")
-    );
+  // Serve static files from the React app
+  app.use(express.static(clientPath));
+
+  // The "catchall" handler: for any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get("*", (_req, res) => {
+    res.sendFile(path.resolve(clientPath, "index.html"));
   });
 }
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("server has been started");
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
