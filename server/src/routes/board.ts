@@ -24,7 +24,7 @@ router.post(
 );
 
 type GetBoardsSchema = {
-  params: {
+  query: {
     deleted?: boolean;
   };
 };
@@ -34,7 +34,7 @@ router.get(
   requireLogin,
   requireOwnBoard,
   asyncHandler(
-    async (req: Request<GetBoardsSchema["params"]>, res: Response) => {
+    async (req: Request<{}, {}, {}, GetBoardsSchema["query"]>, res: Response) => {
       const { deleted } = req.query;
       const boards = await boardController.getBoards(
         req.user?._id || "",

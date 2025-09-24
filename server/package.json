@@ -28,7 +28,8 @@
     "node": "^18.20.2",
     "passport": "^0.7.0",
     "passport-github": "^1.1.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "typescript-eslint": "^8.23.0"
   },
   "devDependencies": {
     "@types/cookie-session": "^2.0.49",

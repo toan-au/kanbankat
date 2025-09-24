@@ -9,9 +9,10 @@ import app from "./app";
 mongoose.Promise = global.Promise;
 
 // Connect to MongoDB
-mongoose.connect(keys.mongoURI)
+mongoose
+  .connect(keys.mongoURI)
   .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log("MongoDB connection error:", err));
+  .catch((err) => console.log("MongoDB connection error:", err));
 
 // Configure static file serving and catch-all route for production
 if (process.env.NODE_ENV === "production") {
@@ -32,3 +33,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+

@@ -43,6 +43,6 @@ export interface UserDocument extends mongoose.Document {
 
 declare global {
   namespace Express {
-    export interface User extends UserDocument {}
+    interface User extends UserDocument {}
   }
 }
