@@ -78,7 +78,7 @@ router.delete(
 );
 
 router.delete(
-  "/api/board/destroy/:boardId",
+  "/api/board/destroy/:boardId", 
   requireLogin,
   requireOwnBoard,
   asyncHandler(async (req, res) => {
