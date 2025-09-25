@@ -40,18 +40,14 @@ const baordSchema = new mongoose.Schema({
 });
 
 baordSchema.pre("save", async function (next) {
-  try {
-    if (this.isNew) {
-      const labels = await Label.insertMany(
-        defaultLabels.map((label) => ({ ...label, board: this._id }))
-      );
+  if (this.isNew) {
+    const labels = await Label.insertMany(
+      defaultLabels.map((label) => ({ ...label, board: this._id }))
+    );
 
-      // Add the label IDs to the user's labels array
-      this.labels = labels.map((label) => label._id);
-      next();
-    }
-  } catch (err: any) {
-    return next(err);
+    // Add the label IDs to the user's labels array
+    this.labels = labels.map((label) => label._id);
+    next();
   }
 });
 

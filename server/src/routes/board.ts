@@ -3,7 +3,6 @@ import requireLogin from "../middleware/requireLogin";
 import requireOwnBoard from "../middleware/requireOwnBoard";
 import asyncHandler from "../middleware/asyncHandler";
 import boardController from "../controllers/boards.controller";
-import _ from "lodash";
 
 const router: Router = express.Router();
 

@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
-
-const express = require("express");
+import express from "express"
 
 const router: Router = express.Router();
 

@@ -13,7 +13,7 @@ if (process.env.NODE_ENV != 'production') {
   dotenv.config({path:__dirname+'/.env'})
 }
 
-let keys: Keys = {
+const keys: Keys = {
   googleClientID: process.env.GOOGLE_CLIENT_ID || "",
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
   githubClientID: process.env.GITHUB_CLIENT_ID || "",

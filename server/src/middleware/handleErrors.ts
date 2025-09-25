@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 
 interface Error {
   statusCode?: number;
@@ -10,7 +10,6 @@ const handleErrors = (
   error: Error,
   _req: Request,
   res: Response,
-  _next: NextFunction
 ) => {
   console.error(error);
   error.statusCode ??= 500;

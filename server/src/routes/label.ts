@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { createLabelHandler, deleteLabelHandler, editLabelHandler, getLabelsHandler } from "../controllers/labels.controller"
-
-const express = require("express");
+import express from "express"
 
 const router: Router = express.Router();
 

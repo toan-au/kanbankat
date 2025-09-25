@@ -1,5 +1,4 @@
 import mongoose, { UpdateQuery } from "mongoose";
-import _ from "lodash";
 import {
   BoardDocument,
   ListDocument,

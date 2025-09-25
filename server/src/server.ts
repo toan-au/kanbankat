@@ -4,13 +4,13 @@ import keys from "../config/keys";
 import mongoose from "mongoose";
 import "express-async-errors";
 import app from "./app";
+import path from "path"
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
 // client app
 if (process.env.NODE_ENV === "production") {
-  const path = require("path");
   // express will serve our static bundle files
   app.use(express.static(path.resolve(__dirname, "../", "../", "../", "client-vite", "dist")));
 

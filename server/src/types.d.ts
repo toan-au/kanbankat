@@ -1,4 +1,4 @@
-import mongoose, { Model, Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export interface TaskDocument {
   readonly _id: Types.ObjectId;
@@ -34,15 +34,16 @@ export interface BoardDocument extends mongoose.Document {
 
 export interface UserDocument extends mongoose.Document {
   readonly _id: string;
-  googleId: String;
-  githubId: String;
-  displayName: String;
+  googleId: string;
+  githubId: string;
+  displayName: string;
   boards: BoardDocument[];
   labels: LabelDocument[];
 }
 
 declare global {
   namespace Express {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     export interface User extends UserDocument {}
   }
 }
