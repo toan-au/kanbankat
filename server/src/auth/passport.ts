@@ -3,8 +3,9 @@ import PassportGoogle from "passport-google-oauth20";
 import PassportGitHub from "passport-github";
 import keys from "../../config/keys";
 import mongoose from "mongoose";
+import { UserDocument } from "../types";
 
-const User = mongoose.model("User");
+const User = mongoose.model<UserDocument>("User");
 const GitHubStrategy = PassportGitHub.Strategy;
 const GoogleStrategy = PassportGoogle.Strategy;
 

@@ -31,7 +31,6 @@ type GetBoardsSchema = {
 router.get(
   "/api/boards",
   requireLogin,
-  requireOwnBoard,
   asyncHandler(
     async (req: Request<GetBoardsSchema["params"]>, res: Response) => {
       const { deleted } = req.query;
