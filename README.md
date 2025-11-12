@@ -1,10 +1,14 @@
 # KanbanKat
 
-KanbanKat is a kanban style project management web app.
+KanbanKat is a kanban-style project management web app.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+KanbanKat is a kanban-style project management web app.
+It features:
+* OAuth2 JWT authentication/authorization
+* Back-end REST API for board, list, task CRUD operations
+* Front-end React App using Redux for state management
 
 ## Getting Started
 
