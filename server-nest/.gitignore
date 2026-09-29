@@ -1,6 +1,8 @@
 node_modules
-server/config/devKeys.ts
 dist
+coverage
 .env
 .env.*
 !.env.example
+
+/generated/prisma

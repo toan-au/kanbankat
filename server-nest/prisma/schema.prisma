@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Stage-1 placeholder: proves the migration pipeline (container -> migrate
+// -> generated client -> query) works end to end. Replaced by the real
+// domain schema in Stage 2 (see docs/nestjs-migration-spec.md).
+model StageOneCheck {
+  id Int @id @default(autoincrement())
+}
