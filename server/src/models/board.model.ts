@@ -55,7 +55,7 @@ baordSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    await Label.deleteMany({ user: this._id });
+    await Label.deleteMany({ board: this._id });
     next();
   }
 );

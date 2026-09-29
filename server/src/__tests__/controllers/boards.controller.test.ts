@@ -287,18 +287,15 @@ describe("boards.controller", () => {
       expect(result).toBe(listA._id.toString());
     });
 
-    it("removes the LAST list when listId does not match any list (existing splice(-1) behavior)", async () => {
+    it("leaves lists unchanged when listId does not match any list", async () => {
       const listA = { _id: new mongoose.Types.ObjectId() };
       const listB = { _id: new mongoose.Types.ObjectId() };
       const board = makeBoard({ lists: makeLists([listA, listB]) });
       MockedBoardModel.findById = jest.fn().mockResolvedValue(board);
 
-      // findIndex returns -1 when nothing matches; lists.splice(-1, 1) then
-      // removes the LAST element rather than doing nothing. This documents
-      // that latent gotcha rather than fixing it.
       await boardController.deleteList(board._id.toString(), "does-not-exist");
 
-      expect(board.lists.map((l) => l._id)).toEqual([listA._id]);
+      expect(board.lists.map((l) => l._id)).toEqual([listA._id, listB._id]);
     });
   });
 
@@ -363,19 +360,16 @@ describe("boards.controller", () => {
       expect(result).toBeNull();
     });
 
-    it("throws when the task is not found in the list and an update field is provided (existing behavior)", async () => {
+    it("returns null when the task is not found in the list", async () => {
       const listId = new mongoose.Types.ObjectId();
       const board = makeBoard({ lists: makeLists([{ _id: listId, tasks: [] }]) });
       MockedBoardModel.findById = jest.fn().mockResolvedValue(board);
 
-      // taskIndex resolves to -1; `list.tasks[-1].name = ...` throws because
-      // tasks[-1] is undefined. Documents the current crash rather than
-      // guarding against it.
-      await expect(
-        boardController.editTask(board._id.toString(), listId.toString(), "missing-task", {
-          name: "New",
-        })
-      ).rejects.toThrow();
+      const result = await boardController.editTask(board._id.toString(), listId.toString(), "missing-task", {
+        name: "New",
+      });
+
+      expect(result).toBeNull();
     });
   });
 
@@ -406,7 +400,7 @@ describe("boards.controller", () => {
       expect(result).toBeNull();
     });
 
-    it("removes the LAST task when taskId does not match (existing splice(-1) behavior)", async () => {
+    it("returns null and leaves tasks unchanged when taskId does not match", async () => {
       const listId = new mongoose.Types.ObjectId();
       const t1 = makeTask({ name: "t1" });
       const t2 = makeTask({ name: "t2" });
@@ -415,8 +409,8 @@ describe("boards.controller", () => {
 
       const result = await boardController.deleteTask(board._id.toString(), listId.toString(), "missing-task");
 
-      expect(result?.task).toBeUndefined();
-      expect(board.lists[0].tasks).toEqual([t1]);
+      expect(result).toBeNull();
+      expect(board.lists[0].tasks).toEqual([t1, t2]);
     });
   });
 });

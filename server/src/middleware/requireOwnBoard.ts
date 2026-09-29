@@ -10,8 +10,10 @@ const requireOwnBoard = async (
     const match = req.user?.boards.filter(
       (board: BoardDocument) => board._id.toString() == req.params.boardId
     );
-    if (match && match.length == 0)
+    if (match && match.length == 0) {
       res.status(401).send({ error: "this is not your board" });
+      return;
+    }
     return next();
   }
   return next();

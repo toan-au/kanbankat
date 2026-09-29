@@ -38,7 +38,7 @@ describe("requireOwnBoard middleware", () => {
     expect(status).not.toHaveBeenCalled();
   });
 
-  it("sends 401 when the board is not among the user's boards, but still calls next() (existing behavior)", async () => {
+  it("sends 401 and does NOT call next() when the board is not among the user's boards", async () => {
     const boardId = new mongoose.Types.ObjectId();
     const otherBoardId = new mongoose.Types.ObjectId();
     const req = {
@@ -48,12 +48,9 @@ describe("requireOwnBoard middleware", () => {
 
     await requireOwnBoard(req, res as Response, next);
 
-    // Documents current behavior: the middleware sends a 401 response but
-    // unconditionally falls through to next() as well, rather than returning
-    // after sending the response. Downstream code ends up running anyway.
     expect(status).toHaveBeenCalledWith(401);
     expect(send).toHaveBeenCalledWith({ error: "this is not your board" });
-    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).not.toHaveBeenCalled();
   });
 
   it("calls next() without sending 401 when req.user is undefined (no boards to check)", async () => {

@@ -123,7 +123,7 @@ const deleteList = async (boardId: string, listId: string) => {
   const index = board.lists.findIndex(
     (list: ListDocument) => list._id.toString() == listId
   );
-  board.lists.splice(index, 1);
+  if (index !== -1) board.lists.splice(index, 1);
   await board.save();
   return listId;
 };
@@ -156,6 +156,8 @@ const editTask = async (
   const taskIndex = list?.tasks.findIndex(
     (task: TaskDocument) => task._id.toString() == taskId
   );
+  if (taskIndex === -1) return null;
+
   if (update.name) list.tasks[taskIndex].name = update.name;
   if (update.content) list.tasks[taskIndex].content = update.content;
   if (update.color) list.tasks[taskIndex].color = update.color;
@@ -171,6 +173,8 @@ const deleteTask = async (boardId: string, listId: string, taskId: string) => {
   const taskIndex = list?.tasks.findIndex(
     (task: TaskDocument) => task._id.toString() == taskId
   );
+  if (taskIndex === -1) return null;
+
   const task = list?.tasks[taskIndex];
   list?.tasks.splice(taskIndex, 1);
   await board.save();

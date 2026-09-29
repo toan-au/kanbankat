@@ -57,18 +57,15 @@ describe("Board model", () => {
   });
 
   describe("pre('deleteOne', {document: true}) hook", () => {
-    it("does NOT actually remove the board's labels, because it filters by 'user' instead of 'board' (existing bug, documented not fixed)", async () => {
+    it("removes the board's labels when the board is deleted", async () => {
       const board = new BoardModel({ name: "To Delete", user: new mongoose.Types.ObjectId() });
       await board.save();
       expect(await LabelModel.countDocuments({ board: board._id })).toBe(6);
 
       await board.deleteOne();
 
-      // Label documents have no `user` field (see label.model.ts), so
-      // `Label.deleteMany({ user: this._id })` matches nothing and the
-      // labels are silently orphaned instead of being cleaned up.
       const remainingLabels = await LabelModel.find({ board: board._id });
-      expect(remainingLabels).toHaveLength(6);
+      expect(remainingLabels).toHaveLength(0);
     });
   });
 });
