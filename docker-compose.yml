@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kanbankat
+      POSTGRES_PASSWORD: kanbankat
+      POSTGRES_DB: kanbankat
+    ports:
+      - "5432:5432"
+    volumes:
+      - kanbankat-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kanbankat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kanbankat-postgres-data:
