@@ -30,13 +30,21 @@ describe('AuthController', () => {
     controller = module.get(AuthController);
   });
 
-  function mockResponse(): Response {
-    return {
-      cookie: jest.fn(),
-      clearCookie: jest.fn(),
+  // Returns typed references to the mock cookie/clearCookie functions
+  // alongside the Response object itself, so assertions can target the
+  // jest.Mock directly instead of a property access on a Response-typed
+  // value (which trips @typescript-eslint/unbound-method, since the type
+  // checker sees a real Express Response method there, not a plain mock).
+  function mockResponse() {
+    const cookie = jest.fn();
+    const clearCookie = jest.fn();
+    const res = {
+      cookie,
+      clearCookie,
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
     } as unknown as Response;
+    return { res, cookie, clearCookie };
   }
 
   describe('refresh', () => {
@@ -48,12 +56,12 @@ describe('AuthController', () => {
       const req = {
         cookies: { refreshToken: 'old-refresh' },
       } as unknown as Request;
-      const res = mockResponse();
+      const { res, cookie } = mockResponse();
 
       const result = await controller.refresh(req, res);
 
       expect(authService.refreshTokens).toHaveBeenCalledWith('old-refresh');
-      expect(res.cookie).toHaveBeenCalledWith(
+      expect(cookie).toHaveBeenCalledWith(
         'refreshToken',
         'new-refresh',
         expect.objectContaining({ httpOnly: true }),
@@ -67,28 +75,28 @@ describe('AuthController', () => {
       const req = {
         cookies: { refreshToken: 'current-refresh' },
       } as unknown as Request;
-      const res = mockResponse();
+      const { res, clearCookie } = mockResponse();
 
       await controller.logout(req, res);
 
       expect(authService.revokeRefreshToken).toHaveBeenCalledWith(
         'current-refresh',
       );
-      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+      expect(clearCookie).toHaveBeenCalledWith('refreshToken');
     });
   });
 
   describe('logoutAll', () => {
     it('revokes every refresh token for the authenticated user and clears the cookie', async () => {
       const req = { user: { id: 'user-1' } } as unknown as Request;
-      const res = mockResponse();
+      const { res, clearCookie } = mockResponse();
 
       await controller.logoutAll(req, res);
 
       expect(authService.revokeAllRefreshTokensForUser).toHaveBeenCalledWith(
         'user-1',
       );
-      expect(res.clearCookie).toHaveBeenCalledWith('refreshToken');
+      expect(clearCookie).toHaveBeenCalledWith('refreshToken');
     });
   });
 });
