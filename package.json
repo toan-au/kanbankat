@@ -13,6 +13,8 @@
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client-vite",
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
+    "lint": "npm run lint --prefix server && npm run lint --prefix client-vite",
+    "test": "npm test --prefix server && npm test --prefix client-vite",
     "heroku-postbuild": "cd client-vite && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "author": "Toan Au",
