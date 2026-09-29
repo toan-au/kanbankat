@@ -69,16 +69,14 @@ The server follows a layered Express.js architecture:
 
 The client is a React SPA using Vite as the build tool:
 
-**State Management**: Redux Toolkit with three slices:
-- `boards`: Manages board/list/task data and CRUD operations
-- `currentUser`: Manages authenticated user state
-- `ui`: Manages UI state (modals, menus, etc.)
+**State Management**: Redux Toolkit store configured in `client-vite/src/state/store.ts`, with slices under `client-vite/src/state/`:
+- `boards/boards.ts`: Manages board/list/task data and CRUD operations
+- `current-user/current-user.ts`: Manages authenticated user state
+- `ui/ui.ts`: Manages UI state (modals, menus, etc.)
 
-**Routing**: React Router with route structure:
-- `/` - Home/Landing page
-- `/dashboard` - User's boards dashboard
-- `/board/:boardId` - Individual board view
-- `/settings` - User settings
+**Routing**: React Router routes are defined inline in `client-vite/src/App.tsx` via `createBrowserRouter`, split into two route groups by parent element:
+- Public (wrapped in `Template`): `/` - Home/Landing page
+- Protected (wrapped in `Authguard`): `/oauth/success`, `/dashboard`, `/board/:boardId`, `/settings/`
 
 **Key Patterns**:
 - Redux async thunks for API calls (e.g., `createBoardAsync`, `getBoardAsync`)
@@ -91,8 +89,9 @@ The client is a React SPA using Vite as the build tool:
 - `pages/`: Top-level page components
 - `components/board/`: Board-specific components (List, Task, etc.)
 - `components/dashboard/`: Dashboard-specific components
-- `components/UI/`: Reusable UI components
-- `components/templates/`: Layout templates and auth guards
+- `components/UI/`: Hand-rolled reusable components (Spinner, Overlay, MoreOptionsButton)
+- `components/ui/`: Radix-based primitives (button, dropdown-menu, navigation-menu) — note both `UI/` and `ui/` exist side by side
+- `components/templates/`: Layout templates and auth guards (`Template`, `Authguard`)
 
 ### API Endpoints
 
@@ -119,7 +118,11 @@ All API routes are prefixed with `/api` except auth routes (`/auth`):
 - `DELETE /api/board/:boardId/list/:listId/task/:taskId` - Delete task
 
 **Labels**:
-- Label endpoints in `server/src/routes/label.ts` (prefixed with `/api`)
+- `POST /api/board/:boardId/labels` - Create label
+- `GET /api/board/:boardId/labels` - Get board's labels
+- `PATCH /api/board/:boardId/label/:id` - Update label
+- `DELETE /api/board/:boardId/label/:id` - Delete label
+- Defined in `server/src/routes/label.ts`
 
 **Auth**:
 - `GET /auth/google` - Initiate Google OAuth
@@ -130,10 +133,7 @@ All API routes are prefixed with `/api` except auth routes (`/auth`):
 
 ## Configuration
 
-**Server Environment**: Requires `server/config/keys.js` (or `.env` file at `server/config/.env`) with:
-- Database connection string (MongoDB)
-- OAuth credentials (Google, GitHub)
-- Cookie session key
+**Server Environment**: `server/config/keys.ts` reads from `process.env`, loading `server/config/.env` via dotenv when `NODE_ENV != 'production'`. Required vars: `MONGO_URI`, `COOKIE_KEY`, `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`/`GITHUB_CLIENT_SECRET`.
 
 **Client**: Vite proxy configuration may be in `client-vite/vite.config.ts` for API requests
 
@@ -143,18 +143,28 @@ All API routes are prefixed with `/api` except auth routes (`/auth`):
 
 ## Testing
 
-Tests are located in `server/src/__tests__/` using Jest. Test fixtures in `server/src/__tests__/board.fixture.json`.
+**Workflow: Test-Driven Development.** New features and bug fixes in this repo are built TDD-style, with AI assistance following the same discipline: write a failing test that captures the desired behavior first, confirm it fails for the expected reason, then write the minimum code to make it pass, then refactor with the test green. Don't write implementation code before its test exists. This applies on both `server/` and `client-vite/`.
 
-To run a single test file:
-```bash
-cd server
-npm test -- <test-file-name>
-```
+**Server** (`server/src/__tests__/`, Jest + Supertest):
+- `server/src/__tests__/*.test.ts` — route-level tests (mock the controller + `requireLogin`/`requireOwnBoard`, drive requests through `supertest(app)`)
+- `server/src/__tests__/middleware/` — middleware unit tests (call the middleware directly with fake `req`/`res`/`next`)
+- `server/src/__tests__/controllers/` — controller unit tests (mock the Mongoose model, exercise real controller logic)
+- `server/src/__tests__/models/` — Mongoose hook/validation tests, using a real in-memory MongoDB via `mongodb-memory-server` (see `server/src/__tests__/setup/mongoMemoryServer.ts`)
+- Test fixtures in `server/src/__tests__/board.fixture.json`
+- Run: `cd server && npm test`, or a single file with `npm test -- <test-file-name>`
+
+**Client** (`client-vite/src/__tests__/`, Vitest + React Testing Library):
+- `client-vite/src/__tests__/state/` — Redux slice/thunk tests (reducers driven directly with RTK action creators; thunks tested with `vi.mock('axios')`)
+- `client-vite/src/__tests__/components/` — component tests via `renderWithProviders()` (`client-vite/src/__tests__/setup/renderWithProviders.tsx`), which wraps a real Redux store + `MemoryRouter`
+- `client-vite/src/__tests__/setup/setup.ts` — Vitest setup file (jest-dom matchers, `ResizeObserver` polyfill)
+- Run: `cd client-vite && npm test`, or target a file with `npx vitest run <path>`
+
+Both test trees mirror the same structure (`__tests__/` at the `src/` root, subfolders by concern) so the two halves of the monorepo stay consistent.
 
 ## Important Notes
 
 - The server uses `ts-node-dev` for development with auto-reload
 - Client uses Vite's HMR for fast development
 - Board deletion is soft delete by default (sets `deleted: true`, `deletedOn: Date`)
-- Default labels are automatically created when a new board is created (see `server/src/models/board.model.ts:5-12`)
+- Default labels are automatically created when a new board is created (default set defined at `server/src/models/board.model.ts:5-12`, inserted by a pre-save hook at lines 42-52)
 - Session cookie max age is 30 days
