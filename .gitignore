@@ -1,3 +1,6 @@
 node_modules
 server/config/devKeys.ts
 dist
+.env
+.env.*
+!.env.example

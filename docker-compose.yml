@@ -3,15 +3,15 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: kanbankat
-      POSTGRES_PASSWORD: kanbankat
-      POSTGRES_DB: kanbankat
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env, see .env.example}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env, see .env.example}
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env, see .env.example}
     ports:
       - "5432:5432"
     volumes:
       - kanbankat-postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kanbankat"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
