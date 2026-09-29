@@ -2,20 +2,22 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import boardController from "../controllers/boards.controller";
-import { BoardDocument, UserDocument } from "../types";
+import { BoardDocument, ListDocument, UserDocument } from "../types";
 
 // Mock middlewares - must be defined before jest.mock calls
-let mockRequireLogin = jest.fn();
-let mockRequireOwnBoard = jest.fn();
+const mockRequireLogin = jest.fn();
+const mockRequireOwnBoard = jest.fn();
 
 jest.mock("../middleware/requireLogin", () => ({
   __esModule: true,
-  default: (...args: any[]) => mockRequireLogin(...args),
+  default: (req: Request, res: Response, next: NextFunction) =>
+    mockRequireLogin(req, res, next),
 }));
 
 jest.mock("../middleware/requireOwnBoard", () => ({
   __esModule: true,
-  default: (...args: any[]) => mockRequireOwnBoard(...args),
+  default: (req: Request, res: Response, next: NextFunction) =>
+    mockRequireOwnBoard(req, res, next),
 }));
 
 // Mock board controller
@@ -56,7 +58,7 @@ const mockBoard: Partial<BoardDocument> = {
         },
       ],
     },
-  ] as any,
+  ] as unknown as mongoose.Types.DocumentArray<ListDocument>,
   deleted: false,
 };
 
