@@ -2,6 +2,15 @@ import mongoose from "mongoose";
 import { connect, closeDatabase, clearDatabase } from "../setup/mongoMemoryServer";
 import BoardModel from "../../models/board.model";
 import LabelModel from "../../models/label.model";
+import { BoardDocument } from "../../types";
+
+// `labels` is set by board.model.ts's schema/hook but isn't declared on the
+// BoardDocument TS interface; `text` is the label schema's actual field,
+// while the LabelDocument interface (mis-)declares it as `name`. Both are
+// existing type/schema mismatches, not fixed here — these local types just
+// let the tests access the real runtime shape without an `any` escape hatch.
+type BoardWithLabels = BoardDocument & { labels: unknown[] };
+type LabelWithText = { text: string };
 
 beforeAll(async () => {
   await connect();
@@ -22,13 +31,11 @@ describe("Board model", () => {
 
       await board.save();
 
-      // `labels` isn't declared on the BoardDocument TS interface even
-      // though the schema defines it, so this is cast to access it.
-      expect((board as any).labels).toHaveLength(6);
+      expect((board as unknown as BoardWithLabels).labels).toHaveLength(6);
 
       const savedLabels = await LabelModel.find({ board: board._id });
       expect(savedLabels).toHaveLength(6);
-      expect(savedLabels.map((l) => (l as any).text).sort()).toEqual(
+      expect(savedLabels.map((l) => (l as unknown as LabelWithText).text).sort()).toEqual(
         ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5", "Label 6"].sort()
       );
     });

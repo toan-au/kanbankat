@@ -17,6 +17,8 @@ const MockedUserModel = UserModel as unknown as {
   findOne: jest.Mock;
 };
 
+type TestList = ListDocument & { save: jest.Mock };
+
 // Builds a plain-object stand-in for a Mongoose board document. `lists` gets
 // a `.id()` helper attached to mimic Mongoose's DocumentArray#id(), since the
 // controller relies on it for task lookups.
@@ -25,9 +27,8 @@ function makeLists(lists: Partial<ListDocument>[]) {
     tasks: [],
     save: jest.fn().mockResolvedValue(undefined),
     ...list,
-  })) as unknown as ListDocument[] & { id: (id: string) => ListDocument | undefined };
-  (arr as any).id = (id: string) =>
-    arr.find((list) => list._id.toString() === id);
+  })) as unknown as TestList[] & { id: (id: string) => TestList | undefined };
+  arr.id = (id) => arr.find((list) => list._id.toString() === id);
   return arr;
 }
 
@@ -73,7 +74,7 @@ describe("boards.controller", () => {
       expect(dbUser.boards).toEqual([boardInstance]);
       expect(dbUser.save).toHaveBeenCalledTimes(1);
       expect(boardInstance.save).toHaveBeenCalledTimes(1);
-      expect((result as any).user.toString()).toBe(userId);
+      expect(result.user.toString()).toBe(userId);
     });
   });
 
@@ -123,7 +124,13 @@ describe("boards.controller", () => {
       const updated = makeBoard({ name: "Renamed" });
       MockedBoardModel.findOneAndUpdate = jest.fn().mockResolvedValue(updated);
 
-      const result = await boardController.editBoard("board-1", { name: "Renamed", deleted: undefined as any });
+      const result = await boardController.editBoard("board-1", {
+        name: "Renamed",
+        // BoardUpdate.deleted is typed `string` even though callers only ever
+        // pass a boolean or leave it undefined — an existing type mismatch,
+        // not fixed here.
+        deleted: undefined as unknown as string,
+      });
 
       expect(MockedBoardModel.findOneAndUpdate).toHaveBeenCalledWith(
         { _id: "board-1" },
@@ -178,7 +185,7 @@ describe("boards.controller", () => {
 
       const result = await boardController.shiftLists(board._id.toString(), 0, 2);
 
-      expect(result.lists.map((l: any) => l._id)).toEqual([listB._id, listC._id, listA._id]);
+      expect(result.lists.map((l) => l._id)).toEqual([listB._id, listC._id, listA._id]);
       expect(board.save).toHaveBeenCalledTimes(1);
     });
   });
@@ -208,8 +215,8 @@ describe("boards.controller", () => {
         { name: "New" }
       );
 
-      expect((result as any).name).toBe("New");
-      expect((result as any).save).toHaveBeenCalledTimes(1);
+      expect(result?.name).toBe("New");
+      expect(board.lists[0].save).toHaveBeenCalledTimes(1);
     });
 
     it("returns null when the list is not found", async () => {
@@ -276,7 +283,7 @@ describe("boards.controller", () => {
 
       const result = await boardController.deleteList(board._id.toString(), listA._id.toString());
 
-      expect(board.lists.map((l: any) => l._id)).toEqual([listB._id]);
+      expect(board.lists.map((l) => l._id)).toEqual([listB._id]);
       expect(result).toBe(listA._id.toString());
     });
 
@@ -291,7 +298,7 @@ describe("boards.controller", () => {
       // that latent gotcha rather than fixing it.
       await boardController.deleteList(board._id.toString(), "does-not-exist");
 
-      expect(board.lists.map((l: any) => l._id)).toEqual([listA._id]);
+      expect(board.lists.map((l) => l._id)).toEqual([listA._id]);
     });
   });
 
