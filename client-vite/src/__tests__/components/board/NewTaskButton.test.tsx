@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import boardsReducer from "../../../state/boards/boards";
 import NewTaskButton from "../../../components/board/NewTaskButton";
 
@@ -42,7 +43,7 @@ describe("NewTaskButton", () => {
     const user = userEvent.setup();
     renderWithProviders(<NewTaskButton boardId="board-1" listId="list-1" />, { preloadedState: preloadedState() });
 
-    await user.click(screen.getByRole("button", { name: /add a task/i }));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: /add a task/i })));
 
     expect(screen.getByPlaceholderText(/enter anything/i)).toBeVisible();
   });
@@ -51,9 +52,9 @@ describe("NewTaskButton", () => {
     const user = userEvent.setup();
     renderWithProviders(<NewTaskButton boardId="board-1" listId="list-1" />, { preloadedState: preloadedState() });
 
-    await user.click(screen.getByRole("button", { name: /add a task/i }));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: /add a task/i })));
     const input = screen.getByPlaceholderText(/enter anything/i);
-    await user.type(input, "Buy milk{Enter}");
+    await actAndFlush(() => user.type(input, "Buy milk{Enter}"));
 
     expect(axios.post).toHaveBeenCalledWith("/api/board/board-1/list/list-1/task", { name: "Buy milk" });
     expect(input).toHaveValue("");

@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import boardsReducer from "../../../state/boards/boards";
 import Task from "../../../components/board/Task";
 
@@ -62,10 +63,10 @@ describe("Task", () => {
 
     expect(store.getState().ui.showShroud).toBe(false);
 
-    await user.click(screen.getByRole("button", { name: "" }));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
     expect(store.getState().ui.showShroud).toBe(true);
 
-    await user.click(screen.getByRole("button", { name: "" }));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
     expect(store.getState().ui.showShroud).toBe(false);
   });
 
@@ -76,12 +77,12 @@ describe("Task", () => {
       { preloadedState: { boards: boardsStateWithActiveBoard("board-1", "list-1") } }
     );
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Edit"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Edit")));
 
     const textbox = screen.getByDisplayValue("Buy milk");
-    await user.clear(textbox);
-    await user.type(textbox, "Buy oat milk{Enter}");
+    await actAndFlush(() => user.clear(textbox));
+    await actAndFlush(() => user.type(textbox, "Buy oat milk{Enter}"));
 
     expect(axios.patch).toHaveBeenCalledWith("/api/board/board-1/list/list-1/task/task-1", {
       name: "Buy oat milk",
@@ -95,8 +96,8 @@ describe("Task", () => {
       { preloadedState: { boards: boardsStateWithActiveBoard("board-1", "list-1") } }
     );
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Delete"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Delete")));
 
     expect(axios.delete).toHaveBeenCalledWith("/api/board/board-1/list/list-1/task/task-1");
   });

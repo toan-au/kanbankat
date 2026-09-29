@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import BoardListItem from "../../../components/dashboard/BoardListItem";
 
 vi.mock("axios");
@@ -30,8 +31,8 @@ describe("BoardListItem", () => {
     const user = userEvent.setup();
     renderWithProviders(<BoardListItem board={board} />);
 
-    await user.click(screen.getByRole("button", { name: "" })); // MoreOptionsButton has no accessible name
-    await user.click(screen.getByText("Archive"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" }))); // MoreOptionsButton has no accessible name
+    await actAndFlush(() => user.click(screen.getByText("Archive")));
 
     expect(axios.delete).toHaveBeenCalledWith("/api/board/board-1");
   });
@@ -40,12 +41,12 @@ describe("BoardListItem", () => {
     const user = userEvent.setup();
     renderWithProviders(<BoardListItem board={board} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Rename"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Rename")));
 
     const textbox = screen.getByRole("textbox");
-    await user.clear(textbox);
-    await user.type(textbox, "Renamed Board{Enter}");
+    await actAndFlush(() => user.clear(textbox));
+    await actAndFlush(() => user.type(textbox, "Renamed Board{Enter}"));
 
     expect(axios.patch).toHaveBeenCalledWith("/api/board/board-1", { name: "Renamed Board" });
   });

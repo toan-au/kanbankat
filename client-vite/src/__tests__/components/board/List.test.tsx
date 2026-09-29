@@ -4,6 +4,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import List from "../../../components/board/List";
 
 vi.mock("axios");
@@ -49,12 +50,12 @@ describe("List", () => {
     const user = userEvent.setup();
     renderWithProviders(<List boardId="board-1" list={list} index={0} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Rename"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Rename")));
 
     const textbox = screen.getByDisplayValue("To Do");
-    await user.clear(textbox);
-    await user.type(textbox, "Doing{Enter}");
+    await actAndFlush(() => user.clear(textbox));
+    await actAndFlush(() => user.type(textbox, "Doing{Enter}"));
 
     expect(axios.patch).toHaveBeenCalledWith("/api/board/board-1/list/list-1", { name: "Doing" });
   });
@@ -63,11 +64,11 @@ describe("List", () => {
     const user = userEvent.setup();
     renderWithProviders(<List boardId="board-1" list={list} index={0} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Rename"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Rename")));
 
     const textbox = screen.getByDisplayValue("To Do");
-    await user.type(textbox, "{Shift>}{Enter}{/Shift}");
+    await actAndFlush(() => user.type(textbox, "{Shift>}{Enter}{/Shift}"));
 
     expect(axios.patch).not.toHaveBeenCalled();
   });
@@ -76,8 +77,8 @@ describe("List", () => {
     const user = userEvent.setup();
     renderWithProviders(<List boardId="board-1" list={list} index={0} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Delete"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Delete")));
 
     expect(axios.delete).toHaveBeenCalledWith("/api/board/board-1/list/list-1");
   });
