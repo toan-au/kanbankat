@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,9 +10,114 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Stage-1 placeholder: proves the migration pipeline (container -> migrate
-// -> generated client -> query) works end to end. Replaced by the real
-// domain schema in Stage 2 (see docs/nestjs-migration-spec.md).
-model StageOneCheck {
-  id Int @id @default(autoincrement())
+// --- Domain schema (Stage 2, docs/nestjs-migration-spec.md) ---
+//
+// IDs: cuid() everywhere -- non-sequential and non-guessable, so board/list/
+// task/label IDs can't be enumerated the way auto-increment integers could.
+//
+// Ordering: `position` is a Float (fractional/lexicographic ordering, per
+// the spec) on List and Task. Reordering only ever touches the one row being
+// moved, at the cost of eventually needing to rebalance if repeated
+// insertions between two positions exhaust float precision -- an edge case
+// not worth solving until it's actually a problem for a personal kanban app.
+//
+// Cascades: deleting a User cascades to their Boards and RefreshTokens;
+// deleting a Board cascades to its Lists and Labels; deleting a List
+// cascades to its Tasks. This only matters for the hard-delete path --
+// Board keeps the same deleted/deletedOn soft-delete pair the old schema
+// had, and List keeps deleted/deletedOn too (Task did not have soft delete
+// in the old schema either, so it doesn't get one here).
+//
+// Not carried over: the old app's default-label-auto-creation (a Mongoose
+// pre('save') hook) and Session model (Mongo-backed express-session storage,
+// obsolete now that auth is JWT, not server-side sessions). Default-label
+// creation becomes application logic in BoardsService (Stage 4), not a
+// schema-level concern.
+
+model User {
+  id          String   @id @default(cuid())
+  googleId    String?  @unique
+  githubId    String?  @unique
+  displayName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  boards        Board[]
+  refreshTokens RefreshToken[]
+}
+
+model Board {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  about     String    @default("")
+  deleted   Boolean   @default(false)
+  deletedOn DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  lists  List[]
+  labels Label[]
+
+  @@index([userId])
+}
+
+model List {
+  id        String    @id @default(cuid())
+  boardId   String
+  board     Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  name      String
+  position  Float
+  deleted   Boolean   @default(false)
+  deletedOn DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  tasks Task[]
+
+  @@index([boardId])
+}
+
+model Task {
+  id        String   @id @default(cuid())
+  listId    String
+  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  name      String
+  content   String   @default("")
+  color     String   @default("none")
+  position  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([listId])
+}
+
+model Label {
+  id        String   @id @default(cuid())
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  text      String
+  hexColour String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+// Refresh-token rotation (see docs/nestjs-migration-spec.md, "Refresh token
+// revocation"). tokenHash stores a hash of the token, never the raw value.
+// usedAt marks a token as spent (rotated away); a token presented again
+// after usedAt is set is a replay/compromise signal, handled in AuthService
+// (Stage 3). revokedAt supports explicit logout / logout-everywhere.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  issuedAt  DateTime  @default(now())
+  usedAt    DateTime?
+  revokedAt DateTime?
+
+  @@index([userId])
 }
