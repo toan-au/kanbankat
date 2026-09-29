@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { actAndFlush } from "../../setup/flushTimers";
 import NewBoardButton from "../../../components/dashboard/NewBoardButton";
 
 describe("NewBoardButton", () => {
@@ -15,7 +16,7 @@ describe("NewBoardButton", () => {
     const user = userEvent.setup();
     render(<NewBoardButton text="New board" onSave={vi.fn()} />);
 
-    await user.click(screen.getByRole("button", { name: /new board/i }));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: /new board/i })));
 
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
@@ -25,8 +26,8 @@ describe("NewBoardButton", () => {
     const user = userEvent.setup();
     render(<NewBoardButton text="New board" onSave={onSave} />);
 
-    await user.click(screen.getByRole("button", { name: /new board/i }));
-    await user.type(screen.getByRole("textbox"), "My Board{Enter}");
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: /new board/i })));
+    await actAndFlush(() => user.type(screen.getByRole("textbox"), "My Board{Enter}"));
 
     expect(onSave).toHaveBeenCalledWith("My Board");
     // Editing mode closes and the trigger button reappears
@@ -38,8 +39,8 @@ describe("NewBoardButton", () => {
     const user = userEvent.setup();
     render(<NewBoardButton text="New board" onSave={onSave} />);
 
-    await user.click(screen.getByRole("button", { name: /new board/i }));
-    await user.type(screen.getByRole("textbox"), "Abandoned{Escape}");
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: /new board/i })));
+    await actAndFlush(() => user.type(screen.getByRole("textbox"), "Abandoned{Escape}"));
 
     expect(onSave).not.toHaveBeenCalled();
     expect(screen.getByRole("button", { name: /new board/i })).toBeInTheDocument();

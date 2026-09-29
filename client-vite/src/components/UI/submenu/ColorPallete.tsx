@@ -12,7 +12,7 @@ function ColorPallete() {
       </div>
       <ul className="flex flex-col gap-2 mt-1 w-48">
         {colorOptions.map((color) => (
-          <li className="flex">
+          <li key={color} className="flex">
             <input type="checkbox" className="p-3 mr-2 scale-150" />
             <div
               className="flex-1 px-2 py-1 rounded-lg text-sm"

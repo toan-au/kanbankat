@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import ArchivedBoardListItem from "../../../components/dashboard/ArchivedBoardListItem";
 
 vi.mock("axios");
@@ -28,8 +29,8 @@ describe("ArchivedBoardListItem", () => {
     const user = userEvent.setup();
     renderWithProviders(<ArchivedBoardListItem board={board} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Restore"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Restore")));
 
     expect(axios.patch).toHaveBeenCalledWith("/api/board/board-1", { deleted: false });
   });
@@ -38,8 +39,8 @@ describe("ArchivedBoardListItem", () => {
     const user = userEvent.setup();
     renderWithProviders(<ArchivedBoardListItem board={board} />);
 
-    await user.click(screen.getByRole("button", { name: "" }));
-    await user.click(screen.getByText("Delete"));
+    await actAndFlush(() => user.click(screen.getByRole("button", { name: "" })));
+    await actAndFlush(() => user.click(screen.getByText("Delete")));
 
     expect(axios.delete).toHaveBeenCalledWith("/api/board/destroy/board-1");
   });

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import ArchivedBoards from "../../../components/dashboard/ArchivedBoards";
 
 vi.mock("axios");
@@ -12,10 +13,12 @@ describe("ArchivedBoards", () => {
     vi.clearAllMocks();
   });
 
-  it("fetches archived boards (deleted=true) on mount", () => {
+  it("fetches archived boards (deleted=true) on mount", async () => {
     mockedGet.mockResolvedValue({ data: [] });
 
-    renderWithProviders(<ArchivedBoards />);
+    await actAndFlush(() => {
+      renderWithProviders(<ArchivedBoards />);
+    });
 
     expect(axios.get).toHaveBeenCalledWith("/api/boards", { params: { deleted: true } });
   });

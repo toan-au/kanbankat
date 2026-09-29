@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { renderWithProviders } from "../../setup/renderWithProviders";
+import { actAndFlush } from "../../setup/flushTimers";
 import boardsReducer from "../../../state/boards/boards";
 import Boards from "../../../components/dashboard/Boards";
 
@@ -15,10 +16,15 @@ describe("Boards", () => {
     vi.clearAllMocks();
   });
 
-  it("fetches the user's boards on mount", () => {
+  it("fetches the user's boards on mount", async () => {
     mockedGet.mockResolvedValue({ data: [] });
 
-    renderWithProviders(<Boards />);
+    // Wrapping the render itself so the mocked response's fulfilled-action
+    // re-render settles within act() before the test ends, instead of
+    // leaking into the next test.
+    await actAndFlush(() => {
+      renderWithProviders(<Boards />);
+    });
 
     expect(axios.get).toHaveBeenCalledWith("/api/boards");
   });
