@@ -70,8 +70,15 @@ export class AuthService {
   }
 
   async revokeRefreshToken(rawRefreshToken: string): Promise<void> {
-    await this.prisma.refreshToken.update({
+    const existing = await this.prisma.refreshToken.findUnique({
       where: { tokenHash: this.hashToken(rawRefreshToken) },
+    });
+    if (!existing) {
+      throw new UnauthorizedException();
+    }
+
+    await this.prisma.refreshToken.update({
+      where: { id: existing.id },
       data: { revokedAt: new Date() },
     });
   }

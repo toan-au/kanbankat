@@ -177,15 +177,26 @@ describe('AuthService', () => {
 
   describe('revokeRefreshToken', () => {
     it('marks the matching token revoked', async () => {
+      prisma.refreshToken.findUnique.mockResolvedValue({ id: 'rt-1' });
       prisma.refreshToken.update.mockResolvedValue({});
 
       await service.revokeRefreshToken('raw-refresh-token');
 
       expect(prisma.refreshToken.update).toHaveBeenCalledWith(
         expect.objectContaining({
+          where: { id: 'rt-1' },
           data: expect.objectContaining({ revokedAt: expect.any(Date) }),
         }),
       );
+    });
+
+    it('rejects an unknown refresh token', async () => {
+      prisma.refreshToken.findUnique.mockResolvedValue(null);
+
+      await expect(service.revokeRefreshToken('bogus')).rejects.toThrow(
+        UnauthorizedException,
+      );
+      expect(prisma.refreshToken.update).not.toHaveBeenCalled();
     });
   });
 
