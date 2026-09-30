@@ -20,6 +20,9 @@ declare global {
 declare module 'express' {
   interface Request {
     cookies: { refreshToken?: string };
+    // Set by pino-http's genReqId (see src/common/request-id.ts) before any
+    // route handler runs.
+    id?: string;
   }
 }
 

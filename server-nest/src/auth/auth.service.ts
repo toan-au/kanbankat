@@ -1,8 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { createHash, randomBytes } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  InvalidRefreshTokenException,
+  RefreshTokenExpiredException,
+  RefreshTokenReuseDetectedException,
+  RefreshTokenRevokedException,
+} from './exceptions/refresh-token.exceptions';
 
 interface TokenPair {
   accessToken: string;
@@ -45,20 +51,20 @@ export class AuthService {
     });
 
     if (!existing) {
-      throw new UnauthorizedException();
+      throw new InvalidRefreshTokenException();
     }
     if (existing.revokedAt) {
-      throw new UnauthorizedException();
+      throw new RefreshTokenRevokedException();
     }
     if (Date.now() - existing.issuedAt.getTime() > REFRESH_TOKEN_TTL_MS) {
-      throw new UnauthorizedException();
+      throw new RefreshTokenExpiredException();
     }
     if (existing.usedAt) {
       // Replay of an already-rotated-away token: someone else has a copy of
       // it. Revoke the whole family rather than just this one token -- see
       // docs/nestjs-migration-spec.md ("Refresh token revocation").
       await this.revokeAllRefreshTokensForUser(existing.userId);
-      throw new UnauthorizedException();
+      throw new RefreshTokenReuseDetectedException();
     }
 
     await this.prisma.refreshToken.update({
@@ -74,7 +80,7 @@ export class AuthService {
       where: { tokenHash: this.hashToken(rawRefreshToken) },
     });
     if (!existing) {
-      throw new UnauthorizedException();
+      throw new InvalidRefreshTokenException();
     }
 
     await this.prisma.refreshToken.update({

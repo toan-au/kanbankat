@@ -1,8 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  InvalidRefreshTokenException,
+  RefreshTokenExpiredException,
+  RefreshTokenReuseDetectedException,
+  RefreshTokenRevokedException,
+} from './exceptions/refresh-token.exceptions';
 
 // Stage 3 (auth) unit tests, written before the implementation exists --
 // see docs/nestjs-migration-spec.md ("Auth flow", "Refresh token
@@ -118,7 +123,7 @@ describe('AuthService', () => {
       prisma.refreshToken.findUnique.mockResolvedValue(null);
 
       await expect(service.refreshTokens('bogus')).rejects.toThrow(
-        UnauthorizedException,
+        InvalidRefreshTokenException,
       );
     });
 
@@ -132,7 +137,7 @@ describe('AuthService', () => {
       });
 
       await expect(service.refreshTokens('raw')).rejects.toThrow(
-        UnauthorizedException,
+        RefreshTokenRevokedException,
       );
     });
 
@@ -148,7 +153,7 @@ describe('AuthService', () => {
       });
 
       await expect(service.refreshTokens('raw')).rejects.toThrow(
-        UnauthorizedException,
+        RefreshTokenExpiredException,
       );
     });
 
@@ -163,7 +168,7 @@ describe('AuthService', () => {
       prisma.refreshToken.updateMany.mockResolvedValue({ count: 3 });
 
       await expect(service.refreshTokens('raw')).rejects.toThrow(
-        UnauthorizedException,
+        RefreshTokenReuseDetectedException,
       );
 
       expect(prisma.refreshToken.updateMany).toHaveBeenCalledWith(
@@ -194,7 +199,7 @@ describe('AuthService', () => {
       prisma.refreshToken.findUnique.mockResolvedValue(null);
 
       await expect(service.revokeRefreshToken('bogus')).rejects.toThrow(
-        UnauthorizedException,
+        InvalidRefreshTokenException,
       );
       expect(prisma.refreshToken.update).not.toHaveBeenCalled();
     });
