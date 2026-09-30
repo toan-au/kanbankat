@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Request, Response } from 'express';
 import { AuthController } from './auth.controller';
@@ -68,6 +69,16 @@ describe('AuthController', () => {
       );
       expect(result).toEqual({ accessToken: 'new-access' });
     });
+
+    it('throws UnauthorizedException when there is no refresh cookie', async () => {
+      const req = { cookies: {} } as unknown as Request;
+      const { res } = mockResponse();
+
+      await expect(controller.refresh(req, res)).rejects.toThrow(
+        UnauthorizedException,
+      );
+      expect(authService.refreshTokens).not.toHaveBeenCalled();
+    });
   });
 
   describe('logout', () => {
@@ -82,6 +93,16 @@ describe('AuthController', () => {
       expect(authService.revokeRefreshToken).toHaveBeenCalledWith(
         'current-refresh',
       );
+      expect(clearCookie).toHaveBeenCalledWith('refreshToken');
+    });
+
+    it('clears the cookie without calling the service when there is no refresh cookie', async () => {
+      const req = { cookies: {} } as unknown as Request;
+      const { res, clearCookie } = mockResponse();
+
+      await controller.logout(req, res);
+
+      expect(authService.revokeRefreshToken).not.toHaveBeenCalled();
       expect(clearCookie).toHaveBeenCalledWith('refreshToken');
     });
   });
