@@ -3,8 +3,10 @@ import { APP_FILTER } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { AppExceptionFilter } from './common/filters/app-exception.filter';
 import { genRequestId } from './common/request-id';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { genRequestId } from './common/request-id';
             : { target: 'pino-pretty' },
       },
     }),
+    PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

@@ -4,9 +4,11 @@ import {
   Req,
   Res,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 const REFRESH_COOKIE = 'refreshToken';
 const REFRESH_COOKIE_OPTIONS = { httpOnly: true } as const;
@@ -48,6 +50,7 @@ export class AuthController {
   }
 
   @Post('logout-all')
+  @UseGuards(JwtAuthGuard)
   async logoutAll(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,

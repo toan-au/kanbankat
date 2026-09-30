@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 import { InvalidRefreshTokenException } from './../src/auth/exceptions/refresh-token.exceptions';
+import { PrismaService } from './../src/prisma/prisma.service';
 
 // Registered alongside the real AppModule (not part of it) purely so this
 // spec has routes to throw from -- proves the app's real, globally
@@ -29,7 +30,12 @@ describe('AppExceptionFilter (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
       controllers: [TestErrorController],
-    }).compile();
+    })
+      // Neither test route touches the database; avoid depending on a real
+      // Postgres just because AuthModule/PrismaModule are globally wired in.
+      .overrideProvider(PrismaService)
+      .useValue({ user: { findUnique: jest.fn() } })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
