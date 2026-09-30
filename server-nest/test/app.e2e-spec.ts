@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
+import { PrismaService } from './../src/prisma/prisma.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -10,7 +11,12 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      // This route doesn't touch the database; avoid depending on a real
+      // Postgres just because AuthModule/PrismaModule are globally wired in.
+      .overrideProvider(PrismaService)
+      .useValue({ user: { findUnique: jest.fn() } })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

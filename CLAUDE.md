@@ -161,6 +161,10 @@ All API routes are prefixed with `/api` except auth routes (`/auth`):
 
 Both test trees mirror the same structure (`__tests__/` at the `src/` root, subfolders by concern) so the two halves of the monorepo stay consistent.
 
+## Code Style
+
+**Comments**: Keep comments short — one line, not paragraphs. Only comment on the non-obvious (a hidden constraint, a gotcha, why something is done a specific way); never restate what the code already shows.
+
 ## Important Notes
 
 - The server uses `ts-node-dev` for development with auto-reload
